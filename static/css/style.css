@@ -1,0 +1,151 @@
+body {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    background: #051655;
+    font-family: 微软雅黑, MicrosoftYahei, sans-serif;
+    color: #fff;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol,
+pre,
+table,
+blockquote,
+input,
+button,
+select,
+em,
+textarea {
+    margin: 0;
+    font-weight: normal;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-style: normal;
+}
+
+html,
+body {
+    font-family: 微软雅黑, MicrosoftYahei, sans-serif;
+    color: #fff;
+    background: #00065b url(../img/bg.jpg);
+    background-size: 100% 100%;
+    background-position: 0 0;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+}
+
+.wpbox {
+    width: 100%;
+    height: calc(100% - 10px)
+}
+
+.bnt {
+    height: 11%;
+    width: 100%;
+    display: inline-block;
+}
+
+.topbnt_left {
+    width: 33%
+}
+
+.topbnt_left ul {
+    padding-top: 38px;
+    padding-left: 10%;
+    width: 100%
+}
+
+.topbnt_left li {
+    background: url(../img/bnt.png) center;
+    font-size: 14px;
+    line-height: 40px; /* 增大按钮的高度，以适应更大的间距 */
+    background-repeat: no-repeat;
+    width: 22%; /* 增大按钮的宽度 */
+    height: 40px; /* 增大按钮的高度 */
+    float: left;
+    text-align: center;
+    margin-left: 10%; /* 增大按钮之间的间距 */
+    margin-right: 2%; /* 增大按钮之间的间距 */
+}
+
+
+
+.topbnt_left li.active,
+.topbnt_right li.active {
+    background: url(../img/bntactive.png) no-repeat center;
+}
+
+.topbnt_left li a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.tith1 {
+    width: 33%;
+    text-align: center;
+    padding-top: 16px;
+    font-weight: bold;
+    letter-spacing: 8px;
+    font-size: 36px;
+}
+
+.topbnt_right {
+    padding-top: 2%;
+    padding-right: 2.5%; /* 增大右侧按钮组的右边距 */
+    width: 27%  /* 调整右侧按钮组的宽度 */
+}
+
+.topbnt_right li {
+    background: url(../img/bnt.png) center;
+    font-size: 14px;
+    line-height: 40px; /* 增大按钮的高度，以适应更大的间距 */
+    background-repeat: no-repeat;
+    width: 22%; /* 增大按钮的宽度 */
+    height: 40px; /* 增大按钮的高度 */
+    float: left;
+    text-align: center;
+    margin-left: 10%; /* 增大按钮之间的间距 */
+    margin-right: 10%; /* 增大按钮之间的间距 */
+}
+
+.topbnt_right li a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.font14 p.fl,
+.font14 p.fr {
+    color: #fff;
+    font-size: 14px;
+}
+.fl {
+    float: left;
+}
+
+.fr {
+    float: right;
+}
+
+.fishery-text {
+    color: black; /* 文字颜色为白色，适应深蓝色背景 */
+    font-family: "Times New Roman", serif; /* 使用 Arial 字体，或者根据你的需要选择合适的字体 */
+    font-size: 50px; /* 增大字体大小 */
+    text-align: center; /* 文字居中对齐 */
+    display: block; /* 确保文本以块级元素显示 */
+    margin: 300px auto 0; /* 让文本距离上方 100px，并水平居中 */
+    line-height: 40px; /* 设置行高为 40px，可以根据需要调整 */
+}
