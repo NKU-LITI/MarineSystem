@@ -1,0 +1,362 @@
+<html>
+
+<meta charset="utf-8">
+
+<head>
+
+<title>海洋牧场智慧可视化系统</title>
+<!--<link href="../static/css/_style.css" rel="stylesheet" type="text/css" media="all" />-->
+<!-- <link rel="stylesheet" type="text/css" href= "{{ url_for('static', filename = 'css/smartCenter.css') }}"> -->
+<link rel="stylesheet" type="text/css" href= "../static/css/smartCenter.css?v=2012">
+
+<!-- 禁用缓存 -->
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+
+</head>
+
+<body>
+    <div class="main">
+        <div class="header">
+            <div class="topbnt_left fl">
+                <ul>
+                    <li><a href="/mainInfo">主要信息</a></li>
+                    <li><a href="/waterSystem">水下系统</a></li>
+                </ul>
+            </div>
+            <h1 class="tith1 fl">海洋牧场智慧可视化系统</h1>
+            <div class=" fr topbnt_right">
+                <ul>
+                    <li><a href="/dataCenter">数据中心</a></li>
+                    <li><a href="/smartCenter">智能中心</a></li>
+                </ul>
+            </div>
+        </div>
+
+
+        <div class="content">
+            <!-- 左边 -->
+            <div class="content-left">
+                <!-- 左边上面 -->
+                <div class="content-title">
+                    <span>环境综合评价</span>
+                </div>
+                <div class="left-top">
+                    <div id="table0" class="_table0"></div>
+                </div>
+
+                <!-- 左边下面 -->
+                <div class="left-bottom">
+                    <span>近期环境</span>
+                    <!-- <div id="test" style="width: 600px;height:400px;"></div> -->
+                    <div id="table1" class="_table1"></div>
+                </div>
+            </div>
+
+            <!-- 中间 -->
+            <div class="content-center">
+                <!-- 中间上面 -->
+                <div class="center-top">
+                    <span>实时监控</span>
+                    <div class="center-pic" ></div>
+                </div>
+
+
+                <!-- 中间下面 -->
+                <div class="content-title">
+                    <span style="font-size: 18px;margin-left:70rem">实时数据</span>
+                </div>
+                <div class="center-bottom">
+                    <!-- 下上 -->
+                    <div class="bottom-top">
+                        <div class="bottom-pic"></div>
+                        <div class="bottom-middle"></div>
+                        <div class="bottom-text">
+                            <ul>
+                                <li>编号：AS0092</li>
+                                <li>种类：扇形海鱼</li>
+                                <li>性别：雌性</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 下下 -->
+                    <div class="bottom-bottom">
+                        <div class="box">
+                            <p>体长</p>
+                            <h3 class="box-num" style="color:cornflowerblue">10寸</h3>
+                            <h4 class="box-updown">较平均（8寸）<img src="../static/img/smartCenter/iconup-1.png" height="16" />25%</h4>
+                        </div>
+                        <div class="box">
+                             <p>体重</p>
+                            <h3 class="box-num" style="color:darkorchid">5千克</h3>
+                            <h4 class="box-updown" style="margin-left: 4rem;">较平均（4千克）<img src="../static/img/smartCenter/iconup-1.png" height="16" />25%</h4>
+                        </div>
+                        <div class="box">
+                             <p>年龄</p>
+                            <h3 class="box-num" style="color:aquamarine">1岁</h3>
+                            <h4 class="box-updown">较平均（2岁）<img src="../static/img/smartCenter/icondown-1.png" height="16" />50%</h4>
+                        </div>
+                        <div class="box">
+                             <p>健康</p>
+                            <h3 class="box-num" style="color:yellow">较差</h3>
+                            <h4 class="box-updown">较平均健康状况<img src="../static/img/smartCenter/icondown-0.png" height="16" /></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+           <!-- 右边 -->
+           <div class="content-right">
+                <div class="content-title">
+                    <span>智能决策</span>
+                </div>
+                <!-- 右边上面 -->
+                <div class="right-top">
+                    <div id="table2" class="_table2"></div>
+                </div>
+
+                <!-- 右边下面 -->
+                <div class="right-bottom">
+                    <span>智能问答</span>
+                </div>
+
+                <div class="chat-container">
+                    <div class="chat-header">Chat</div>
+                    <div class="chat-content"></div>
+                    <div class="chat-input">
+                        <input type="text" placeholder="Type a message...">
+                        <button>Send</button>
+                    </div>
+                </div>
+           </div>
+
+        </div>
+    </div>
+
+
+</body>
+
+<script src="../static/js/dataCenter/echarts.min.js"></script>
+<script src="../static/js/dataCenter/jquery.min.js"></script>
+
+
+<script src="../static/js/dataCenter/echart.js"></script>
+<script src="../static/js/dataCenter/fontscroll.js"></script>
+<script src="../static/js/dataCenter/china.js"></script>
+
+<!-- table0 -->
+<script type="text/javascript">
+    var myChart = echarts.init(document.getElementById('table0'));
+    option = {
+      color:['#f1ff00','#00c1ff', '#61a0a8', '#d48265', '#91c7ae','#749f83',  '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3'],
+        // backgroundColor: 'rgba(1,202,217,.2)',
+        grid: {
+                                        left:20,
+                                        right:20,
+                                        top:30,
+                                        bottom:30
+                                    },
+       radar: {
+           name: {
+                  textStyle: {
+                      fontSize: 10,
+                      color: 'rgba(255,255,255,.8)'
+                  }
+              },
+              splitLine: {
+                  lineStyle: {
+                      color: [
+                          'rgba(1,202,217,.01)', 'rgba(1,202,217,.01)'
+                      ].reverse()
+                  }
+              },
+              splitArea: {
+                  show: false
+              },
+              axisLine: {
+                  lineStyle: {
+                      color: 'rgba(1,202,217,.7)'
+                  }
+              },
+           indicator: [
+              { name: '水温', max: 6500 },
+              { name: 'PH', max: 16000},
+              { name: '光照', max: 30000},
+              { name: '溶解氧', max: 44000}
+           ]
+       },
+       series: [{
+           name: '',
+           type: 'radar',
+           radius : [5, 100],
+           center: ['50%', '50%'],
+           data : [
+               {
+                   value : [4300, 10000, 28000, 19000],
+                   name : 'value',
+               },
+                {
+                   value : [5000, 14000,  22000, 41000],
+                   name : 'max',
+                   
+               },{
+                    value : [3300, 4000, 2000, 30000],
+                    name : 'min',
+                    
+               }
+           ]
+       }],
+       graphic: { // 添加这部分
+            type: 'text',
+            left: 'center',
+            top: 'center',
+            z: 100, // 设置 z 轴层级
+            style: {
+                text: '84',
+                textAlign: 'center',
+                fill: '#fff',
+                fontSize: 32
+            }
+        }
+    };
+    myChart.setOption(option);
+</script>
+
+<!-- table1 -->
+<script type="text/javascript">
+    var myChart = echarts.init(document.getElementById('table1'));
+    option = {
+      color:['#7de494','#7fd7b1', '#5578cf', '#5ebbeb', '#d16ad8','#f8e19a',  '#00b7ee', '#81dabe','#5fc5ce'],
+        backgroundColor: 'rgba(1,202,217,.2)',
+
+        grid: {
+          left:30,
+          right:40,
+          top:30,
+          bottom:20,
+            containLabel: true
+        },
+        toolbox: {
+            feature: {
+                saveAsImage: {}
+            }
+        },
+        xAxis: {
+            type: 'category',
+            boundaryGap: true,
+            name: "日期",
+            axisLine:{
+              lineStyle:{
+                color:'rgba(255,255,255,.2)'
+              }
+            },
+            splitLine:{
+              lineStyle:{
+                color:'rgba(255,255,255,.1)'
+              }
+            },
+            axisLabel:{
+                color:"rgba(255,255,255,.7)"
+            },
+            data: ['6-08','6-09','6-10','6-11','6-12','6-13','6-14']
+        },
+        yAxis: {
+            type: 'value',
+            name: "环境得分",
+            axisLine:{
+              lineStyle:{
+                color:'rgba(255,255,255,.2)'
+              }
+            },
+            splitLine:{
+              lineStyle:{
+                color:'rgba(255,255,255,.1)'
+              }
+            },
+            axisLabel:{
+                color:"rgba(255,255,255,.7)"
+            },
+        },
+        series: [
+            {
+                name:'2014年',
+                type:'line',
+                stack: '总量',
+                //   areaStyle: {normal: {}},// 面积
+                data:[76, 89, 83, 91, 88, 80, 84],
+                label: {
+                    show: true, // 开启标签
+                    position: 'top' // 标签位置
+                },
+                markLine: { // 涨跌线
+                    data: [
+                        {type: 'average', name: '平均值'}
+                    ],
+                    lineStyle: { // 修改线条颜色
+                        color: '#FFFF00' // 黄色
+                    },
+                    symbol: 'none'// 去掉箭头
+                }
+            }
+
+        ]
+        };
+    myChart.setOption(option);
+</script>
+
+
+<!-- table2 -->
+<script type="text/javascript">
+    var myChart = echarts.init(document.getElementById('table2'));
+    option = {
+      color:['#76c4bf','#e5ffc7','#508097','#4d72d9'],
+        backgroundColor: 'transparent',// 透明
+        grid: {
+                                        left:10,
+                                        right:40,
+                                        top:0,
+                                        bottom:0,
+                  containLabel: true
+                                    },
+                  // legend: {
+                  //     x : 'center',
+                  //     y : 'bottom',
+                  //     textStyle:{
+                  //       fontSize: 10,
+                  //       color:'rgba(255,255,255,.7)'
+                  //     },
+                  //     data:['涉蒙','涉疆','涉军','涉恐','涉藏','涉稳','涉警']
+                  // },
+                  calculable : true,
+                  series : [
+
+                      {
+                          name:'面积模式',
+                          type:'pie',
+                          radius : [10, 70],
+                          center : ['50%', '50%'],
+                          roseType : 'area',
+                          data:[
+                              {value:15, name:'温度'},
+                              {value:50, name:'光照'},
+                              {value:0.3, name:'溶解氧'},
+                              {value:8.4, name:'PH'},
+                              {value:0.02, name:'盐度'}
+
+                          ],
+                          label: {
+                            show: true, // 显示标签
+                            formatter: '{b}: {c}' // 标签的格式，其中 {b} 代表数据名，{c} 代表数据值
+                        }
+                      }
+                  ]
+              };
+    myChart.setOption(option);
+</script>
+
+
+
+</html>
