@@ -1,0 +1,88 @@
+﻿<!-- <!DOCTYPE html> -->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>无标题文档</title>
+    <!-- <link rel="stylesheet" type="text/css" href= "{{ url_for('static', filename = 'css/admain/style.css') }}"> -->
+    <link href="../../static/css/style_admain.css" rel="stylesheet" type="text/css"/>
+    <link href="../../static/css/font/iconfont.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="../static/js/admain/jquery/jquery.1.11.2.min.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            //导航切换
+            $(".menuson li").click(function () {
+                $(".menuson li.active").removeClass("active")
+                $(this).addClass("active");
+            });
+
+            $('.title').click(function () {
+                var $ul = $(this).next('ul');
+                $('dd').find('ul').slideUp();
+                if ($ul.is(':visible')) {
+                    $(this).next('ul').slideUp();
+                } else {
+                    $(this).next('ul').slideDown();
+                }
+            });
+        })
+    </script>
+</head>
+
+<body>
+<div class="lefttop">
+    <a href="/admain" target="_parent">AdminUI</a>
+</div>
+<dl class="leftmenu">
+    <dd>
+        <div class="title">
+            <span class="iconfont icon-shouye"></span>首页
+        </div>
+        <ul class="menuson">
+            <li class="active">
+                <a href="/admain_default" target="rightFrame">区块模板</a>
+                <i></i>
+            </li>
+            <li>
+                <a href="/admain_index" target="rightFrame">简洁模板</a>
+                <i></i>
+            </li>
+        </ul>
+    </dd>
+    <dd>
+        <div class="title">
+            <span class="iconfont icon-liebiao"></span>列表
+        </div>
+        <ul class="menuson">
+            <li><a href="/admain_operateList" target="rightFrame">用户信息</a></li>
+            <li><a href="/admain_searchList" target="rightFrame">用户信息</a></li>
+        </ul>
+    </dd>
+    <dd>
+        <div class="title">
+            <span class="iconfont icon-wodebiaodan"></span>管理员操作
+        </div>
+        <ul class="menuson">
+            <li><a href="/admain_form" target="rightFrame">提交表单</a></li>
+            <li><a href="/admain_tab" target="rightFrame">Tab页</a></li>
+            <li><a href="/admain_imgtable" target="rightFrame">图片列表</a></li>
+            <li><a href="/admain_imglist" target="rightFrame">图片网格</a></li>
+            <li><a href="/admain_imglist1" target="rightFrame">图片自定义</a></li>
+            <li><a href="/admain_tools" target="rightFrame">常用工具</a></li>
+            <li><a href="/admain_filelist" target="rightFrame">文件管理</a></li>
+            <li><a href="/admain_computer" target="rightFrame">我的电脑</a></li>
+        </ul>
+    </dd>
+    <dd>
+        <div class="title">
+            <span class="iconfont icon-qita1"></span>其他设置
+        </div>
+        <ul class="menuson">
+            <li><a href="/admain_error" target="rightFrame">404页面</a></li>
+        </ul>
+    </dd>
+    <div class="bq">海洋牧场<br/>管理员后端</div>
+</dl>
+
+</body>
+</html>
