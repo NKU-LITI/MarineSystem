@@ -6,13 +6,16 @@
 
 <title>海洋牧场智慧可视化系统</title>
 <!--<link href="../static/css/_style.css" rel="stylesheet" type="text/css" media="all" />-->
-<link rel="stylesheet" type="text/css" href= "{{ url_for('static', filename = 'css/style.css') }}">
+<!-- <link rel="stylesheet" type="text/css" href= "{{ url_for('static', filename = 'css/style.css') }}"> -->
+<link rel="stylesheet" type="text/css" href= "../static/css/mainInfo.css?v=2012">
+<script type="text/javascript" src="js/area_echarts.js"></script>
+
 
 </head>
 
 <body>
-    <div class="wpbox">
-        <div class="bnt">
+    <div class="main">
+        <div class="header">
             <div class="topbnt_left fl">
                 <ul>
                     <li><a href="/mainInfo">主要信息</a></li>
@@ -28,12 +31,679 @@
             </div>
         </div>
 
-        <span class="fishery-text">主要信息</span>
 
+    <div class="content">
+        <!-- 左边 -->
+        <div class="content-left">
+            <div class="content-title">
+                <span>监控画面</span>
+            </div>
+            <!-- 左上 -->
+            <div class="content-left-top">
+                <div class="left-pic"></div>
+            </div>
+
+            <!-- 左中按钮 -->
+            <div class="content-left-middle">
+                <button class="btn">开关</button>
+                <button class="btn">拍照</button>
+                <button class="btn">回放</button>
+                <button class="btn">切换</button>
+            </div>
+
+            <!-- 左下 -->
+            <div class="content-title">
+                <span style="margin-left: 45rem;">水文气象情况</span>
+            </div>
+            <div class="content-left-bottom">
+
+                <div id="feng"class="_feng"></div>
+                <div id="datashows"class="_datashows"></div>
+            </div>
+        </div>
+
+
+        <!-- 中间 -->
+        <div class="content-center">
+            <!-- 中上 -->
+            <div class="center-top">
+                <div class="center-map">
+                    <div class="map1">
+                        <img src="../static/img/mainInfo/lbx.png" />
+                    </div>
+                    <div class="map2">
+                        <img src="../static/img/mainInfo/jt.png" />
+                    </div>
+                    <div class="map3">
+                        <img src="../static/img/mainInfo/earth.png" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- 中下 -->
+
+            <div class="center-bottom">
+                <div class="content-title" style="margin-left: 15rem;">
+                    <span style="margin-left: 40rem;">海洋牧场位置</span>
+                </div>
+                <!-- <div class="content-title">牧场定位</div> -->
+                <div class="baidumap">
+                    <div id="container"></div>
+                </div>
+                
+            </div>
+        </div>
+
+
+        <!-- 右边 -->
+        <div class="content-right">
+            <div class="content-title" style="margin-top: -5rem;">
+                <span>历史数据</span>
+            </div>
+
+
+
+            <div class="right-top">
+                <button id="ph" class="choice">PH值</button>
+                <button id="temp" class="choice">温度</button>
+                <button id="ox" class="choice">溶解氧</button>
+                <button id="sun" class="choice">光照</button>
+                <div id="table0" class="_table0"></div>
+            </div>
+            
+            <div class="right-bottom">
+                <div class="content-title">
+                    <span style="margin-left: 50rem;">设备情况</span>
+                </div>
+                <div class="right-bottom-table">
+                    <ul>
+                         <li>
+                         <p class="fl"><b>设备ID</b><br>
+                            8D19C331-4F08-47A1<br>
+                         </p>
+                         </li>
+                         <li class="bg">
+                         <p class="fl"><b>主控状态</b><br>
+                            版本:VO.1.1；温度:39.64°C<br>
+                         </p>
+                         </li>
+                         <li>
+                         <p class="fl"><b>次控状态</b><br>
+                           连接：断开<br>
+                         </p>
+                         </li>
+                         <li class="bg">
+                         <p class="fl"><b>警告状态</b><br>
+                           正常<br>
+                         </p>
+                         </li>
+                         <li>
+                         <p class="fl"><b>供氧系统</b><br>
+                           状态：正常供氧中<br>
+                         </p>
+                         </li>
+                         <li class="bg">
+                         <p class="fl"><b>摄像头状态</b><br>
+                            可见光摄像头: 正常；红外摄像头: 异常<br>
+                         </p>
+                         </li>
+                         <li>
+                         <p class="fl"><b>牧场存储状态</b><br>
+                            可用空间: 50%<br>
+                         </p>
+                         </li>
+                         <li class="bg">
+                         <p class="fl"><b>传输器状态</b><br>
+                            传输速率: 100 Mbps<br>
+                         </p>
+                         </li>
+     
+                         <li>
+                         <p class="fl"><b>控制面板状态</b><br>
+                            屏幕亮度: 80%；音量: 50%<br>
+                         </p>
+                         </li>
+                         <li class="bg">
+                         <p class="fl"><b>供电状态</b><br>
+                            电源类型: AC；剩余电量: 30%<br>
+                         </p>
+                         </li>
+
+                         
+     
+                    </ul>
+
+
+                
+                    
+                 </div>
+            </div>
+        </div>
     </div>
 
 
 </body>
+
+<script src="../static/js/dataCenter/echarts.min.js"></script>
+<script
+      type="text/javascript"
+      src="https://api.map.baidu.com/api?v=2.0&ak=2YCQxbGampc7M1pFsKWNiwpS5F7RKVRt&s=1">
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- map -->
+<script type="text/javascript">
+    var markerArr = [
+
+{
+ point: "103.850585,36.069335",
+},
+
+{
+  point: "103.86812,36.063267",
+},
+{
+  point: "103.856047,36.042024",
+},
+{
+ point: "103.841674,36.067235",
+},
+
+{
+  point: "103.953207,36.031751",
+},
+{
+  point: "103.801573,36.073886",
+},
+{
+ point: "103.819108,36.068168",
+},
+
+{
+  point: "103.715954,36.099723",
+},
+{
+  point: "103.716573,36.101553",
+},
+{
+ point: "103.708129,36.100725",
+},
+
+{
+  point: "103.712378,36.10171",
+},
+{
+  point: "103.711467,36.103415",
+},
+{
+ point: "103.70226,36.102388",
+},
+
+{
+  point: "103.714764,36.100639",
+},
+{
+  point: "103.700535,36.110261",
+}
+
+];
+
+var markerArr1 = [
+
+{
+ point: "103.865245,36.061166",
+},
+
+{
+  point: "103.773259,36.077037",
+},
+{
+  point: "103.910664,36.05323",
+},
+{
+ point: "103.768085,36.108768",
+},
+
+{
+  point: "103.689896,36.107835",
+},
+{
+  point: "103.841099,36.074236",
+},
+{
+ point: "103.839949,36.056965",
+},
+
+{
+  point: "103.886517,36.065368",
+},
+{
+  point: "103.815228,36.091504",
+},
+{
+ point: "103.870995,36.026147",
+},
+
+];
+
+var markerArr2 = [
+
+{
+ point: "103.784757,36.059533",
+},
+
+{
+  point: "103.754862,36.067235",
+},
+{
+  point: "103.779008,36.135589",
+},
+{
+ point: "103.839374,36.095704",
+},
+
+{
+  point: "103.693633,36.116932",
+},
+{
+  point: "103.946021,36.034553",
+},
+{
+ point: "103.967868,36.00466",
+},
+
+{
+  point: "103.679835,36.114833",
+},
+{
+  point: "103.977641,36.055564",
+},
+{
+ point: "103.856334,36.060233",
+},
+
+];
+    //  var map = new BMap.Map('container')
+    //  // 创建地图实例
+    //  var point = new BMap.Point(103.71878, 36.10396)
+    //  // 创建点坐标
+    //  map.centerAndZoom(point, 15)
+    //  // 初始化地图，设置中心点坐标和地图级别
+
+    var map = new BMap.Map("container"); // 创建地图实例
+    var point = new BMap.Point(117.1746, 39.1054); // 创建点坐标，天津南开大学的经纬度
+    map.centerAndZoom(point, 15); // 初始化地图，设置中心点坐标和地图级别
+    map.enableScrollWheelZoom(true)
+    var ctrlSca = new window.BMap.ScaleControl({
+                                               anchor: BMAP_ANCHOR_BOTTOM_RIGHT
+                                           });
+    map.addControl(ctrlSca);
+
+    // 修改了 addMarker, addMarker1, addMarker2 函数，使得图标更大
+    function addMarker(point, index) {
+        var myIcon = new BMap.Icon("img/green5.png", new BMap.Size(60, 60)); // 将图标大小改为 60x60
+        var marker = new BMap.Marker(point, {icon: myIcon});
+        map.addOverlay(marker);
+        map.setCenter(point); // 设置地图中心点
+        return marker;
+    }
+
+    function addMarker1(point, index) {
+        var myIcon = new BMap.Icon("img/red5.png", new BMap.Size(60, 60)); // 将图标大小改为 60x60
+        var marker = new BMap.Marker(point, {icon: myIcon});
+        map.addOverlay(marker);
+        map.setCenter(point); // 设置地图中心点
+        return marker;
+    }
+
+    function addMarker2(point, index) {
+        var myIcon = new BMap.Icon("img/yellow5.png", new BMap.Size(60, 60)); // 将图标大小改为 60x60
+        var marker = new BMap.Marker(point, {icon: myIcon});
+        map.addOverlay(marker);
+        map.setCenter(point); // 设置地图中心点
+        return marker;
+    }
+
+
+
+     map.setMapStyle({ style: 'midnight' })
+     $('#container').css('background-color', 'rgba(50,72,106,0.2)')
+
+   </script>
+
+
+<!-- 风 -->
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('feng'));
+    var gauge_value=66;
+
+    option = {
+    title: {
+            x: "center",
+            bottom: 10,
+            //text: '风向',
+            subtext: '风向',
+            textStyle: {
+                fontWeight: 'normal',
+                fontSize: 18,
+                color: "#fff"
+            },
+        },
+        tooltip: {
+            show: true,
+        
+        
+        },
+        series: [
+            {
+            type: 'gauge',
+            radius:'60%',  
+            center: ['50%', '55%'],
+            splitNumber: 7, //刻度数量
+            min: 0,
+            max:70,
+            startAngle: 225,
+            endAngle: -45,
+            axisLine: {
+                show: true,
+                lineStyle: {
+                    width: 2,
+                    shadowBlur: 0,
+                    color: [
+                        [1, '#8f8f8f']
+                    ]
+                }
+            },
+            axisTick: {
+                show: false,
+                lineStyle: {
+                    color: '#8f8f8f',
+                    width: 1
+                },
+                length: -5,
+                splitNumber: 7
+            },
+            splitLine: {
+                show: true,
+                length: -5,
+                lineStyle: {
+                    color: "rgba(255,255,255,.2)",
+                }
+            },
+            axisLabel: {
+                distance: -25,
+            
+                    formatter: function(e) {
+                    switch(e + "") {
+                        case "0":
+                            return "北风";
+                        case "10":
+                            return "东北风";
+
+                        case "20":
+                            return "东风";
+
+                        case "30":
+                            return "东南风";
+
+                        case "40":
+                            return "南风";
+                            
+                        case "50":
+                            return "西南风";
+                            
+                        case "60":
+                            return "西风";
+                                
+                        case "70":
+                            return "西北风";
+                            
+                        default:
+                            return e;
+                    }
+                },
+                textStyle: {
+                    fontSize: 10,
+                    color: "rgba(255,255,255,.6)",
+                }
+
+            },
+            pointer: { //仪表盘指针
+                show: 0
+            },
+            detail: {
+                show: false
+            },
+            data: [{
+                name: "",
+                value: 100
+            }]
+        } ,
+        
+        {
+            name: '风向',
+            type: 'gauge',
+            startAngle: 225,
+            endAngle: -45,
+            radius: '56%',
+        center: ['50%', '55%'], // 默认全局居中  
+            
+            min: 0,
+            max: 100,
+
+            axisLine: {
+                show: false,
+                lineStyle: {
+                    width:5,
+                    shadowBlur: 0,
+                    color: [
+                    
+                        [1, '#ffffff']
+                    ]
+                }
+            },
+            axisTick: {
+                show: false,
+                
+            },
+            splitLine: {
+                show: false,
+                length: 20,
+
+            },
+
+            axisLabel: {
+                show:false
+            },
+            pointer: {
+                show: true,
+                length: '65%',
+                width: 4
+            },
+            detail: {
+                show:false,
+                offsetCenter: [0, 0],
+                textStyle: {
+                    fontSize: 10
+                }
+            },
+            itemStyle: {
+            normal: {
+                color: "#ffffff",
+                
+            }
+        },
+            data: [{
+                name: "",
+                value: Math.floor(gauge_value)
+            }]
+        }]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+    window.addEventListener("resize",function(){
+        myChart.resize();
+    });
+</script>
+
+<!-- table0 -->
+<script>
+    // 初始化ECharts实例
+    var myChart1 = echarts.init(document.getElementById('table0'));
+
+    // 初始数据
+    var data_ph = [2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 8.3, 9.4, 7.0, 9.5, 12.0, 11.2];
+    var data_temp = [2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2];
+
+    // 初始显示2017年数据
+    renderChart(data_ph);
+
+    // 点击按钮切换显示数据
+    document.getElementById('ph').onclick = function() {
+        renderChart(data_ph);
+    }
+
+    document.getElementById('temp').onclick = function() {
+        renderChart(data_temp);
+    }
+
+    // 渲染图表函数
+    function renderChart(data) {
+        var option = {
+            // 图表配置项
+            xAxis: {
+                type: 'category',
+                data: ['1','2','3','4','5','6','7','8','9','10','11','12'],
+                axisLine: {
+                // 设置类别轴的颜色
+                lineStyle: {
+                    color: '#ffffff'
+                }
+            }
+                
+            },
+            yAxis: {
+                type: 'value',
+                name: '数据',
+                axisLabel: {
+                    formatter: '{value}',
+                    color: '#ffffff'
+                }
+            },
+            series: [{
+                type: 'bar',
+                data: data,
+                itemStyle:{
+                    color: '#1f5cb7'
+                }
+            }]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart1.setOption(option);
+    }
+</script>
+
+<!-- table1--左下那个 -->
+<script>
+    var myChart2 = echarts.init(document.getElementById('datashows'));
+	var salvProName =["PH值","温度","溶解氧","光照","污染值"];
+	var salvProValue =[6.0,22.5,7,6,9.2];
+	var salvProMax =[];//背景按最大值
+	for (let i = 0; i < salvProValue.length; i++) {
+	    salvProMax.push(salvProValue[0])
+	}
+	option = {
+
+	    grid: {
+	        left: '2%',
+	        right: '2%',
+	        bottom: '-6%',
+	        top: '8%',
+	        containLabel: true
+	    },
+	    tooltip: {
+	        trigger: 'axis',
+	        axisPointer: {
+	            type: 'none'
+	        },
+	        formatter: function(params) {
+	            return params[0].name  + ' : ' + params[0].value
+	        }
+	    },
+	    xAxis: {
+	        show: false,
+	        type: 'value'
+	    },
+	    yAxis: [{
+	        type: 'category',
+	        inverse: true,
+	        axisLabel: {
+	            show: true,
+	            textStyle: {
+	                color: '#fff'
+	            },
+	        },
+	        splitLine: {
+	            show: false
+	        },
+	        axisTick: {
+	            show: false
+	        },
+	        axisLine: {
+	            show: false
+	        },
+	        data: salvProName
+	    }, {
+	        type: 'category',
+	        inverse: true,
+	        axisTick: 'none',
+	        axisLine: 'none',
+	        show: true,
+	        axisLabel: {
+	            textStyle: {
+	                color: '#ffffff',
+	                fontSize: '12'
+	            },
+	        },
+	        data:salvProValue
+	    }],
+	    series: [{
+	            name: '值',
+	            type: 'bar',
+	            zlevel: 1,
+	            itemStyle: {
+	                normal: {
+	                    barBorderRadius: 30,
+	                    color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
+	                        offset: 0,
+	                        color: 'rgb(57,89,255,1)'
+	                    }, {
+	                        offset: 1,
+	                        color: 'rgb(46,200,207,1)'
+	                    }]),
+	                },
+	            },
+	            barWidth: 10,
+	            data: salvProValue
+	        },
+	        {
+	            name: '背景',
+	            type: 'bar',
+	            barWidth: 10,
+	            barGap: '-100%',
+	            data: salvProMax,
+	            itemStyle: {
+	                normal: {
+	                    color: 'rgba(24,31,68,1)',
+	                    barBorderRadius: 30,
+	                }
+	            },
+	        },
+	    ]
+	};
+
+	myChart2.setOption(option);
+</script>
 
 
 </html>

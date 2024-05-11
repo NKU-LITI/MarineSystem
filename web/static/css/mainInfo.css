@@ -1,0 +1,409 @@
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box
+}
+
+*,    
+/* 设置 body 元素样式 */
+body {
+    margin: 0px;
+    /* 设置元素内边距，左右各添加 5px */
+    /*padding: 0px 5px;*/
+    padding: 0px;
+    /* 设置文字颜色为白色 */
+    color: #fff;
+    /* 设置字体 */
+    font-family: "微软雅黑";
+}
+
+/* 设置 HTML 和 body 元素的样式 */
+html,
+body {
+    /* 设置背景图片，覆盖整个页面 */
+    background: url("../img/bg.jpg") no-repeat;
+    /* 背景图片填充整个背景 */
+    background-size: cover;
+    /* 设置字体大小为 0.16rem */
+    font-size: .16rem;
+    /* 设置文字颜色为白色 */
+    color: #fff;
+    /* 设置元素相对定位 */
+    position: relative;
+    /* 设置宽度为视口宽度 */
+    width: 100%;
+    /* 设置高度为视口高度 */
+    height: 100%;
+}
+
+
+
+.fl {
+    float: left;
+}
+
+.fr {
+    float: right;
+}
+
+ul,
+ol {
+    list-style: none;
+}
+
+
+.allnav {
+    height: 100%;
+}
+
+.main {
+    /* width: 100%;
+    height: 100%;
+    background: url("../img/bj.png") no-repeat;
+    background-size: cover;
+    position: relative; */
+}
+
+/*头部*/
+
+.header {
+    height: 11%;
+    width: 100%;
+    display: inline-block;
+}
+
+/*头部左边*/
+
+.header .topbnt_left {
+    width: 33%
+}
+
+.header .topbnt_left ul {
+    padding-top: 38px;
+    padding-left: 10%;
+    width: 100%
+}
+
+.header .topbnt_left li {
+    background: url(../img/bnt.png) center;
+    font-size: 14px;
+    line-height: 40px; /* 增大按钮的高度，以适应更大的间距 */
+    background-repeat: no-repeat;
+    width: 22%; /* 增大按钮的宽度 */
+    height: 40px; /* 增大按钮的高度 */
+    float: left;
+    text-align: center;
+    margin-left: 10%; /* 增大按钮之间的间距 */
+    margin-right: 2%; /* 增大按钮之间的间距 */
+}
+
+
+.header .topbnt_left li a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.header .tith1 {
+    width: 35%;
+    text-align: center;
+    padding-top: 16px;
+    font-weight: bold;
+    letter-spacing: 8px;
+    font-size: 36px;
+}
+
+/*头部右边*/
+
+.header .topbnt_right {
+    padding-top: 2%;
+    padding-right: 2.5%; /* 增大右侧按钮组的右边距 */
+    width: 30%  /* 调整右侧按钮组的宽度 */
+}
+
+.header .topbnt_right li {
+    background: url(../img/bnt.png) center;
+    font-size: 14px;
+    line-height: 40px; /* 增大按钮的高度，以适应更大的间距 */
+    background-repeat: no-repeat;
+    width: 22%; /* 增大按钮的宽度 */
+    height: 40px; /* 增大按钮的高度 */
+    float: left;
+    text-align: center;
+    margin-left: 10%; /* 增大按钮之间的间距 */
+    margin-right: 10%; /* 增大按钮之间的间距 */
+}
+
+.header .topbnt_right li a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.title {
+    width: 100%;
+    height: .3rem;
+    /*border: 1px solid red;*/
+    color: #ffffff;
+    font-size: .2rem;
+    padding-left: .3rem;
+    line-height: .4rem;
+    background: url("../img/dataCenter/ksh33.png") no-repeat;
+    background-size: 100% 100%;
+    margin-top: .1rem;
+    position: relative;
+}
+
+.content {
+    padding: .2rem .1rem 0 .1rem;
+    /* background: url("../img/dataCenter/a.png"); */
+    display: flex; /* 添加这行使 .content 的子元素在同一行上 */
+
+
+}
+
+.content .content-title {
+    width: 80%;
+    margin-left: 25rem;
+    background: url("../img/mainInfo/title.png");
+    background-size: 100% 100%;
+
+}
+
+.content-title span {
+    margin-left: 55rem;
+    font-size: 22px;
+    color: #ffffff;
+}
+
+/* 左中右 */
+
+.content .content-left {
+    width: 35%;
+    padding: .1rem;
+
+    /* 上下对齐 */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.content .content-center {
+    width: 30%;
+    padding: .1rem;
+
+    /* 上下对齐 */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+}
+
+.content .content-right {
+    width: 35%;
+    padding: .1rem;
+
+    /* 上下对齐 */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+
+/* 左 */
+
+.content .content-left .content-left-top{
+    margin-left: 10rem;
+    width: 100%;
+    height: 50%;
+    background: url("../img/mainInfo/1.jpg");
+    background-size: 100% 100%;
+}
+
+
+.content .content-left .content-left-top .left-pic {
+    margin-top: 10rem;
+    margin-left: 10rem;
+    width: 90%;
+    height: 80%;
+    background: url("../img/mainInfo/2.jpg");
+    background-size: 100% 100%;
+}
+
+.content .content-left .content-left-middle{
+    margin-left: 10rem;
+    width: 95%;
+    height: 15%;
+    /* 设置为 flex 容器 */
+    display: flex;
+    /* 按钮之间的间距 */
+    justify-content: space-between;
+    /* 按钮垂直居中 */
+    align-items: center;
+    background: url("../img/mainInfo/b.png");
+    background-size: 100% 100%;
+}
+
+.btn {
+    /* 设置按钮的样式 */
+    margin-top: -2px;
+    margin-left: 30px;
+    margin-right: 10px;
+    padding: 10px 20px;
+    border: none;
+    background-color: #4c70af;
+    color: white;
+    cursor: pointer;
+}
+
+
+.content .content-left .content-left-bottom{
+    margin-top: 0rem;
+    margin-left: 5rem;
+    width: 90%;
+    height: 40%;
+    display: flex;
+}
+
+._feng{
+    width: 50%;
+    height: 50%;
+    margin-left: -6rem;
+    margin-top: 25rem;
+}
+
+._datashows{
+    margin-top: 5rem;
+    width: 70%;
+    height: 80%;
+}
+
+/* 中 */
+.content .content-center .center-top{
+    width: 80%;
+    height: 10%;
+    /* background: url("../img/mainInfo/bg3.png");
+    background-size: 100% 100%;
+    text-align: center; */
+
+}
+
+
+/* .content .content-center .center-top .center-top-pic {
+    margin-top: 5rem;
+    margin-left: 10rem;
+    width: 70%;
+    height: 80%;
+    background: url("../img/mainInfo/earth.png");
+    background-size: 100% 100%;
+} */
+
+@keyframes myfirst2
+{
+from {transform: rotate(0deg);}
+to { transform: rotate(360deg);}
+}
+
+@keyframes myfirst
+{
+from {transform: rotate(0deg);}
+to { transform: rotate(-360deg);}
+}
+
+
+.center-map{ transform: scale(0.5);position:relative;  z-index: 9;flex:1;}
+.map1,.map2,.map3{ position:absolute; opacity: .5;}
+/* .map1{ width:6.43rem; z-index: 2;top:.45rem; left: .7rem;  animation: myfirst2 15s infinite linear;transform-origin: center;}
+.map2{ width:5.66rem; top:.85rem; left:1.2rem; z-index: 3; opacity: 0.2; animation: myfirst 10s infinite linear;transform-origin: center;} */
+
+/* .map1{ width:6.43rem; z-index: 2;top:.45rem; left: .7rem; }
+.map2{ width:5.66rem; top:.85rem; left:1.2rem; z-index: 3; opacity: 0.2;}
+.map3{ width:5.18rem; top:1.07rem; left: 1.4rem; z-index: 1;} */
+
+.map1{ z-index: 2;top:-15rem;left:-15rem;animation: myfirst2 15s infinite linear;transform-origin: center; }
+.map2{ z-index: 3;left:0rem;top:3rem;opacity: 0.2;animation: myfirst 10s infinite linear;transform-origin: center;}
+.map3{ z-index: 1;left:10rem;top:10rem}
+
+
+
+.content .content-center .center-bottom{
+    margin-left: 10rem;
+    margin-top:130rem;
+    width: 100%;
+    height: 60%;
+    flex:1;
+}
+
+.content .content-center .center-bottomx .baiduMap {
+    height: 300px;
+    background: rgba(50, 72, 106, 0.2);
+    /* position: relative; */
+}
+.content .content-center .center-bottom .baiduMap #container {
+    height: 300px;
+    border: 1px solid rgba(27, 146, 253, 0.5);
+}
+
+/* 右 */
+.content .content-right .right-top {
+    margin-left: 10rem;
+    width: 90%;
+    height: 120rem;
+    background: url("../img/mainInfo/3.png");
+    background-size: 100% 100%;
+}
+
+.choice {
+    /* 设置按钮的样式 */
+    margin-left: 30px;
+    padding: 3px 20px;
+    border: 2px solid #031733;
+    background-color: #1f5cb7;
+    color: white;
+    cursor: pointer;
+    /* 添加过渡效果 */
+    transition: background-color 0.3s ease;
+    /* 设置四个角的圆弧 */
+    border-radius: 10px;
+}
+
+.choice:hover {
+    /* 设置鼠标悬停时的背景颜色 */
+    background-color: #031733;
+}
+
+.content .content-right .right-bottom {
+    margin-top: 10rem;
+    margin-left: 15rem;
+    width: 90%;
+    height: 120rem;
+    background: url("../img/mainInfo/3.png");
+    background-size: 100% 100%;
+}
+
+
+.content .content-right .right-bottom .right-bottom-table {
+    margin-top: 0rem;
+    margin-left: -5rem;
+    width: 91%; margin-left: 5%; font-size: 12px;height:83.6%; 
+    overflow: auto;
+} 
+
+
+
+
+.right-bottom-table li{background: rgba(1,202,217,.2) url(../img/icosjx.png) no-repeat  top left; position: relative;overflow: hidden; padding: 2% 6%; color:rgba(255,255,255,.7); line-height: 150%}
+.right-bottom-table li b{color:rgba(255,255,255,1); font-weight: normal;}
+.right-bottom-table li p.fl{ width: 80%; overflow: hidden;}
+.right-bottom-table li p.fr{ position: absolute; right: 5%; top: -20%;}
+.yellow{ color: #fff45c}
+.green{ color: #00c2fd}
+.right-bottom-table li.bg{ background: rgba(0,255,255,.4) url(../img/icosjx.png) no-repeat  top left;}
+
+
+
+._table0 {
+    margin-top: 4rem;
+    margin-left: 8rem;
+    width: 400px;
+    height:270px;
+}
+
