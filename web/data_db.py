@@ -18,11 +18,25 @@ class SourceData(SourceDataDemo):
         self.ENGINE = create_engine(ENGINE_CONFIG)
 
     @property
+    def fish_count(self): #鱼种数量占比饼图
+        sql = """
+        SELECT COUNT(*) AS total_count FROM fish
+        """
+        df = pd.read_sql(sql, self.ENGINE)
+        total_count = df['total_count'].values[0]
+
+        print(total_count)  # 输出提取的数字
+
+        # 如果需要将这个数字转换为 int 类型，可以使用 int() 函数
+        total_count_int = int(total_count)
+        return total_count_int
+
+    @property
     def pie(self): #鱼种数量占比饼图
         sql = """
-        SELECT species, COUNT(*) AS fish_count
+        SELECT Species, COUNT(*) AS fish_count
         FROM fish
-        GROUP BY species
+        GROUP BY Species
         ORDER BY LEFT(species, 1);
         """
         df = pd.read_sql(sql, self.ENGINE)
@@ -31,6 +45,7 @@ class SourceData(SourceDataDemo):
     
     @property  #鱼数量变化折线图
     def line(self):
+        '''
         sql = """
         SELECT DISTINCT 
         t1.entry_date,
@@ -44,6 +59,8 @@ class SourceData(SourceDataDemo):
             'legend': [row[1] for row in df.values]
         }
         return data
+        '''
+        
     
     @property  #鱼属性分布
     def line2(self):

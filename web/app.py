@@ -4,7 +4,8 @@ import sys
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + '/../')
 
 from flask import Flask, render_template, request, url_for, redirect
-from data import SourceData
+#from data import SourceData
+from data_db import SourceData
 
 app = Flask(__name__,static_folder='static')
 source = SourceData()
@@ -49,11 +50,11 @@ def mainInfo():
 @app.route('/waterSystem')
 def waterSystem():
     data = source.pie
-    data2= source.line
-    xAxis = data2.pop('legend')
-    data3=source.line2
-    return render_template('waterSystem.html', title='水下系统', data=data, legend=[i.get('name') for i in data], data2=data2, legend2=list(data2.keys()),xAxis=xAxis, data3=data3,)
-
+    #data2= source.line
+    #xAxis = data2.pop('legend')
+    #data3=source.line2
+    #return render_template('waterSystem.html', title='水下系统', data=data, legend=[i.get('name') for i in data], data2=data2, legend2=list(data2.keys()),xAxis=xAxis, data3=data3,)
+    return render_template('waterSystem.html', title='水下系统', data=data, legend=[i.get('name') for i in data])
 
 @app.route('/dataCenter')
 def dataCenter():

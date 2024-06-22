@@ -1,6 +1,11 @@
+
+
 <html>
 
+
+
 <meta charset="utf-8">
+
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -46,7 +51,7 @@
                                     <div class="liIn" style="width: 80%;height: 5%;">
                                         <div style="display: flex;">
                                             <h3 style="flex: 1;">鱼群数量</h3>
-                                            <p class="shu" style="flex: 1;"><span class="shu1">1038</span><i></i></p>
+                                            <p class="shu" style="flex: 1;"><span class="shu1">159</span><i></i></p>
                                         </div>
 
                                     </div>
@@ -68,12 +73,12 @@
                             <li style="flex:0 0 20%">
                                 <div class="liIn">
                                     <div style="display: flex;">
-                                        <h3 style="flex: 1;">数据总量</h3>
-                                        <p class="shu" style="flex: 1;"><span class="shu1">159485</span><i></i></p>
+                                        <h3 style="flex: 1;">数据总量</h3>                                  
+                                        <p class="shu" style="flex: 1;"><span class="shu1">159</span><i></i></p>
                                     </div>
                                     <div style="display: flex;">
                                         <h3 style="flex: 1;">鱼种</h3>
-                                        <p class="shu" style="flex: 1;"><span class="shu1">50+</span><i></i></p>
+                                        <p class="shu" style="flex: 1;"><span class="shu1">7</span><i></i></p>
                                     </div>
                                     <div style="display: flex;">
                                         <h3 style="flex: 1;">鱼苗</h3>
@@ -128,297 +133,7 @@
             </div>
         </div>
 
-        <div class="rightMain">
-            <div class="rightMain_top">
-                <div class="rightMain_topIn">
-                    <h3>鱼群个体数量历史曲线</h3>
-                    <div class="biaoge" style="width:100%;" id="fish_count"></div>
-                    <script type="text/javascript">
-
-                        // 基于准备好的dom，初始化echarts实例
-                        var myChart = echarts.init(document.getElementById('fish_count'));
-                        // 指定图表的配置项和数据
-                        var option = {
-                                title: {
-                                    // text: '一周变化',
-                                },
-                                tooltip: {
-                                    trigger: 'axis'
-                                },
-                                legend: {
-                                    data:{{legend2|safe}}
-                                },
-                                toolbox: {
-                                    show: true,
-                                    itemGap: 15,
-                                    showTitle: true,
-                                    feature: {
-                                        magicType: {
-                                            show:true,
-                                            title:{
-                                                line:'切换为折线图',
-                                                bar:'切换为柱状图',
-                                            },
-                                            type: ['line', 'bar']},
-                                        restore: {show:true, title:'重置'},
-                                        saveAsImage: {show:true, title:'保存为图片图'}
-                                    }
-                                },
-                                xAxis:  {
-                                    type: 'category',
-                                    boundaryGap: false,
-                                    data: {{xAxis|safe}}
-                                },
-                                yAxis: {
-                                    type: 'value',
-                                    axisLabel: {
-                                        formatter: '{value}'
-                                    }
-                                },
-                                series: [
-                                {% for key, value in data2.items() %}
-                                    {
-                                        name:'{{key}}',
-                                        type:'line',
-                                        data:{{value|safe}},
-                                        itemStyle : { 
-                            normal : { 
-                                color:'#0AB6B2', //折线上的颜色
-                            } 
-                        },
-                                        symbol: 'none',//去掉折线图节点
-                                        smooth: true,//是否平滑曲线，true曲线，false直
-                                        // 区域填充样式
-                        areaStyle: {
-                            normal: {
-                                // 线性渐变，前四个参数分别是 x0, y0, x2, y2, 范围从 0 - 1，相当于在图形包围盒中的百分比，如果 globalCoord 为 `true`，则该四个值是绝对的像素位置
-                                color: {//分隔区域的颜色
-                                    x0: 0,
-                                    y0: 0,
-                                    x2: 0,
-                                    y2: 1,
-                                    colorStops: [{
-                                        offset: 0,
-                                        color: "#6AB0B8" // 0% 处的颜色
-                                    }, {
-                                        offset: 1,
-                                        color: "rgba(106,176,184,0)" // 100% 处的颜色；中间还可以设置50%、20%、70%时的颜色
-                                        
-                                    }],
-                                    globalCoord: false // 缺省为 false，以确保上面的x,y,x2,y2表示的是百分比
-                                }
-                            }
-                        },
-                                    },
-                                {% endfor %}
-                                ]
-                            };
-                    
-                            // 使用刚指定的配置项和数据显示图表。
-                            myChart.setOption(option);
-                    
-                    </script>
-                    <span class="border_bg_leftTop"></span>
-                    <span class="border_bg_rightTop"></span>
-                    <span class="border_bg_leftBottom"></span>
-                    <span class="border_bg_rightBottom"></span>
-
-                </div>
-            </div>
-
-        </div>
-
-        <div class="rightMain">
-            <div class="rightMain_top">
-                <div class="rightMain_topIn">
-                    <h3>鱼群属性分布曲线</h3>
-                    <div class="biaoge" style="width:100%;margin-top: -50px;" id="fff"></div>
-                    <div id="buttonContainer" style="margin-top: -10px; width: 100%;">
-                        <div style="display: flex;">
-                            <div class="colorButton" data-type="A" style="flex: 1;">鱼类A</div>
-                            <div class="colorButton" data-type="B" style="flex: 1;">鱼类B</div>
-                            <div class="colorButton" data-type="C" style="flex: 1;">鱼类C</div>
-                            <div class="colorButton" data-type="D" style="flex: 1;">鱼类D</div>
-                            <div class="colorButton" data-type="E" style="flex: 1;">鱼类E</div>
-                            <div class="colorButton" data-type="F" style="flex: 1;">鱼类F</div>
-                        </div>
-                        
-                    </div>
-                    <div id="buttonContainer2" style="margin-top: 10px; width: 50%; margin-left: 185px; ">
-                        <div style="display: flex;">
-                            <div class="colorButton2" data-attibute="weight" style="flex: 1;">鱼重量</div>
-                            <div class="colorButton2" data-attibute="size" style="flex: 1;">鱼尺寸</div>
-                            <div class="colorButton2" data-attibute="status" style="flex: 1;">鱼生命</div>
-                        </div>
-                        
-                    </div>
-                    
-
-                    <script type="text/javascript">
-                                        //var chartDom = document.getElementById('fish_count');
-                                        //var myChart = echarts.init(chartDom);
-                                        var myChart1 = echarts.init(document.getElementById('fff'));
-                                        
-                                // 配置图表的选项和数据
-                                
-                                    // 初始显示的折线图颜色
-                                    var currenttype = 'A';
-                                    var currentattribute = 'weight';
-
-
-                                   
-
-
-
-                                // 初始化图表
-                                    function initChart(type , attribute) {
-                                                // 定义一个变量存储xAxis属性的值
-                                                let xAxisValue, yAxisValue;
-
-                                                if (type == 'A' && attribute == 'weight') {
-                                                    // 根据条件设置xAxisValue的值
-                                                    xAxisValue = {{ data3['A']['weight']['legend'] | safe }};
-                                                yAxisValue = {{ data3['A']['weight']['count'] | safe }};
-                                            } else if (type == 'A' && attribute == 'size') {
-                                                xAxisValue = {{ data3['A']['size']['legend'] | safe }};
-                                            yAxisValue = {{ data3['A']['size']['count'] | safe }};
-                                            }else if (type == 'A' && attribute == 'status') {
-                                                xAxisValue = {{ data3['A']['status']['legend'] | safe }};
-                                            yAxisValue = {{ data3['A']['status']['count'] | safe }};
-                                            }else if(type == 'B' && attribute == 'weight') {
-                                                xAxisValue = {{ data3['B']['weight']['legend'] | safe }};
-                                                yAxisValue = {{ data3['B']['weight']['count'] | safe }};
-                                            } else if (type == 'B' && attribute == 'size') {
-                                                xAxisValue = {{ data3['B']['size']['legend'] | safe }};
-                                                yAxisValue = {{ data3['B']['size']['count'] | safe }};
-                                            }else if (type == 'B' && attribute == 'status') {
-                                                xAxisValue = {{ data3['B']['status']['legend'] | safe }};
-                                                yAxisValue = {{ data3['B']['status']['count'] | safe }};
-                                            }else if(type == 'C' && attribute == 'weight') {
-                                                xAxisValue = {{ data3['C']['weight']['legend'] | safe }};
-                                                yAxisValue = {{ data3['C']['weight']['count'] | safe }};
-                                            } else if (type == 'C' && attribute == 'size') {
-                                                xAxisValue = {{ data3['C']['size']['legend'] | safe }};
-                                                yAxisValue = {{ data3['C']['size']['count'] | safe }};
-                                            }else if (type == 'C' && attribute == 'status') {
-                                                xAxisValue = {{ data3['C']['status']['legend'] | safe }};
-                                                yAxisValue = {{ data3['C']['status']['count'] | safe }};
-                                            }else if(type == 'D' && attribute == 'weight') {
-                                                xAxisValue = {{ data3['D']['weight']['legend'] | safe }};
-                                                yAxisValue = {{ data3['D']['weight']['count'] | safe }};
-                                            } else if (type == 'D' && attribute == 'size') {
-                                                xAxisValue = {{ data3['D']['size']['legend'] | safe }};
-                                                yAxisValue = {{ data3['D']['size']['count'] | safe }};
-                                            }else if (type == 'D' && attribute == 'status') {
-                                                xAxisValue = {{ data3['D']['status']['legend'] | safe }};
-                                                yAxisValue = {{ data3['D']['status']['count'] | safe }};
-                                            }else if(type == 'E' && attribute == 'weight') {
-                                                xAxisValue = {{ data3['E']['weight']['legend'] | safe }};
-                                                yAxisValue = {{ data3['E']['weight']['count'] | safe }};
-                                            } else if (type == 'E' && attribute == 'size') {
-                                                xAxisValue = {{ data3['E']['size']['legend'] | safe }};
-                                                yAxisValue = {{ data3['E']['size']['count'] | safe }};
-                                            }else if (type == 'E' && attribute == 'status') {
-                                                xAxisValue = {{ data3['E']['status']['legend'] | safe }};
-                                                yAxisValue = {{ data3['E']['status']['count'] | safe }};
-                                            }else if(typF == 'F' && attribute == 'weight') {
-                                                xAxisValuF = {{ data3['F']['weight']['legend'] | safe }};
-                                                yAxisValuF = {{ data3['F']['weight']['count'] | safe }};
-                                            } else if (typF == 'F' && attribute == 'sizF') {
-                                                xAxisValuF = {{ data3['F']['size']['legend'] | safe }};
-                                                yAxisValuF = {{ data3['F']['size']['count'] | safe }};
-                                            }else if (typF == 'F' && attribute == 'status') {
-                                                xAxisValuF = {{ data3['F']['status']['legend'] | safe }};
-                                                yAxisValuF = {{ data3['F']['status']['count'] | safe }};
-                                            }
-
-                                            else{
-                                                xAxisValue = {{ data3['A']['weight']['legend'] | safe }};
-                                                yAxisValue = {{ data3['A']['weight']['count'] | safe }};
-                                            }
-                                        var option = {
-                                            xAxis: {
-                                                type: 'category',
-                                                data: xAxisValue,
-                                            },
-                                    yAxis: {
-                                        type: 'value'
-                                    },
-                                    series: [{
-                                        data: yAxisValue,
-                                        type: 'line',
-                                        itemStyle : {
-                                        normal: {
-                                            color: '#0AB6B2', //折线上的颜色
-                                        }
-                                    },
-                                        symbol: 'none',//去掉折线图节点
-                                        smooth: true,//是否平滑曲线，true曲线，false直
-                                        areaStyle: {
-                                        normal: {
-                                            // 线性渐变，前四个参数分别是 x0, y0, x2, y2, 范围从 0 - 1，相当于在图形包围盒中的百分比，如果 globalCoord 为 `true`，则该四个值是绝对的像素位置
-                                            color: {//分隔区域的颜色
-                                                x0: 0,
-                                                y0: 0,
-                                                x2: 0,
-                                                y2: 1,
-                                                colorStops: [{
-                                                    offset: 0,
-                                                    color: "#6AB0B8" // 0% 处的颜色
-                                                }, {
-                                                    offset: 1,
-                                                    color: "rgba(106,176,184,0)" // 100% 处的颜色；中间还可以设置50%、20%、70%时的颜色
-
-                                                }],
-                                                globalCoord: false // 缺省为 false，以确保上面的x,y,x2,y2表示的是百分比
-                                            }
-                                        }
-                                    },
-        }]
-    };
-                                    myChart1.setOption(option);
-}
-
-                                    // 初始化显示红色折线图
-                                    //initChart();
-                                    initChart(currenttype, currentattribute);
-
-                                    // 为按钮添加点击事件
-                                    var colorButtons = document.getElementsByClassName('colorButton');
-                                    var colorButtons2 = document.getElementsByClassName('colorButton2');
-                                    for (var i = 0; i < colorButtons.length; i++) {
-                                        colorButtons[i].addEventListener('click', function() {
-                                            var type = this.getAttribute('data-type');
-                                            if (type !== currenttype ) {
-                                                currenttype = type;
-                                                initChart(currenttype, currentattribute);
-                                            }
-                                        });
-                                    }
-                                    
-                                    for (var i = 0; i < colorButtons2.length; i++) {
-                                        colorButtons2[i].addEventListener('click', function() {
-                                            var attribute = this.getAttribute('data-attibute');
-                                            if (attribute !== currentattribute) {
-                                                currentattribute = attribute;
-                                                initChart(currenttype, currentattribute);
-                                            }
-                                        });
-                                    }
-                                       
-
-                                        // 将配置项应用到图表
-                                     //  myChart.setOption(option);
-                                    </script>
-                                    
-                                    <span class="border_bg_leftTop"></span>
-                                    <span class="border_bg_rightTop"></span>
-                                    <span class="border_bg_leftBottom"></span>
-                                    <span class="border_bg_rightBottom"></span>
-                </div>
-            </div>
-        </div>
-
+        
 
 
 
