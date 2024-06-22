@@ -51,10 +51,20 @@ def mainInfo():
 def waterSystem():
     data = source.pie
     #data2= source.line
-    #xAxis = data2.pop('legend')
+    
     #data3=source.line2
+
+    data_bream = source.line_bream
+    data_roach = source.line_roach
+    data_whitefish = source.line_whitefish
+    data_parkki = source.line_Parkki
+    data_perch = source.line_Perch
+    data_pike = source.line_Pike
+    data_smelt = source.line_Smelt
+    data_height = source.line_height
+    xAxis = data_height.pop('height')
     #return render_template('waterSystem.html', title='水下系统', data=data, legend=[i.get('name') for i in data], data2=data2, legend2=list(data2.keys()),xAxis=xAxis, data3=data3,)
-    return render_template('waterSystem.html', title='水下系统', data=data, legend=[i.get('name') for i in data])
+    return render_template('waterSystem.html', title='水下系统', data=data, legend=[i.get('name') for i in data], data_bream=data_bream, data_roach=data_roach, data_whitefish=data_whitefish, data_parkki=data_parkki, data_perch=data_perch, data_pike=data_pike, data_smelt=data_smelt, data_height=data_height, legend2=list(data_height.keys()), xAxis = xAxis)
 
 @app.route('/dataCenter')
 def dataCenter():
