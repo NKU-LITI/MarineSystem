@@ -17,6 +17,48 @@ class SourceData(SourceDataDemo):
     def __init__(self):
         self.ENGINE = create_engine(ENGINE_CONFIG)
 
+        
+    @property
+    def TotalCount(self): 
+        sql = """
+        SELECT COUNT(*) AS total_count FROM fish;
+        """
+        df = pd.read_sql(sql, self.ENGINE)
+        #提取出数字
+        total_count = df['total_count'].iloc[0]
+        return total_count
+    
+    @property
+    def GrowthCount(self): 
+        sql = """
+        SELECT COUNT(*) AS total_count FROM fish where Status="生长鱼";
+        """
+        df = pd.read_sql(sql, self.ENGINE)
+        #提取出数字
+        total_count = df['total_count'].iloc[0]
+        return total_count
+
+    @property
+    def NoGrowthCount(self): 
+        sql = """
+        SELECT COUNT(*) AS total_count FROM fish where Status="鱼苗";
+        """
+        df = pd.read_sql(sql, self.ENGINE)
+        #提取出数字
+        total_count = df['total_count'].iloc[0]
+        return total_count
+    
+
+    @property
+    def FishSpecies(self): 
+        sql = """
+        SELECT COUNT(DISTINCT species) AS total_species_count
+        FROM fish;
+        """
+        df = pd.read_sql(sql, self.ENGINE)
+        #提取出数字
+        total_count = df['total_species_count'].iloc[0]
+        return total_count
 
     @property
     def pie(self): #鱼种数量占比饼图

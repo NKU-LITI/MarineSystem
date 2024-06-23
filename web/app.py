@@ -50,9 +50,6 @@ def mainInfo():
 @app.route('/waterSystem')
 def waterSystem():
     data = source.pie
-    #data2= source.line
-    
-    #data3=source.line2
 
     data_bream = source.line_bream
     data_roach = source.line_roach
@@ -63,8 +60,19 @@ def waterSystem():
     data_smelt = source.line_Smelt
     data_height = source.line_height
     xAxis = data_height.pop('height')
+
+
+    total_count = source.TotalCount
+    growth_count = source.GrowthCount
+    no_growth_count = source.NoGrowthCount
+    fish_species = source.FishSpecies
+
+
     #return render_template('waterSystem.html', title='水下系统', data=data, legend=[i.get('name') for i in data], data2=data2, legend2=list(data2.keys()),xAxis=xAxis, data3=data3,)
-    return render_template('waterSystem.html', title='水下系统', data=data, legend=[i.get('name') for i in data], data_bream=data_bream, data_roach=data_roach, data_whitefish=data_whitefish, data_parkki=data_parkki, data_perch=data_perch, data_pike=data_pike, data_smelt=data_smelt, data_height=data_height, legend2=list(data_height.keys()), xAxis = xAxis)
+    return render_template('waterSystem.html', title='水下系统', data=data, legend=[i.get('name') for i in data], 
+                           data_bream=data_bream, data_roach=data_roach, data_whitefish=data_whitefish, data_parkki=data_parkki, 
+                           data_perch=data_perch, data_pike=data_pike, data_smelt=data_smelt, data_height=data_height, legend2=list(data_height.keys()), xAxis = xAxis, 
+                           total_count=total_count, growth_count= growth_count, no_growth_count = no_growth_count, fish_species = fish_species)
 
 @app.route('/dataCenter')
 def dataCenter():

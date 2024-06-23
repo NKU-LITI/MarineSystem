@@ -51,7 +51,7 @@
                                     <div class="liIn" style="width: 80%;height: 5%;">
                                         <div style="display: flex;">
                                             <h3 style="flex: 1;">鱼群数量</h3>
-                                            <p class="shu" style="flex: 1;"><span class="shu1">159</span><i></i></p>
+                                            <p class="shu" style="flex: 1;"><span class="shu1">{{total_count}}</span><i></i></p>
                                         </div>
 
                                     </div>
@@ -74,19 +74,19 @@
                                 <div class="liIn">
                                     <div style="display: flex;">
                                         <h3 style="flex: 1;">数据总量</h3>                                  
-                                        <p class="shu" style="flex: 1;"><span class="shu1">159</span><i></i></p>
+                                        <p class="shu" style="flex: 1;"><span class="shu1">{{total_count}}</span><i></i></p>
                                     </div>
                                     <div style="display: flex;">
                                         <h3 style="flex: 1;">鱼种</h3>
-                                        <p class="shu" style="flex: 1;"><span class="shu1">7</span><i></i></p>
+                                        <p class="shu" style="flex: 1;"><span class="shu1">{{fish_species}}</span><i></i></p>
                                     </div>
                                     <div style="display: flex;">
                                         <h3 style="flex: 1;">鱼苗</h3>
-                                        <p class="shu" style="flex: 1;"><span class="shu1">500</span><i>尾</i></p>
+                                        <p class="shu" style="flex: 1;"><span class="shu1">{{no_growth_count}}</span><i>尾</i></p>
                                     </div>
                                     <div style="display: flex;">
                                         <h3 style="flex: 1;">生长</h3>
-                                        <p class="shu" style="flex: 1;"><span class="shu1">600</span><i>尾</i></p>
+                                        <p class="shu" style="flex: 1;"><span class="shu1">{{growth_count}}</span><i>尾</i></p>
                                     </div>
                                     <span class="border_bg_leftTop"></span>
                                     <span class="border_bg_rightTop"></span>
@@ -138,7 +138,7 @@
         <div class="rightMain">
             <div class="rightMain_top">
                 <div class="rightMain_topIn">
-                    <h3>鱼群高度分布曲线</h3>
+                    <h3>鱼高度分布曲线</h3>
                     <div class="biaoge" style="width:100%;" id="fish_height"></div>
                     <script type="text/javascript">
 
@@ -238,7 +238,7 @@
 
         <div class="rightMain">
             <div class="rightMain_top">
-                <div class="rightMain_topIn" style="width:120%" >
+                <div class="rightMain_topIn" style="width:120%; margin-left: -35px;"  >
                     <h3>鱼群属性分布曲线</h3>
                     <div class="biaoge" style="width:100%;margin-top: -50px;" id="fff"></div>
                     <div id="buttonContainer" style="margin-top: -10px; width: 100%;">
