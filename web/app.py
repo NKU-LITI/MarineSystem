@@ -4,7 +4,8 @@ import sys
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + '/../')
 
 from flask import Flask, render_template, request, url_for, redirect
-from data import SourceData
+#from data import SourceData
+from data_db import SourceData
 
 app = Flask(__name__,static_folder='static')
 source = SourceData()
@@ -57,7 +58,17 @@ def waterSystem():
 
 @app.route('/dataCenter')
 def dataCenter():
-    return render_template('dataCenter.html')
+    data = source.pie
+    supply = source.water_supply #补充数据2021.4
+    chinaDatas = [[{'name': item['省份'], 'value': item['水质类别']}] for item in supply]
+    print(chinaDatas)
+
+    yield_data = source.yield_data
+    basin_data = [{'省份': item['省份'], '流域': item['流域'], 
+                  '温度': item['温度'], 'PH': item['PH'], '站点情况': item['站点情况']} for item in supply]
+    all_yield = source.all_yield
+    return render_template('dataCenter.html', title='数据中心', data=data, legend=[i.get('name') for i in data],
+                           supply=supply, chinaDatas=chinaDatas, yield_data=yield_data, basin_data=basin_data, all_yield=all_yield)
 
 
 @app.route('/smartCenter')
@@ -68,8 +79,6 @@ def smartCenter():
 @app.route('/admain')
 def admain():
     return render_template('admain/login.html')
-
-
 
 
 @app.route('/do_admain_login', methods=['POST'])

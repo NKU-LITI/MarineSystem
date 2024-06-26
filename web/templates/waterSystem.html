@@ -46,7 +46,7 @@
                                     <div class="liIn" style="width: 80%;height: 5%;">
                                         <div style="display: flex;">
                                             <h3 style="flex: 1;">鱼群数量</h3>
-                                            <p class="shu" style="flex: 1;"><span class="shu1">1038</span><i></i></p>
+                                            <p class="shu" style="flex: 1;"><span class="shu1">{{total_count}}</span><i></i></p>
                                         </div>
 
                                     </div>
@@ -68,20 +68,20 @@
                             <li style="flex:0 0 20%">
                                 <div class="liIn">
                                     <div style="display: flex;">
-                                        <h3 style="flex: 1;">数据总量</h3>
-                                        <p class="shu" style="flex: 1;"><span class="shu1">159485</span><i></i></p>
+                                        <h3 style="flex: 1;">数据总量</h3>                                  
+                                        <p class="shu" style="flex: 1;"><span class="shu1">{{total_count}}</span><i></i></p>
                                     </div>
                                     <div style="display: flex;">
                                         <h3 style="flex: 1;">鱼种</h3>
-                                        <p class="shu" style="flex: 1;"><span class="shu1">50+</span><i></i></p>
+                                        <p class="shu" style="flex: 1;"><span class="shu1">{{fish_species}}</span><i></i></p>
                                     </div>
                                     <div style="display: flex;">
                                         <h3 style="flex: 1;">鱼苗</h3>
-                                        <p class="shu" style="flex: 1;"><span class="shu1">500</span><i>尾</i></p>
+                                        <p class="shu" style="flex: 1;"><span class="shu1">{{no_growth_count}}</span><i>尾</i></p>
                                     </div>
                                     <div style="display: flex;">
                                         <h3 style="flex: 1;">生长</h3>
-                                        <p class="shu" style="flex: 1;"><span class="shu1">600</span><i>尾</i></p>
+                                        <p class="shu" style="flex: 1;"><span class="shu1">{{growth_count}}</span><i>尾</i></p>
                                     </div>
                                     <span class="border_bg_leftTop"></span>
                                     <span class="border_bg_rightTop"></span>
@@ -128,15 +128,17 @@
             </div>
         </div>
 
+
+
         <div class="rightMain">
             <div class="rightMain_top">
                 <div class="rightMain_topIn">
-                    <h3>鱼群个体数量历史曲线</h3>
-                    <div class="biaoge" style="width:100%;" id="fish_count"></div>
+                    <h3>鱼高度分布曲线</h3>
+                    <div class="biaoge" style="width:100%;" id="fish_height"></div>
                     <script type="text/javascript">
 
                         // 基于准备好的dom，初始化echarts实例
-                        var myChart = echarts.init(document.getElementById('fish_count'));
+                        var myChart = echarts.init(document.getElementById('fish_height'));
                         // 指定图表的配置项和数据
                         var option = {
                                 title: {
@@ -176,7 +178,7 @@
                                     }
                                 },
                                 series: [
-                                {% for key, value in data2.items() %}
+                                {% for key, value in data_height.items() %}
                                     {
                                         name:'{{key}}',
                                         type:'line',
@@ -227,28 +229,29 @@
             </div>
 
         </div>
+        
 
         <div class="rightMain">
             <div class="rightMain_top">
-                <div class="rightMain_topIn">
+                <div class="rightMain_topIn" style="width:120%; margin-left: -35px;"  >
                     <h3>鱼群属性分布曲线</h3>
                     <div class="biaoge" style="width:100%;margin-top: -50px;" id="fff"></div>
                     <div id="buttonContainer" style="margin-top: -10px; width: 100%;">
                         <div style="display: flex;">
-                            <div class="colorButton" data-type="A" style="flex: 1;">鱼类A</div>
-                            <div class="colorButton" data-type="B" style="flex: 1;">鱼类B</div>
-                            <div class="colorButton" data-type="C" style="flex: 1;">鱼类C</div>
-                            <div class="colorButton" data-type="D" style="flex: 1;">鱼类D</div>
-                            <div class="colorButton" data-type="E" style="flex: 1;">鱼类E</div>
-                            <div class="colorButton" data-type="F" style="flex: 1;">鱼类F</div>
+                            <div class="colorButton" data-type="A" style="flex: 1;">Bream</div>
+                            <div class="colorButton" data-type="B" style="flex: 1;">Roach</div>
+                            <div class="colorButton" data-type="C" style="flex: 1;">Whitefish</div>
+                            <div class="colorButton" data-type="D" style="flex: 1;">Parkki</div>
+                            <div class="colorButton" data-type="E" style="flex: 1;">Perch</div>
+                            <div class="colorButton" data-type="F" style="flex: 1;">Pike</div>
+                            <div class="colorButton" data-type="G" style="flex: 1;">Smelt</div>
                         </div>
                         
                     </div>
-                    <div id="buttonContainer2" style="margin-top: 10px; width: 50%; margin-left: 185px; ">
+                    <div id="buttonContainer2" style="margin-top: 10px; width: 30%; margin-left: 150px; ">
                         <div style="display: flex;">
                             <div class="colorButton2" data-attibute="weight" style="flex: 1;">鱼重量</div>
-                            <div class="colorButton2" data-attibute="size" style="flex: 1;">鱼尺寸</div>
-                            <div class="colorButton2" data-attibute="status" style="flex: 1;">鱼生命</div>
+                            <div class="colorButton2" data-attibute="size" style="flex: 1;">鱼长度</div>
                         </div>
                         
                     </div>
@@ -264,12 +267,6 @@
                                     // 初始显示的折线图颜色
                                     var currenttype = 'A';
                                     var currentattribute = 'weight';
-
-
-                                   
-
-
-
                                 // 初始化图表
                                     function initChart(type , attribute) {
                                                 // 定义一个变量存储xAxis属性的值
@@ -277,65 +274,66 @@
 
                                                 if (type == 'A' && attribute == 'weight') {
                                                     // 根据条件设置xAxisValue的值
-                                                    xAxisValue = {{ data3['A']['weight']['legend'] | safe }};
-                                                yAxisValue = {{ data3['A']['weight']['count'] | safe }};
-                                            } else if (type == 'A' && attribute == 'size') {
-                                                xAxisValue = {{ data3['A']['size']['legend'] | safe }};
-                                            yAxisValue = {{ data3['A']['size']['count'] | safe }};
-                                            }else if (type == 'A' && attribute == 'status') {
-                                                xAxisValue = {{ data3['A']['status']['legend'] | safe }};
-                                            yAxisValue = {{ data3['A']['status']['count'] | safe }};
-                                            }else if(type == 'B' && attribute == 'weight') {
-                                                xAxisValue = {{ data3['B']['weight']['legend'] | safe }};
-                                                yAxisValue = {{ data3['B']['weight']['count'] | safe }};
-                                            } else if (type == 'B' && attribute == 'size') {
-                                                xAxisValue = {{ data3['B']['size']['legend'] | safe }};
-                                                yAxisValue = {{ data3['B']['size']['count'] | safe }};
-                                            }else if (type == 'B' && attribute == 'status') {
-                                                xAxisValue = {{ data3['B']['status']['legend'] | safe }};
-                                                yAxisValue = {{ data3['B']['status']['count'] | safe }};
-                                            }else if(type == 'C' && attribute == 'weight') {
-                                                xAxisValue = {{ data3['C']['weight']['legend'] | safe }};
-                                                yAxisValue = {{ data3['C']['weight']['count'] | safe }};
-                                            } else if (type == 'C' && attribute == 'size') {
-                                                xAxisValue = {{ data3['C']['size']['legend'] | safe }};
-                                                yAxisValue = {{ data3['C']['size']['count'] | safe }};
-                                            }else if (type == 'C' && attribute == 'status') {
-                                                xAxisValue = {{ data3['C']['status']['legend'] | safe }};
-                                                yAxisValue = {{ data3['C']['status']['count'] | safe }};
-                                            }else if(type == 'D' && attribute == 'weight') {
-                                                xAxisValue = {{ data3['D']['weight']['legend'] | safe }};
-                                                yAxisValue = {{ data3['D']['weight']['count'] | safe }};
-                                            } else if (type == 'D' && attribute == 'size') {
-                                                xAxisValue = {{ data3['D']['size']['legend'] | safe }};
-                                                yAxisValue = {{ data3['D']['size']['count'] | safe }};
-                                            }else if (type == 'D' && attribute == 'status') {
-                                                xAxisValue = {{ data3['D']['status']['legend'] | safe }};
-                                                yAxisValue = {{ data3['D']['status']['count'] | safe }};
-                                            }else if(type == 'E' && attribute == 'weight') {
-                                                xAxisValue = {{ data3['E']['weight']['legend'] | safe }};
-                                                yAxisValue = {{ data3['E']['weight']['count'] | safe }};
-                                            } else if (type == 'E' && attribute == 'size') {
-                                                xAxisValue = {{ data3['E']['size']['legend'] | safe }};
-                                                yAxisValue = {{ data3['E']['size']['count'] | safe }};
-                                            }else if (type == 'E' && attribute == 'status') {
-                                                xAxisValue = {{ data3['E']['status']['legend'] | safe }};
-                                                yAxisValue = {{ data3['E']['status']['count'] | safe }};
-                                            }else if(typF == 'F' && attribute == 'weight') {
-                                                xAxisValuF = {{ data3['F']['weight']['legend'] | safe }};
-                                                yAxisValuF = {{ data3['F']['weight']['count'] | safe }};
-                                            } else if (typF == 'F' && attribute == 'sizF') {
-                                                xAxisValuF = {{ data3['F']['size']['legend'] | safe }};
-                                                yAxisValuF = {{ data3['F']['size']['count'] | safe }};
-                                            }else if (typF == 'F' && attribute == 'status') {
-                                                xAxisValuF = {{ data3['F']['status']['legend'] | safe }};
-                                                yAxisValuF = {{ data3['F']['status']['count'] | safe }};
-                                            }
+                                                    xAxisValue = {{ data_bream['attribute1'] | safe }};
+                                                    yAxisValue = {{ data_bream['count1'] | safe }};
+                                                } 
+                                                else if (type == 'A' && attribute == 'size') {
+                                                    xAxisValue = {{ data_bream['attribute2'] | safe }};
+                                                    yAxisValue = {{ data_bream['count2'] | safe }};
+                                                }
+                                                else if (type == 'B' && attribute == 'weight') {
+                                                    xAxisValue = {{ data_roach['attribute1'] | safe }};
+                                                    yAxisValue = {{ data_roach['count1'] | safe }};
+                                                }
+                                                else if (type == 'B' && attribute == 'size') {
+                                                    xAxisValue = {{ data_roach['attribute2'] | safe }};
+                                                    yAxisValue = {{ data_roach['count2'] | safe }};
+                                                }
+                                                else if (type == 'C' && attribute == 'weight') {
+                                                    xAxisValue = {{ data_whitefish['attribute1'] | safe }};
+                                                    yAxisValue = {{ data_whitefish['count1'] | safe }};
+                                                }
+                                                else if (type == 'C' && attribute == 'size') {
+                                                    xAxisValue = {{ data_whitefish['attribute2'] | safe }};
+                                                    yAxisValue = {{ data_whitefish['count2'] | safe }};
+                                                }
+                                                else if (type == 'D' && attribute == 'weight') {
+                                                    xAxisValue = {{ data_parkki['attribute1'] | safe }};
+                                                    yAxisValue = {{ data_parkki['count1'] | safe }};
+                                                }
+                                                else if (type == 'D' && attribute == 'size') {
+                                                    xAxisValue = {{ data_parkki['attribute2'] | safe }};
+                                                    yAxisValue = {{ data_parkki['count2'] | safe }};
+                                                }
+                                                else if (type == 'E' && attribute == 'weight') {
+                                                    xAxisValue = {{ data_perch['attribute1'] | safe }};
+                                                    yAxisValue = {{ data_perch['count1'] | safe }};
+                                                }
+                                                else if (type == 'E' && attribute == 'size') {
+                                                    xAxisValue = {{ data_perch['attribute2'] | safe }};
+                                                    yAxisValue = {{ data_perch['count2'] | safe }};
+                                                }
+                                                else if (type == 'F' && attribute == 'weight') {
+                                                    xAxisValue = {{ data_pike['attribute1'] | safe }};
+                                                    yAxisValue = {{ data_pike['count1'] | safe }};
+                                                }
+                                                else if (type == 'F' && attribute == 'size') {
+                                                    xAxisValue = {{ data_pike['attribute2'] | safe }};
+                                                    yAxisValue = {{ data_pike['count2'] | safe }};
+                                                }
+                                                else if (type == 'G' && attribute == 'weight') {
+                                                    xAxisValue = {{ data_smelt['attribute1'] | safe }};
+                                                    yAxisValue = {{ data_smelt['count1'] | safe }};
+                                                }
+                                                else if (type == 'G' && attribute == 'size') {
+                                                    xAxisValue = {{ data_smelt['attribute2'] | safe }};
+                                                    yAxisValue = {{ data_smelt['count2'] | safe }};
+                                                }
+                                                else{
+                                                    xAxisValue = {{ data_bream['attribute1'] | safe }};
+                                                    yAxisValue = {{ data_bream['count1'] | safe }};
 
-                                            else{
-                                                xAxisValue = {{ data3['A']['weight']['legend'] | safe }};
-                                                yAxisValue = {{ data3['A']['weight']['count'] | safe }};
-                                            }
+                                                }
                                         var option = {
                                             xAxis: {
                                                 type: 'category',
@@ -418,6 +416,8 @@
                 </div>
             </div>
         </div>
+
+
 
 
 

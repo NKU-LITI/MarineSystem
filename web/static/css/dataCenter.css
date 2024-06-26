@@ -539,7 +539,7 @@ ol {
     display: block;
     float: left;
     height: .2rem;
-    width: 33%;
+    width: 20%;
     /*background: red;*/
     /*margin: 15px 10px 10px 10px;*/
     /*padding: 20px;*/
@@ -602,7 +602,7 @@ ol {
     display: inline-block;
     /*float: left;*/
     /*height: 20px;*/
-    width: 31%;
+    width: 18%;
     color: #ffffff;
 
     /*background: red;*/
