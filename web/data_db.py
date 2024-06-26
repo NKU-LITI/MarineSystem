@@ -39,6 +39,17 @@ class SourceData(SourceDataDemo):
         return total_count
 
     @property
+    def TotalWeight(self): 
+        sql = """
+        SELECT SUM(Weight) FROM fish;
+        """
+        df = pd.read_sql(sql, self.ENGINE)
+        #提取出数字
+        #df['SUM(Weight)'] = df['SUM(Weight)'].astype(float)
+        data = round(df['SUM(Weight)'].iloc[0], 2 )
+        return data
+
+    @property
     def NoGrowthCount(self): 
         sql = """
         SELECT COUNT(*) AS total_count FROM fish where Status="鱼苗";
