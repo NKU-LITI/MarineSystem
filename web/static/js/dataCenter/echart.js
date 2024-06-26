@@ -155,10 +155,10 @@ $(function() {
         var myChart = echarts.init(document.getElementById('ceshi8'));
 
         var chinaGeoCoordMap = {
+            "北京": [116.4551, 40.2539],
             "上海": [121.4648, 31.2891],
             "云南": [102.9199, 25.4663],
             "内蒙古": [110.3467, 41.4899],
-            //"北京": [116.4551, 40.2539],
             "吉林": [125.325, 43.8868],
             "四川": [103.9526, 30.7617],
             "天津": [117.4219, 39.4189],
@@ -181,7 +181,7 @@ $(function() {
             "黑龙江": [127.9688, 45.368]
         };
         
-        /*var chinaDatas_ = [
+        var chinaDatas_ = [
             [{
                 name: '黑龙江',
                 value: 0
@@ -254,10 +254,13 @@ $(function() {
                 name: '上海',
                 value: 1
             }]
-        ];*/
+        ];
 
         //chinaDatas = [[{'name': item['省份'], 'value': float(item['温度'])}] for item in supply];
-        var convertData = function(data) {
+
+        console.log(chinaDatas_);
+        console.log(chinaDatas);
+        /*var convertData = function(data) {
             var res = [];
             for (var i = 0; i < data.length; i++) {
                 var dataItem = data[i];
@@ -274,13 +277,33 @@ $(function() {
                 }
             }
             return res;
+        };*/
+        var convertData = function(data) { //方向相反
+            var res = [];
+            for (var i = 0; i < data.length; i++) {
+                var dataItem = data[i];
+                var fromCoord = chinaGeoCoordMap[dataItem[0].name];
+                var toCoord = [116.4551, 40.2539];
+                if (fromCoord && toCoord) {
+                    res.push([{
+                        coord: toCoord, // 调整为 toCoord
+                    }, {
+                        coord: fromCoord, // 调整为 fromCoord
+                        value: dataItem[0].value
+                    }]);
+                }
+            }
+            return res;
         };
         var series = [];
         [
             ['北京', chinaDatas]
         ].forEach(function(item, i) {
+            console.log(chinaGeoCoordMap)
             console.log(item)
+            console.log(item[0])
             series.push({
+                    //lines 类型：用于绘制带有箭头的轨迹线。
                     type: 'lines',
                     zlevel: 2,
                     effect: {
@@ -288,24 +311,25 @@ $(function() {
                         period: 4, //箭头指向速度，值越小速度越快
                         trailLength: 0.02, //特效尾迹长度[0,1]值越大，尾迹越长重
                         symbol: 'arrow', //箭头图标
-                        symbolSize: 5, //图标大小
+                        symbolSize: 4, //图标大小
                     },
                     lineStyle: {
                         normal: {
-                            width: 1, //尾迹线条宽度
+                            width: 0.5, //尾迹线条宽度
                             opacity: 1, //尾迹线条透明度
                             curveness: .3 //尾迹线条曲直度
                         }
                     },
                     data: convertData(item[1])
-                }, {
+                },
+                {   //effectScatter 类型：用于绘制带有涟漪效果的散点。
                     type: 'effectScatter',
                     coordinateSystem: 'geo',
                     zlevel: 2,
                     rippleEffect: { //涟漪特效
                         period: 4, //动画时间，值越小速度越快
-                        brushType: 'stroke', //波纹绘制方式 stroke, fill
-                        scale: 4 //波纹圆环最大限制，值越大波纹越大
+                        brushType: 'stroke',
+                        scale: 3 //几就表示几圈涟漪
                     },
                     label: {
                         normal: {
@@ -323,12 +347,13 @@ $(function() {
                     },
                     symbol: 'circle',
                     symbolSize: function(val) {
-                        return 5 + val[2] * 5; //圆环大小
+                        return 1 + val[2] * 2;
+                        //return 5 + val[2] * 5; //圆环大小
                     },
                     itemStyle: {
                         normal: {
                             show: false,
-                            color: '#f00'
+                            color: '#0000ff'  //'#f00'
                         }
                     },
                     data: item[1].map(function(dataItem) {
@@ -369,7 +394,7 @@ $(function() {
                     symbolSize: 50,
                     data: [{
                         name: item[0],
-                        value: chinaGeoCoordMap[item[0]].concat([10]),
+                        value: chinaGeoCoordMap[item[0]].concat([10]),   //报错
                     }],
                 }
             );
@@ -390,7 +415,7 @@ $(function() {
                     var res = "";
                     var name = params.name;
                     var value = params.value[params.seriesIndex + 1];
-                    res = "<span style='color:#fff;'>" + name + "</span><br/>水质：" + value;
+                    res = "<span style='color:#fff;'>" + name + "</span><br/>水质等级：" + value;
                     return res;
                 }
             },
@@ -432,13 +457,6 @@ $(function() {
         window.addEventListener("resize", function() {
             myChart.resize();
         });
-        /*myChart.on('click',  function(param) {
-            alert("更多模板，关注公众号【DreamCoders】\n回复'BigDataView'即可获取\n或前往Gitee下载 https://gitee.com/iGaoWei/big-data-view")
-            setTimeout(function(){
-                location.href = "https://gitee.com/iGaoWei/big-data-view";
-            },20000);
-        });*/
-
     }
 
     function ceshi2(yield_data) {
