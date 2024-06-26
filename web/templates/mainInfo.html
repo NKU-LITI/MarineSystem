@@ -41,15 +41,19 @@
             </div>
             <!-- 左上 -->
             <div class="content-left-top">
-                <div class="left-pic"></div>
+                <div class="left-pic">
+                    <video id="video" width="100%" controls>
+                        <source src="../static/img/video/video1.mp4" type="video/mp4">
+                    </video>
+                </div>
             </div>
 
             <!-- 左中按钮 -->
             <div class="content-left-middle">
-                <button class="btn">开关</button>
-                <button class="btn">拍照</button>
-                <button class="btn">回放</button>
-                <button class="btn">切换</button>
+                <!-- <button class="btn">开关</button> -->
+                <button class="btn" id="capture">定时拍照</button>
+                <button class="btn" id="replay">重新播放</button>
+                <button class="btn" id="switch">切换视频</button>
             </div>
 
             <!-- 左下 -->
@@ -191,6 +195,66 @@
       src="https://api.map.baidu.com/api?v=2.0&ak=2YCQxbGampc7M1pFsKWNiwpS5F7RKVRt&s=1">
 </script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- video setting -->
+<script>
+    const video = document.getElementById('video');
+    const captureButton = document.getElementById('capture');
+    const replayButton = document.getElementById('replay');
+    const switchButton = document.getElementById('switch');
+
+
+    // 拍照按钮：截图
+    captureButton.addEventListener('click', () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        // const img = document.createElement('img');
+        // img.src = canvas.toDataURL('image/png');
+        // document.body.appendChild(img);
+
+        // 将截图转换为Blob对象
+        canvas.toBlob((blob) => {
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'snapshot.png';
+            
+            // 自动触发下载
+            link.click();
+            
+            // 释放URL对象
+            URL.revokeObjectURL(url);
+        }, 'image/png');
+
+    });
+
+    // 回放按钮：重新播放视频
+    replayButton.addEventListener('click', () => {
+        video.currentTime = 0;
+        video.play();
+    });
+
+    // 切换按钮：切换视频源
+    let videoSrc1 = '../static/img/video/video1.mp4';
+    let videoSrc2 = '../static/img/video/video2.mp4';
+    let currentSrc = 1;
+    switchButton.addEventListener('click', () => {
+        if (currentSrc === 1) {
+            video.src = videoSrc2;
+            currentSrc = 2;
+        } else {
+            video.src = videoSrc1;
+            currentSrc = 1;
+        }
+        video.play();
+    });
+</script>
+
+
 <!-- map -->
 <script type="text/javascript">
     var markerArr = [

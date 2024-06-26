@@ -3,9 +3,11 @@ import sys
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + '/../')
 
-from flask import Flask, render_template, request, url_for, redirect
+from flask import Flask, render_template, request, url_for, redirect, jsonify
 #from data import SourceData
 from data_db import SourceData
+from openai import OpenAI
+import requests
 
 app = Flask(__name__,static_folder='static')
 source = SourceData()
@@ -50,11 +52,29 @@ def mainInfo():
 @app.route('/waterSystem')
 def waterSystem():
     data = source.pie
-    data2= source.line
-    xAxis = data2.pop('legend')
-    data3=source.line2
-    return render_template('waterSystem.html', title='水下系统', data=data, legend=[i.get('name') for i in data], data2=data2, legend2=list(data2.keys()),xAxis=xAxis, data3=data3,)
 
+    data_bream = source.line_bream
+    data_roach = source.line_roach
+    data_whitefish = source.line_whitefish
+    data_parkki = source.line_Parkki
+    data_perch = source.line_Perch
+    data_pike = source.line_Pike
+    data_smelt = source.line_Smelt
+    data_height = source.line_height
+    xAxis = data_height.pop('height')
+
+
+    total_count = source.TotalCount
+    growth_count = source.GrowthCount
+    no_growth_count = source.NoGrowthCount
+    fish_species = source.FishSpecies
+
+
+    #return render_template('waterSystem.html', title='水下系统', data=data, legend=[i.get('name') for i in data], data2=data2, legend2=list(data2.keys()),xAxis=xAxis, data3=data3,)
+    return render_template('waterSystem.html', title='水下系统', data=data, legend=[i.get('name') for i in data], 
+                           data_bream=data_bream, data_roach=data_roach, data_whitefish=data_whitefish, data_parkki=data_parkki, 
+                           data_perch=data_perch, data_pike=data_pike, data_smelt=data_smelt, data_height=data_height, legend2=list(data_height.keys()), xAxis = xAxis, 
+                           total_count=total_count, growth_count= growth_count, no_growth_count = no_growth_count, fish_species = fish_species)
 
 @app.route('/dataCenter')
 def dataCenter():
@@ -158,6 +178,37 @@ def admain_error():
 @app.route('/logout_success')
 def logout_success():
     return render_template('mainInfo.html')
+
+# 大模型API（用于回答）
+api_key = "sk-Z6ttNnGzWksu7LYIOVVNuvXi3GqD5g6rykmK7NAn7ZcqTP7Q"
+MessageModel = OpenAI(api_key=api_key, base_url="https://api.moonshot.cn/v1")
+
+
+@app.route('/api/chat', methods=['POST'])
+def chat():
+    data = request.json
+    user_message = data.get('message')
+    print("question:",user_message)
+
+    # 构建消息列表
+    messages = [
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": user_message}
+    ]
+
+    # 调用OpenAI API
+    completion = MessageModel.chat.completions.create(
+        model="moonshot-v1-8k",
+        messages=messages,
+        temperature=0.3,
+    )
+
+
+    # 直接访问ChatCompletionMessage对象的content属性
+    model_reply = completion.choices[0].message.content
+    # model_reply = get_reply(user_message)
+    print("answer:",model_reply)
+    return jsonify({'reply': model_reply})
 
 
 if __name__ == '__main__':

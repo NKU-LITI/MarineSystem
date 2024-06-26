@@ -90,10 +90,6 @@ class SourceData(SourceDataDemo):
         return data
         '''
         
-    
-    
-
-
     @property
     def line_bream(self):
         sql1="""
