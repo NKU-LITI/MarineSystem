@@ -171,10 +171,10 @@ def admain_error():
 def logout_success():
     return render_template('mainInfo.html')
 
+
 # 大模型API（用于回答）
 api_key = "sk-Z6ttNnGzWksu7LYIOVVNuvXi3GqD5g6rykmK7NAn7ZcqTP7Q"
 MessageModel = OpenAI(api_key=api_key, base_url="https://api.moonshot.cn/v1")
-
 
 @app.route('/api/chat', methods=['POST'])
 def chat():
@@ -194,7 +194,6 @@ def chat():
         messages=messages,
         temperature=0.3,
     )
-
 
     # 直接访问ChatCompletionMessage对象的content属性
     model_reply = completion.choices[0].message.content
