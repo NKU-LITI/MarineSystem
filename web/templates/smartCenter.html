@@ -126,10 +126,10 @@
 
                 <div class="chat-container">
                     <div class="chat-header">Chat</div>
-                    <div class="chat-content"></div>
-                    <div class="chat-input">
-                        <input type="text" placeholder="Type a message...">
-                        <button>Send</button>
+                    <div class="chat-content" id="chatContent"></div>
+                    <div class="chat-input" >
+                        <input type="text" id="chatInput" placeholder="Type a message...">
+                        <button id="sendButton">Send</button>
                     </div>
                 </div>
            </div>
@@ -358,6 +358,64 @@
     myChart.setOption(option);
 </script>
 
+<!-- AI message -->
+ <script type="text/javascript">
+    const chatContent = document.getElementById('chatContent');
+    const chatInput = document.getElementById('chatInput');
+    const sendButton = document.getElementById('sendButton');
+    // print("ss")
 
+    // 显示用户发送的消息
+    function addMessage(message, isUser = true) {
+        // print('User: ' + message)
+        const messageElement = document.createElement('div');
+        messageElement.textContent = message;
+        messageElement.style.textAlign = isUser ? 'right' : 'left';
+        // messageElement.style.margin = '5px 0';
+        messageElement.style.font = '#000000';
+        messageElement.style.fontSize = '14px';
+        // messageElement.style.border = '1px solid rgba(27, 146, 253, 0.5)';
+        chatContent.appendChild(messageElement);
+        chatContent.scrollTop = chatContent.scrollHeight;
+    }
+    
+    // Function to send a message to the backend
+    async function sendMessage(message) {
+        addMessage(message);
+        chatInput.value = '';
+
+        // Replace with your actual backend URL
+        const response = await fetch('/api/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ message })
+        });
+        const data = await response.json();
+        addMessage(data.reply, false);
+    }
+
+    sendButton.addEventListener('click', () => {
+        // print("me:",message)
+        const message = chatInput.value.trim();
+        console.log(message)
+        if (message) {
+            sendMessage(message);
+        }
+    });
+
+    chatInput.addEventListener('keypress', (event) => {
+        if (event.key === 'Enter') {
+            console.log("here")
+            // print("here")
+            const message = chatInput.value.trim();
+            if (message) {
+                sendMessage(message);
+            }
+        }
+    });
+
+</script>
 
 </html>

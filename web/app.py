@@ -3,9 +3,11 @@ import sys
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + '/../')
 
-from flask import Flask, render_template, request, url_for, redirect
+from flask import Flask, render_template, request, url_for, redirect, jsonify
 #from data import SourceData
 from data_db import SourceData
+from openai import OpenAI
+import requests
 
 app = Flask(__name__,static_folder='static')
 source = SourceData()
@@ -168,6 +170,37 @@ def admain_error():
 @app.route('/logout_success')
 def logout_success():
     return render_template('mainInfo.html')
+
+# 大模型API（用于回答）
+api_key = "sk-Z6ttNnGzWksu7LYIOVVNuvXi3GqD5g6rykmK7NAn7ZcqTP7Q"
+MessageModel = OpenAI(api_key=api_key, base_url="https://api.moonshot.cn/v1")
+
+
+@app.route('/api/chat', methods=['POST'])
+def chat():
+    data = request.json
+    user_message = data.get('message')
+    print("question:",user_message)
+
+    # 构建消息列表
+    messages = [
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": user_message}
+    ]
+
+    # 调用OpenAI API
+    completion = MessageModel.chat.completions.create(
+        model="moonshot-v1-8k",
+        messages=messages,
+        temperature=0.3,
+    )
+
+
+    # 直接访问ChatCompletionMessage对象的content属性
+    model_reply = completion.choices[0].message.content
+    # model_reply = get_reply(user_message)
+    print("answer:",model_reply)
+    return jsonify({'reply': model_reply})
 
 
 if __name__ == '__main__':
