@@ -39,17 +39,6 @@ class SourceData(SourceDataDemo):
         return total_count
 
     @property
-    def TotalWeight(self): 
-        sql = """
-        SELECT SUM(Weight) FROM fish;
-        """
-        df = pd.read_sql(sql, self.ENGINE)
-        #提取出数字
-        #df['SUM(Weight)'] = df['SUM(Weight)'].astype(float)
-        data = round(df['SUM(Weight)'].iloc[0], 2 )
-        return data
-
-    @property
     def NoGrowthCount(self): 
         sql = """
         SELECT COUNT(*) AS total_count FROM fish where Status="鱼苗";
@@ -101,10 +90,6 @@ class SourceData(SourceDataDemo):
         return data
         '''
         
-    
-    
-
-
     @property
     def line_bream(self):
         sql1="""
@@ -474,3 +459,75 @@ ORDER BY MIN(Length);
             'count': [row[1] for row in df.values]
         }
         return data
+    
+    @ property
+    def water_supply(self):
+        sql = """
+        SELECT *
+        FROM water_supply
+        WHERE 省份 != '北京';
+        """
+        df = pd.read_sql(sql, self.ENGINE)
+        client_data = [{'省份': row[0].strip(), '流域': row[1].strip(), 
+                        '断面': row[2].strip(), '水质类别': row[3] , 
+                        '温度': row[4], 'PH':row[5] , 
+                        '站点情况':row[6].strip() } for row in df.values]
+        return client_data
+
+    @ property
+    def yield_data(self):
+        sql = """
+        SELECT `月份`, `产量`, `鱼排面积`, `同比增加`, `平均产量`
+        FROM `yield`
+        ORDER BY `月份` ASC;
+        """
+        df = pd.read_sql(sql, self.ENGINE)
+        yield_data = {
+            '产量': df['产量'].tolist(),
+            '鱼排面积': df['鱼排面积'].tolist(),
+            '同比增加': df['同比增加'].tolist(),
+            '平均产量': df['平均产量'].tolist()
+        }
+        return yield_data
+    
+
+    @ property
+    def all_yield(self):
+        sql=""" SELECT * FROM `all_yield` WHERE `地区` = '全国'; """
+        df = pd.read_sql(sql, self.ENGINE)
+            # 初始化一个空的结果列表
+        result = []
+        
+        # 将DataFrame中的每一行转换为{name: value}的形式，并加入到结果列表中
+        for index, row in df.iterrows():
+            data = {
+                'name': '鱼类',
+                'value': row['鱼类']
+            }
+            result.append(data)
+            
+            data = {
+                'name': '甲壳类',
+                'value': row['甲壳类']
+            }
+            result.append(data)
+            
+            data = {
+                'name': '贝类',
+                'value': row['贝类']
+            }
+            result.append(data)
+            
+            data = {
+                'name': '藻类',
+                'value': row['藻类']
+            }
+            result.append(data)
+            
+            data = {
+                'name': '其它',
+                'value': row['其它']
+            }
+            result.append(data)
+        
+        return result

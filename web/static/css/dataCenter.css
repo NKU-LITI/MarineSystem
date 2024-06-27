@@ -319,8 +319,8 @@ ol {
 
 /* 设置底部区域样式 */
 .content .content-center .center-top .top-bottom {
-    width: 70%;
-    height: 70%;
+    width: 90%; /*这两个决定地图占比*/
+    height: 90%;
     /* 设置绝对定位 */
     position: absolute;
     /* 注释掉的边框样式 */
@@ -539,7 +539,7 @@ ol {
     display: block;
     float: left;
     height: .2rem;
-    width: 33%;
+    width: 20%;
     /*background: red;*/
     /*margin: 15px 10px 10px 10px;*/
     /*padding: 20px;*/
@@ -602,7 +602,7 @@ ol {
     display: inline-block;
     /*float: left;*/
     /*height: 20px;*/
-    width: 31%;
+    width: 18%;
     color: #ffffff;
 
     /*background: red;*/

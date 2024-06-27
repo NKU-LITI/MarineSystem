@@ -3,7 +3,8 @@
 <head>
     <meta charset="utf-8">
 
-    <title>海洋牧场智慧可视化系统</title>
+    <!--<title>海洋牧场智慧可视化系统</title>-->
+    <title>{{ title }}</title>
     <!-- <link rel="stylesheet" href="../static/css/dataCenter.css">  -->
     <link rel="stylesheet" type="text/css" href= "{{ url_for('static', filename = 'css/dataCenter.css') }}">
 
@@ -66,7 +67,7 @@
                         <ul>
                             <li>建筑面积：1168亩</li>
                             <li>渔户总数：867户</li>
-                            <li>人口总数：13万</li>
+                            <li>所在河流：Ohio River</li>
                             <li>年总产值：680万</li>
                             <li>年总产值：4651万</li>
                             <li>年总产值：4546万</li>
@@ -83,7 +84,7 @@
                 <!--左下-->
                 <div class="left-bottom">
                     <div class="title">
-                        <span>产量/养殖面积</span>
+                        <span>产量/鱼排面积</span>
                     </div>
                     <div class="allnav" id="ceshi2"></div>
                 </div>
@@ -95,17 +96,11 @@
                     <div class="top-title">
                         <ul>
                             <li>
-                                <p>养殖基地</p>
+                                <p>各地流域水质</p>
+                                <!--<span>3</span>-->
+                                <span>2</span>
                                 <span>3</span>
-                                <span>6</span>
-                                <span>5</span>
                                 <b>个</b>
-                            </li>
-                            <li>
-                                <p>已接入</p>
-                                <span>8</span>
-                                <span>3</span>
-                                <b>%</b>
                             </li>
                         </ul>
                     </div>
@@ -175,12 +170,10 @@
                                         <p>DO</p>
                                     </li>
                                 </ul>
-
                             </div>
                         </div>
                         <div class="dom" style="display: none">
                             <div class="listStyle">
-
                                 <span>鱼排：<strong>560</strong>个</span>
                                 <span>供应企业：<strong>36</strong>家</span>
                                 <span>经销商：<strong>540</strong>个</span>
@@ -197,108 +190,30 @@
                 <!--右中-->
                 <div class="right-center">
                     <div class="title">
-                        <span>销量排行</span>
+                        <span>各流域水质</span>
                     </div>
 
                     <div class="echart wenzi">
                         <div class="gun">
-                            <span>名称</span>
-                            <span>同比</span>
-                            <span>销量</span>
+                            <span>省份</span>
+                            <span>流域</span>
+                            <span>温度</span>
+                            <span>PH</span>
+                            <span>站点情况</span>
                         </div>
                         <div id="FontScroll" class="myscroll">
                             <ul>
+                                {% for item in basin_data %}
                                 <li>
                                     <div class="fontInner clearfix">
-                                        <span>
-                                            <b> 1.鲤鱼</b>
-                                        </span>
-                                        <span>2.3%</span>
-                                        <span>45吨</span>
+                                        <span>{{ item.省份 }}</span>
+                                        <span>{{ item.流域 }}</span>
+                                        <span>{{ item.温度 }}</span>
+                                        <span>{{ item.PH }}</span>
+                                        <span>{{ item.站点情况 }}</span>
                                     </div>
                                 </li>
-                                <li>
-                                    <div class="fontInner clearfix">
-                                        <span>
-                                            <b>2.鲫鱼</b>
-                                        </span>
-                                        <span>2.2%</span>
-                                        <span>44.5吨</span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="fontInner clearfix">
-                                        <span>
-                                            <b>3.鳙鱼</b>
-                                        </span>
-                                        <span>2.15%</span>
-                                        <span>44.3吨</span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="fontInner clearfix">
-                                        <span>
-                                            <b>4.鲈鱼</b>
-                                        </span>
-                                        <span>2.1%</span>
-                                        <span>43.5吨</span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="fontInner clearfix">
-                                        <span>
-                                            <b>5.鲳鱼</b>
-                                        </span>
-                                        <span>2%</span>
-                                        <span>43吨</span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="fontInner clearfix">
-                                        <span>
-                                            <b>6.黑鱼</b>
-                                        </span>
-                                        <span>1.95%</span>
-                                        <span>42.6吨</span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="fontInner clearfix">
-                                        <span>
-                                            <b>7.鲷鱼</b>
-                                        </span>
-                                        <span>1.93%</span>
-                                        <span>42.3吨</span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="fontInner clearfix">
-                                        <span>
-                                            <b>8.草鱼</b>
-                                        </span>
-                                        <span>1.9%</span>
-                                        <span>42吨</span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="fontInner clearfix">
-                                        <span>
-                                            <b>9.黄花鱼</b>
-                                        </span>
-                                        <span>1.8%</span>
-                                        <span>41吨</span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="fontInner clearfix">
-                                        <span>
-                                            <b>10.鳊鱼</b>
-                                        </span>
-                                        <span>1.8%</span>
-                                        <span>41吨</span>
-                                    </div>
-                                </li>
-
+                                {% endfor %}
                             </ul>
                         </div>
                     </div>
@@ -325,8 +240,17 @@
     <script src="../static/js/dataCenter/echarts.min.js"></script>
     <script src="../static/js/dataCenter/jquery.min.js"></script>
 
-
+    <script>
+        // 将后端传递的数据定义为全局变量
+        var data1 = {{ data|safe }}; var legend1 = {{ legend|safe }};
+        var supply = {{ supply|safe }};
+        var chinaDatas = {{ chinaDatas|safe }};
+        var yield_data = {{ yield_data|safe }};
+        var all_yield  = {{all_yield|safe}};
+    </script>
     <script src="../static/js/dataCenter/echart.js"></script>
+
+
     <script src="../static/js/dataCenter/fontscroll.js"></script>
     <script src="../static/js/dataCenter/china.js"></script>
 
