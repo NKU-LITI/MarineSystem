@@ -8,6 +8,7 @@ from flask import Flask, render_template, request, url_for, redirect, jsonify
 from data_db import SourceData
 from openai import OpenAI
 import requests
+import recognition
 
 app = Flask(__name__,static_folder='static')
 source = SourceData()
@@ -209,6 +210,47 @@ def chat():
     print("answer:",model_reply)
     return jsonify({'reply': model_reply})
 
+# 图像识别模型
+@app.route('/recognize', methods=['POST'])
+def recognize():
+    data = request.json
+    img_path = data.get('path')
+    # 找到'static'在 URL中的位置
+    start_index = img_path.find('static')
+    if start_index != -1:
+        # 截取从'static'开始的子字符串
+        img_path = img_path[start_index:]
+    img_path = 'web/'+img_path
+    # img_path = 'web/草鱼.jpg'
+    print(img_path)
+    res = recognition.predict_fish(img_path)
+    # res = 1
+    print(res)
+    return jsonify(res)
+
+
+# 用户上传自己的图文件
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 限制上传文件大小为 16MB
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', }
+app.config['ALLOWED_EXTENSIONS'] = ALLOWED_EXTENSIONS
+UPLOAD_FOLDER = "web/static/img/smartCenter/userFish"
+@app.route('/upload_fig', methods=['POST'])
+def upload_fig():
+    file = request.files['image']
+    if file:
+        filename = file.filename
+        filepath = UPLOAD_FOLDER+'/'+filename
+        current_dir = os.getcwd()
+        print("Current working directory:", current_dir)
+        file.save(filepath)
+        # 但是传到后端的时候需要把路径变成"web/static/"->"../static"
+        # 找到'static'在 URL中的位置
+        start_index = filepath.find('static')
+        if start_index != -1:
+            # 截取从'static'开始的子字符串
+            filepath = filepath[start_index:]
+        filepath = '../'+filepath
+        return jsonify({'path': filepath})   
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', debug=True)
