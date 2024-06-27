@@ -5,19 +5,24 @@
 # @Site : 
 # @Describe:
 
+
+'''
+目前通过create_engine和pandas的方式连接数据库，只进行了SELECT操作
+为便于编辑减少重复，管理员界面的增删改查使用SQLAlchemy方式
+'''
 import pandas as pd
-from sqlalchemy import create_engine
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import create_engine, text
 from data import SourceDataDemo
 
-ENGINE_CONFIG = 'mysql+pymysql://root:123456@127.0.0.1:3306/fish?charset=utf8'
 
+ENGINE_CONFIG = 'mysql+pymysql://root:123456@127.0.0.1:3306/marinesystem?charset=utf8'
 
 class SourceData(SourceDataDemo):
 
     def __init__(self):
         self.ENGINE = create_engine(ENGINE_CONFIG)
 
-        
     @property
     def TotalCount(self): 
         sql = """
@@ -460,6 +465,7 @@ ORDER BY MIN(Length);
         }
         return data
     
+    # -------------- 以下为'数据中心'界面获取数据操作 -----------------
     @ property
     def water_supply(self):
         sql = """
@@ -531,3 +537,92 @@ ORDER BY MIN(Length);
             result.append(data)
         
         return result
+
+    # -------------- '数据中心'界面 结束 -----------------
+
+    
+    # -------------- 以下为管理员界面对'鱼类信息'的CRUD操作 -----------------
+    @ property
+    def all_fish(self):
+        sql=""" SELECT * FROM `fish`; """
+        df = pd.read_sql(sql, self.ENGINE)
+        client_data = [{'id': row[0], 'Species': row[1], 'Weight': row[2], 
+                        'Length': row[3], 'Height': row[4] , 
+                        'Width': row[5], 'Status':row[6]} for row in df.values]
+        return client_data
+    
+    @ property
+    def get_fish_by_id(self, fish_id):
+        sql = f"SELECT * FROM `fish` WHERE id = {fish_id};"
+        df = pd.read_sql(sql, self.ENGINE)
+        if df.empty:
+            return None
+        row = df.iloc[0]
+        return {'id': row[0], 'Species': row[1].strip(), 'Weight': row[2], 
+                'Length': row[3], 'Height': row[4], 
+                'Width': row[5], 'Status': row[6].strip()}
+
+
+    def update_fish(self, fish_id, species, weight, length, height, width, status):
+        sql = text("""
+        UPDATE fish SET 
+            Species = :species, 
+            Weight = :weight, 
+            Length = :length, 
+            Height = :height, 
+            Width = :width, 
+            Status = :status
+        WHERE id = :fish_id;
+        """)
+        print(f"\n===={length}=====\n")
+        with self.ENGINE.connect() as conn:
+            conn.execute(sql, {
+                'fish_id': fish_id,
+                'species': species,
+                'weight': weight,
+                'length': length,
+                'height': height,
+                'width': width,
+                'status': status
+            })
+            conn.commit() # 提交事务
+
+    def insert_fish(self, species, weight, length, height, width, status):
+        sql = text("""
+        INSERT INTO `fish` (Species, Weight, Length, Height, Width, Status) VALUES (
+            :species,
+            :weight,
+            :length,
+            :height,
+            :width,
+            :status
+        )
+        """)
+        print(f"\n===={length}=====\n")
+        with self.ENGINE.connect() as conn:
+            conn.execute(sql, {
+                'species': species,
+                'weight': weight,
+                'length': length,
+                'height': height,
+                'width': width,
+                'status': status
+            })
+            conn.commit()  # 提交事务
+
+    def delete_fish(self, fish_id):
+        sql = text("DELETE FROM `fish` WHERE id = :fish_id")
+        with self.ENGINE.connect() as conn:
+            conn.execute(sql, {'fish_id': fish_id})
+            conn.commit()  # Commit the transaction after execution
+
+    '''
+    def search_fish(self, query,params):
+        with self.ENGINE.connect() as conn:
+            result = conn.execute(text(query), params).fetchall()
+            #return [dict(row) for row in result]
+            return  [dict(row._mapping) for row in result]
+'''
+        
+    # -------------- '鱼类信息'的CRUD操作 结束 -----------------
+

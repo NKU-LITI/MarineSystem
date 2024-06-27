@@ -1,0 +1,327 @@
+﻿
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>admain-fish</title>
+    <link href="../../static/css/style_admain.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="../../static/js/admain/jquery/jquery.1.11.2.min.js"></script>
+</head>
+
+<body>
+
+<div class="rightinfo">
+    <div class="tools">
+        <ul class="toolbar">
+            <!--<li><span><img src="../../static/img/admain/t04.png"/></span>查询</li>-->
+            <li><span><img src="../../static/img/admain/t01.png"/></span><a href="#" onclick="searchFish()">查询</a></li>
+        </ul>
+        <ul class="toolbar1">
+            <li><span><img src="../../static/img/admain/t01.png"/></span><a href="#" onclick="insertFish()">添加</a></li>
+        </ul>
+
+        <ul class="searchbar">
+            <li><input type="text" id="searchId" placeholder="ID"></li>
+            <li><input type="text" id="searchSpecies" placeholder="Species"></li>
+            <li><input type="text" id="searchWeight" placeholder="Weight"></li>
+            <li><input type="text" id="searchLength" placeholder="Length"></li>
+            <li><input type="text" id="searchHeight" placeholder="Height"></li>
+            <li><input type="text" id="searchWidth" placeholder="Width"></li>
+            <li><input type="text" id="searchStatus" placeholder="Status"></li>
+
+        </ul>
+    </div>
+
+
+    <table class="tablelist">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Species<i class="sort"><img src="../../static/img/admain/px.png"/></i></th>
+                <th>Weight</th>
+                <th>Length</th>
+                <th>Height</th>
+                <th>Width</th>
+                <th>Status</th>
+                <th>Operation</th>
+            </tr>
+        </thead>
+        <tbody id="fishTableBody">
+            {% for fish in all_fish %}
+            <tr>
+                <td>{{ fish.id }}</td>
+                <td>{{ fish.Species }}</td>
+                <td>{{ fish.Weight }}</td>
+                <td>{{ fish.Length }}</td>
+                <td>{{ fish.Height }}</td>
+                <td>{{ fish.Width }}</td>
+                <td>{{ fish.Status }}</td>
+                <td>
+                    <a href="#" class="tablelink" onclick="editFish({{ fish.id }}, '{{ fish.Species }}', {{ fish.Weight }}, {{ fish.Length }}, {{ fish.Height }}, {{ fish.Width }}, '{{ fish.Status }}')">修改</a>
+                    <form id="deleteForm{{ fish.id }}" action="{{ url_for('delete_fish', id=fish.id) }}" method="post" style="display:inline;">
+                        <button type="button" onclick="confirmDelete({{ fish.id }})" class="tablelink">删除</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <!-- edit 模态框 -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>编辑鱼类信息</h2>
+            <form id="editForm">
+                <!--<input type="hidden" id="fishId" name="id">-->
+                <input type="hidden" id="fishId" name="id">
+                <label for="id">ID: <span id="displayId"></span></label><br>
+
+                <label for="species">Species:</label>
+                <input type="text" id="species" name="species"><br>
+
+                <label for="weight">Weight:</label>
+                <input type="number" id="weight" name="weight"><br>
+                <label for="length">Length:</label>
+                <input type="number" id="length" name="length"><br>
+                <label for="height">Height:</label>
+                <input type="number" id="height" name="height"><br>
+                <label for="width">Width:</label>
+                <input type="number" id="width" name="width"><br>
+                <label for="status">Status:</label>
+                <input type="text" id="status" name="status"><br>
+                <button type="button" onclick="submitEditForm()">保存</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- insert 模态框 -->
+    <div id="insertModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>添加鱼类信息</h2>
+            <form id="insertForm">
+                <label for="species">Species:</label>
+                <input type="text" id="species" name="species"><br>
+                <label for="weight">Weight:</label>
+                <input type="number" id="weight" name="weight"><br>
+                <label for="length">Length:</label>
+                <input type="number" id="length" name="length"><br>
+                <label for="height">Height:</label>
+                <input type="number" id="height" name="height"><br>
+                <label for="width">Width:</label>
+                <input type="number" id="width" name="width"><br>
+                <label for="status">Status:</label>
+                <input type="text" id="status" name="status"><br>
+                <button type="button" onclick="submitInsertForm()">保存</button>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- 分页块 （有点繁琐得分批从数据库中查询，这里只实现总数统计）-->
+    <div class="pagin">
+        <div class="message">共 <i class="blue">{{ all_fish|length }}</i> 条记录</div>
+        <!--<ul class="paginList">
+            <li class="paginItem"><a href="javascript:;"><span class="pagepre"></span></a></li>
+            <li class="paginItem"><a href="javascript:;">1</a></li>
+            <li class="paginItem current"><a href="javascript:;">2</a></li>
+            <li class="paginItem"><a href="javascript:;">3</a></li>
+            <li class="paginItem"><a href="javascript:;">4</a></li>
+            <li class="paginItem"><a href="javascript:;">5</a></li>
+            <li class="paginItem more"><a href="javascript:;">...</a></li>
+            <li class="paginItem"><a href="javascript:;">10</a></li>
+            <li class="paginItem"><a href="javascript:;"><span class="pagenxt"></span></a></li>
+        </ul>-->
+    </div>
+
+    <!-- 提示对话框 未使用，可加-->
+    <div class="tip">
+        <div class="tiptop"><span>提示信息</span><a></a></div>
+        <div class="tipinfo">
+            <span><img src="../../static/img/admain/ticon.png"/></span>
+            <div class="tipright">
+                <p>是否确认对信息的修改 ？</p>
+                <cite>如果是请点击确定按钮 ，否则请点取消。</cite>
+            </div>
+        </div>
+        <div class="tipbtn">
+            <input name="" type="button" class="sure" value="确定"/>&nbsp;
+            <input name="" type="button" class="cancel" value="取消"/>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function(){
+        //给偶数行加上颜色
+        $('.tablelist tbody tr:odd').addClass('odd');
+        //提示框弹出事件
+        /*$('.toolbar').find('li').on('click', function(){
+            $(".tip").fadeIn(200);
+        });*/
+        //提示框影藏
+        /*$(".tiptop a").click(function () {
+            $(".tip").fadeOut(200);
+        })
+
+        $(".sure").click(function () {
+            $(".tip").fadeOut(100);
+        });
+
+        $(".cancel").click(function () {
+            $(".tip").fadeOut(100);
+        });*/
+    });
+</script>
+
+
+<!--'修改/插入'的提示框操作-->
+<script>
+    //修改操作
+    function editFish(id, species, weight, length, height, width, status) {
+        document.getElementById('fishId').value = id;
+        document.getElementById('displayId').textContent = id;
+        document.getElementById('species').value = species;
+        document.getElementById('weight').value = weight;
+        document.getElementById('length').value = length;
+        document.getElementById('height').value = height;
+        document.getElementById('width').value = width;
+        document.getElementById('status').value = status;
+
+        var modal = document.getElementById('editModal');
+        modal.style.display = 'block';
+    }
+
+    function submitEditForm() {
+        var formData = new FormData(document.getElementById('editForm'));
+
+        fetch('{{ url_for("edit_fish") }}', {
+            method: 'POST',
+            body: formData
+        }).then(response => {
+            if (response.ok) {
+                location.reload();
+            } else {
+                alert('修改失败');
+            }
+        });
+
+        var modal = document.getElementById('editModal');
+        modal.style.display = 'none';
+    }
+
+    // 点击模态框外部时关闭模态框
+    window.onclick = function(event) {
+        var editModal = document.getElementById('editModal');
+        var insertModal = document.getElementById('insertModal');
+        if (event.target == editModal) {
+            editModal.style.display = 'none';
+        }
+        if (event.target == insertModal) {
+            insertModal.style.display = 'none';
+        }
+    }
+
+    /*document.querySelector('.close').onclick = function() {
+        var modal = document.getElementById('editModal');
+        modal.style.display = 'none';
+    }*/
+
+    // 点击关闭按钮时关闭模态框
+    document.querySelectorAll('.close').forEach(function(closeButton) {
+        closeButton.onclick = function() {
+            var modal = this.closest('.modal');
+            modal.style.display = 'none';
+        }
+    });
+
+
+    //插入操作
+    function insertFish() {
+        // 可以在这里实现打开模态框或者跳转页面的操作
+        var modal = document.getElementById('insertModal');
+        modal.style.display = 'block';
+    }
+
+    function submitInsertForm() {
+        var formData = new FormData(document.getElementById('insertForm'));
+
+        fetch('{{ url_for("insert_fish") }}', {
+            method: 'POST',
+            body: formData
+        }).then(response => {
+            if (response.ok) {
+                location.reload(); // 插入成功后刷新页面或者执行其他操作
+            } else {
+                alert('添加失败');
+            }
+        });
+
+        var modal = document.getElementById('insertModal');
+        modal.style.display = 'none';
+    }
+
+
+    //删除
+    function confirmDelete(id) {
+        if (confirm(`确认要删除这条数据吗：ID= ${id} ？`)) {
+            // 构建表单提交
+            var form = document.getElementById(`deleteForm${id}`);
+            form.submit();
+        } else {
+            // 用户取消删除操作
+            return false;
+        }
+    }
+
+
+    //查询
+    function searchFish() {
+        var searchId = document.getElementById('searchId').value.trim();
+        var searchSpecies = document.getElementById('searchSpecies').value.trim();
+        var searchWeight = document.getElementById('searchWeight').value.trim();
+        var searchLength = document.getElementById('searchLength').value.trim();
+        var searchHeight = document.getElementById('searchHeight').value.trim();
+        var searchWidth = document.getElementById('searchWidth').value.trim();
+        var searchStatus = document.getElementById('searchStatus').value.trim();
+
+        // 构建查询字符串
+        var queryString = '';
+
+        if (searchId !== '') queryString += '&searchId=' + encodeURIComponent(parseInt(searchId));
+        if (searchSpecies !== '') queryString += '&searchSpecies=' + encodeURIComponent(searchSpecies);
+        if (searchWeight !== '') queryString += '&searchWeight=' + encodeURIComponent(parseFloat(searchWeight));
+        if (searchLength !== '') queryString += '&searchLength=' + encodeURIComponent(parseFloat(searchLength));
+        if (searchHeight !== '') queryString += '&searchHeight=' + encodeURIComponent(parseFloat(searchHeight));
+        if (searchWidth !== '') queryString += '&searchWidth=' + encodeURIComponent(parseFloat(searchWidth));
+        if (searchStatus !== '') queryString += '&searchStatus=' + encodeURIComponent(searchStatus);
+
+        // 移除开头的 "&"
+        queryString = queryString.slice(1);
+        console.log(queryString);
+
+        // 构建完整的 URL
+        var url = '{{ url_for("search_fish") }}?' + queryString;
+
+        // 发起 GET 请求
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(response => {
+            if (response.ok) {
+                // 如果需要跳转到新页面，可以在这里处理
+                window.location.href = url;
+            } else {
+                alert('查询失败');
+            }
+        });
+    }
+
+</script>
+
+
+
+</body>
+</html>

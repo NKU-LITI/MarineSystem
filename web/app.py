@@ -4,14 +4,30 @@ import sys
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + '/../')
 
 from flask import Flask, render_template, request, url_for, redirect, jsonify
+
+
+# 数据库相关
 #from data import SourceData
-from data_db import SourceData
+from data_db import SourceData, ENGINE_CONFIG   # 主要用于前端界面的查询
+#from data_db import db,Fish  # 主要用于admin的CRUD
+from sqlalchemy import text
+
+# openai相关
 from openai import OpenAI
 import requests
 import recognition
 
+# 初始化数据库
 app = Flask(__name__,static_folder='static')
+app.config['SQLALCHEMY_DATABASE_URI'] = ENGINE_CONFIG
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 source = SourceData()
+#db.init_app(app)
+
+
+# bool变量控制查询操作
+#Fish_Find = False
+#Fish_Find_Data = []
 
 
 @app.route('/')
@@ -130,10 +146,110 @@ def admain_right():
 def admain_default():
     return render_template('admain/default.html')
 
-@app.route('/admain_operateList')
-def admain_operateList():
-    return render_template('admain/operateList.html')
-    
+
+# admin: 鱼类表的展示及操作
+# -------------------------------begin-------------------------------
+@app.route('/admain_fish')
+def admain_fish():
+    fish = source.all_fish
+    return render_template('admain/fish.html', all_fish=fish)
+
+@app.route('/edit_fish', methods=['POST'])
+def edit_fish():
+    print("\n1\n")
+    fish_id = request.form['id']
+    species = request.form['species']
+    weight = request.form['weight']
+    length = request.form['length']
+    height = request.form['height']
+    width = request.form['width']
+    status = request.form['status']
+    print("\n2\n")
+    source.update_fish(fish_id, species, weight, length, height, width, status)
+    print("\n3\n")
+    return redirect(url_for('admain_fish'))
+
+@app.route('/delete_fish/<int:id>', methods=['POST'])
+def delete_fish(id):
+    print("\n1  {id}\n")
+    source.delete_fish(fish_id=id)
+    return redirect(url_for('admain_fish'))
+
+
+@app.route('/insert_fish', methods=['POST'])
+def insert_fish():
+    species = request.form.get('species')
+    weight = request.form.get('weight')
+    length = request.form.get('length')
+    height = request.form.get('height')
+    width = request.form.get('width')
+    status = request.form.get('status')
+
+    source.insert_fish(species, weight, length, height, width, status)
+    print("\n3\n")
+    return redirect(url_for('admain_fish'))
+
+
+@app.route('/search_fish', methods=['GET', 'POST'])
+def search_fish():
+    if request.method == 'POST':
+        search_id = request.form.get('searchId')
+        search_species = request.form.get('searchSpecies')
+        search_weight = request.form.get('searchWeight')
+        search_length = request.form.get('searchLength')
+        search_height = request.form.get('searchHeight')
+        search_width = request.form.get('searchWidth')
+        search_status = request.form.get('searchStatus')
+    elif request.method == 'GET':
+        search_id = request.args.get('searchId')
+        search_species = request.args.get('searchSpecies')
+        search_weight = request.args.get('searchWeight')
+        search_length = request.args.get('searchLength')
+        search_height = request.args.get('searchHeight')
+        search_width = request.args.get('searchWidth')
+        search_status = request.args.get('searchStatus')
+
+    # 构建 SQL 查询语句
+    sql_query = "SELECT * FROM fish WHERE 1=1"
+
+    # 添加条件：如果 search_species 不为空，则添加物种条件
+    if search_id:
+        sql_query += f" AND id = {search_id}"
+
+    if search_species:
+        sql_query += f" AND Species = '{search_species}'"
+
+    # 添加条件：如果 search_status 不为空，则添加状态条件
+    if search_status:
+        sql_query += f" AND Status = '{search_status}'"
+
+    # 添加条件：如果不为 0，则添加
+    if search_weight and float(search_weight) != 0:
+        sql_query += f" AND Weight = {float(search_weight)}"
+
+    if search_length and float(search_length) != 0:
+        sql_query += f" AND Length = {float(search_length)}"
+
+    # 添加条件：如果 search_height 不为 0，则添加高度条件
+    if search_height and float(search_height) != 0:
+        sql_query += f" AND Height = {float(search_height)}"
+
+    # 添加条件：如果 search_width 不为 0，则添加宽度条件
+    if search_width and float(search_width) != 0:
+        sql_query += f" AND Width = {float(search_width)}"
+
+    print(sql_query)
+    with source.ENGINE.connect() as conn:
+        result = conn.execute(text(sql_query)).fetchall()
+    fish_list = [dict(row._mapping) for row in result]
+    print(fish_list)
+
+    return render_template('admain/fish.html', all_fish=fish_list)
+
+
+# -------------------------------begin-------------------------------
+
+
 @app.route('/admain_searchList')
 def admain_searchList():
     return render_template('admain/searchList.html')

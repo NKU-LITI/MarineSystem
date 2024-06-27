@@ -21,6 +21,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
 -- Table structure for user
+-- 数据来源：自行设计
 -- ----------------------------
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE user (
@@ -30,10 +31,11 @@ CREATE TABLE user (
     email VARCHAR(100), -- 电子邮件
     role ENUM('user', 'admin') NOT NULL DEFAULT 'user', -- 角色：用户或管理员
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP -- 创建时间
-)ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user
+-- 数据来源：自行设计
 -- ----------------------------
 INSERT INTO `user` (username, password, email, role) VALUES ('user1', '123456', 'user1@example.com', 'user');
 INSERT INTO `user` (username, password, email, role) VALUES ('admin1', '654321', 'admin1@example.com', 'admin');
@@ -43,180 +45,184 @@ INSERT INTO `user` (username, password, email, role) VALUES ('user2', '123456', 
 
 -- ----------------------------
 -- Table structure for fish
+-- 数据来源：Fish.csv
 -- ----------------------------
 DROP TABLE IF EXISTS `fish`;
 CREATE TABLE `fish`  (
-  `Species` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '',
-  `Weight` double NULL DEFAULT NULL,
-  `Length` double NULL DEFAULT NULL,
-  `Height` double NULL DEFAULT NULL,
-  `Width` double NULL DEFAULT NULL,
-  `Status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `Species` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT '',
+  `Weight` double DEFAULT NULL,
+  `Length` double DEFAULT NULL,
+  `Height` double DEFAULT NULL,
+  `Width` double DEFAULT NULL,
+  `Status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of fish
+-- 数据来源：Fish.csv
 -- ----------------------------
-INSERT INTO `fish` VALUES ('Bream', 242, 30, 11.52, 4.02, '生长鱼');
-INSERT INTO `fish` VALUES ('Bream', 290, 31.2, 12.48, 4.3056, '鱼苗');
-INSERT INTO `fish` VALUES ('Bream', 340, 31.1, 12.3778, 4.6961, '生长鱼');
-INSERT INTO `fish` VALUES ('Bream', 363, 33.5, 12.73, 4.4555, '生长鱼');
-INSERT INTO `fish` VALUES ('Bream', 430, 34, 12.444, 5.134, '鱼苗');
-INSERT INTO `fish` VALUES ('Bream', 450, 34.7, 13.6024, 4.9274, '生长鱼');
-INSERT INTO `fish` VALUES ('Bream', 500, 34.5, 14.1795, 5.2785, '生长鱼');
-INSERT INTO `fish` VALUES ('Bream', 390, 35, 12.67, 4.69, '生长鱼');
-INSERT INTO `fish` VALUES ('Bream', 450, 35.1, 14.0049, 4.8438, '生长鱼');
-INSERT INTO `fish` VALUES ('Bream', 500, 36.2, 14.2266, 4.9594, '鱼苗');
-INSERT INTO `fish` VALUES ('Bream', 475, 36.2, 14.2628, 5.1042, '生长鱼');
-INSERT INTO `fish` VALUES ('Bream', 500, 36.2, 14.3714, 4.8146, '生长鱼');
-INSERT INTO `fish` VALUES ('Bream', 500, 36.4, 13.7592, 4.368, '鱼苗');
-INSERT INTO `fish` VALUES ('Bream', 340, 37.3, 13.9129, 5.0728, '生长鱼');
-INSERT INTO `fish` VALUES ('Bream', 600, 37.2, 14.9544, 5.1708, '鱼苗');
-INSERT INTO `fish` VALUES ('Bream', 600, 37.2, 15.438, 5.58, '生长鱼');
-INSERT INTO `fish` VALUES ('Bream', 700, 38.3, 14.8604, 5.2854, '生长鱼');
-INSERT INTO `fish` VALUES ('Bream', 700, 38.5, 14.938, 5.1975, '生长鱼');
-INSERT INTO `fish` VALUES ('Bream', 610, 38.6, 15.633, 5.1338, '鱼苗');
-INSERT INTO `fish` VALUES ('Bream', 650, 38.7, 14.4738, 5.7276, '生长鱼');
-INSERT INTO `fish` VALUES ('Bream', 575, 39.5, 15.1285, 5.5695, '鱼苗');
-INSERT INTO `fish` VALUES ('Bream', 685, 39.2, 15.9936, 5.3704, '生长鱼');
-INSERT INTO `fish` VALUES ('Bream', 620, 39.7, 15.5227, 5.2801, '鱼苗');
-INSERT INTO `fish` VALUES ('Bream', 680, 40.6, 15.4686, 6.1306, '生长鱼');
-INSERT INTO `fish` VALUES ('Bream', 700, 40.5, 16.2405, 5.589, '鱼苗');
-INSERT INTO `fish` VALUES ('Bream', 725, 40.9, 16.36, 6.0532, '鱼苗');
-INSERT INTO `fish` VALUES ('Bream', 720, 40.6, 16.3618, 6.09, '生长鱼');
-INSERT INTO `fish` VALUES ('Bream', 714, 41.5, 16.517, 5.8515, '生长鱼');
-INSERT INTO `fish` VALUES ('Bream', 850, 41.6, 16.8896, 6.1984, '生长鱼');
-INSERT INTO `fish` VALUES ('Bream', 1000, 42.6, 18.957, 6.603, '生长鱼');
-INSERT INTO `fish` VALUES ('Bream', 920, 44.1, 18.0369, 6.3063, '生长鱼');
-INSERT INTO `fish` VALUES ('Bream', 955, 44, 18.084, 6.292, '生长鱼');
-INSERT INTO `fish` VALUES ('Bream', 925, 45.3, 18.7542, 6.7497, '生长鱼');
-INSERT INTO `fish` VALUES ('Bream', 975, 45.9, 18.6354, 6.7473, '生长鱼');
-INSERT INTO `fish` VALUES ('Bream', 950, 46.5, 17.6235, 6.3705, '生长鱼');
-INSERT INTO `fish` VALUES ('Roach', 40, 16.2, 4.1472, 2.268, '鱼苗');
-INSERT INTO `fish` VALUES ('Roach', 69, 20.3, 5.2983, 2.8217, '生长鱼');
-INSERT INTO `fish` VALUES ('Roach', 78, 21.2, 5.5756, 2.9044, '生长鱼');
-INSERT INTO `fish` VALUES ('Roach', 87, 22.2, 5.6166, 3.1746, '鱼苗');
-INSERT INTO `fish` VALUES ('Roach', 120, 22.2, 6.216, 3.5742, '生长鱼');
-INSERT INTO `fish` VALUES ('Roach', 0, 22.8, 6.4752, 3.3516, '生长鱼');
-INSERT INTO `fish` VALUES ('Roach', 110, 23.1, 6.1677, 3.3957, '鱼苗');
-INSERT INTO `fish` VALUES ('Roach', 120, 23.7, 6.1146, 3.2943, '鱼苗');
-INSERT INTO `fish` VALUES ('Roach', 150, 24.7, 5.8045, 3.7544, '生长鱼');
-INSERT INTO `fish` VALUES ('Roach', 145, 24.3, 6.6339, 3.5478, '鱼苗');
-INSERT INTO `fish` VALUES ('Roach', 160, 25.3, 7.0334, 3.8203, '生长鱼');
-INSERT INTO `fish` VALUES ('Roach', 140, 25, 6.55, 3.325, '生长鱼');
-INSERT INTO `fish` VALUES ('Roach', 160, 25, 6.4, 3.8, '生长鱼');
-INSERT INTO `fish` VALUES ('Roach', 169, 27.2, 7.5344, 3.8352, '鱼苗');
-INSERT INTO `fish` VALUES ('Roach', 161, 26.7, 6.9153, 3.6312, '鱼苗');
-INSERT INTO `fish` VALUES ('Roach', 200, 26.8, 7.3968, 4.1272, '生长鱼');
-INSERT INTO `fish` VALUES ('Roach', 180, 27.9, 7.0866, 3.906, '鱼苗');
-INSERT INTO `fish` VALUES ('Roach', 290, 29.2, 8.8768, 4.4968, '生长鱼');
-INSERT INTO `fish` VALUES ('Roach', 272, 30.6, 8.568, 4.7736, '生长鱼');
-INSERT INTO `fish` VALUES ('Roach', 390, 35, 9.485, 5.355, '生长鱼');
-INSERT INTO `fish` VALUES ('Whitefish', 270, 28.7, 8.3804, 4.2476, '鱼苗');
-INSERT INTO `fish` VALUES ('Whitefish', 270, 29.3, 8.1454, 4.2485, '生长鱼');
-INSERT INTO `fish` VALUES ('Whitefish', 306, 30.8, 8.778, 4.6816, '生长鱼');
-INSERT INTO `fish` VALUES ('Whitefish', 540, 34, 10.744, 6.562, '生长鱼');
-INSERT INTO `fish` VALUES ('Whitefish', 800, 39.6, 11.7612, 6.5736, '鱼苗');
-INSERT INTO `fish` VALUES ('Whitefish', 1000, 43.5, 12.354, 6.525, '生长鱼');
-INSERT INTO `fish` VALUES ('Parkki', 55, 16.5, 6.8475, 2.3265, '鱼苗');
-INSERT INTO `fish` VALUES ('Parkki', 60, 17.4, 6.5772, 2.3142, '生长鱼');
-INSERT INTO `fish` VALUES ('Parkki', 90, 19.8, 7.4052, 2.673, '鱼苗');
-INSERT INTO `fish` VALUES ('Parkki', 120, 21.3, 8.3922, 2.9181, '生长鱼');
-INSERT INTO `fish` VALUES ('Parkki', 150, 22.4, 8.8928, 3.2928, '生长鱼');
-INSERT INTO `fish` VALUES ('Parkki', 140, 23.2, 8.5376, 3.2944, '生长鱼');
-INSERT INTO `fish` VALUES ('Parkki', 170, 23.2, 9.396, 3.4104, '鱼苗');
-INSERT INTO `fish` VALUES ('Parkki', 145, 24.1, 9.7364, 3.1571, NULL);
-INSERT INTO `fish` VALUES ('Parkki', 200, 25.8, 10.3458, 3.6636, NULL);
-INSERT INTO `fish` VALUES ('Parkki', 273, 28, 11.088, 4.144, '鱼苗');
-INSERT INTO `fish` VALUES ('Parkki', 300, 29, 11.368, 4.234, '生长鱼');
-INSERT INTO `fish` VALUES ('Perch', 5.9, 8.8, 2.112, 1.408, '生长鱼');
-INSERT INTO `fish` VALUES ('Perch', 32, 14.7, 3.528, 1.9992, '生长鱼');
-INSERT INTO `fish` VALUES ('Perch', 40, 16, 3.824, 2.432, '生长鱼');
-INSERT INTO `fish` VALUES ('Perch', 51.5, 17.2, 4.5924, 2.6316, '鱼苗');
-INSERT INTO `fish` VALUES ('Perch', 70, 18.5, 4.588, 2.9415, '生长鱼');
-INSERT INTO `fish` VALUES ('Perch', 100, 19.2, 5.2224, 3.3216, '生长鱼');
-INSERT INTO `fish` VALUES ('Perch', 78, 19.4, 5.1992, 3.1234, '生长鱼');
-INSERT INTO `fish` VALUES ('Perch', 80, 20.2, 5.6358, 3.0502, '生长鱼');
-INSERT INTO `fish` VALUES ('Perch', 85, 20.8, 5.1376, 3.0368, '生长鱼');
-INSERT INTO `fish` VALUES ('Perch', 85, 21, 5.082, 2.772, '鱼苗');
-INSERT INTO `fish` VALUES ('Perch', 110, 22.5, 5.6925, 3.555, '生长鱼');
-INSERT INTO `fish` VALUES ('Perch', 115, 22.5, 5.9175, 3.3075, '生长鱼');
-INSERT INTO `fish` VALUES ('Perch', 125, 22.5, 5.6925, 3.6675, '生长鱼');
-INSERT INTO `fish` VALUES ('Perch', 130, 22.8, 6.384, 3.534, '生长鱼');
-INSERT INTO `fish` VALUES ('Perch', 120, 23.5, 6.11, 3.4075, '鱼苗');
-INSERT INTO `fish` VALUES ('Perch', 120, 23.5, 5.64, 3.525, '生长鱼');
-INSERT INTO `fish` VALUES ('Perch', 130, 23.5, 6.11, 3.525, '生长鱼');
-INSERT INTO `fish` VALUES ('Perch', 135, 23.5, 5.875, 3.525, '生长鱼');
-INSERT INTO `fish` VALUES ('Perch', 110, 23.5, 5.5225, 3.995, '鱼苗');
-INSERT INTO `fish` VALUES ('Perch', 130, 24, 5.856, 3.624, '生长鱼');
-INSERT INTO `fish` VALUES ('Perch', 150, 24, 6.792, 3.624, '生长鱼');
-INSERT INTO `fish` VALUES ('Perch', 145, 24.2, 5.9532, 3.63, '生长鱼');
-INSERT INTO `fish` VALUES ('Perch', 150, 24.5, 5.2185, 3.626, '生长鱼');
-INSERT INTO `fish` VALUES ('Perch', 170, 25, 6.275, 3.725, '生长鱼');
-INSERT INTO `fish` VALUES ('Perch', 225, 25.5, 7.293, 3.723, '生长鱼');
-INSERT INTO `fish` VALUES ('Perch', 145, 25.5, 6.375, 3.825, '鱼苗');
-INSERT INTO `fish` VALUES ('Perch', 188, 26.2, 6.7334, 4.1658, '生长鱼');
-INSERT INTO `fish` VALUES ('Perch', 180, 26.5, 6.4395, 3.6835, '生长鱼');
-INSERT INTO `fish` VALUES ('Perch', 197, 27, 6.561, 4.239, '鱼苗');
-INSERT INTO `fish` VALUES ('Perch', 218, 28, 7.168, 4.144, '生长鱼');
-INSERT INTO `fish` VALUES ('Perch', 300, 28.7, 8.323, 5.1373, '生长鱼');
-INSERT INTO `fish` VALUES ('Perch', 260, 28.9, 7.1672, 4.335, '生长鱼');
-INSERT INTO `fish` VALUES ('Perch', 265, 28.9, 7.0516, 4.335, '鱼苗');
-INSERT INTO `fish` VALUES ('Perch', 250, 28.9, 7.2828, 4.5662, '生长鱼');
-INSERT INTO `fish` VALUES ('Perch', 250, 29.4, 7.8204, 4.2042, '生长鱼');
-INSERT INTO `fish` VALUES ('Perch', 300, 30.1, 7.5852, 4.6354, '生长鱼');
-INSERT INTO `fish` VALUES ('Perch', 320, 31.6, 7.6156, 4.7716, '生长鱼');
-INSERT INTO `fish` VALUES ('Perch', 514, 34, 10.03, 6.018, '生长鱼');
-INSERT INTO `fish` VALUES ('Perch', 556, 36.5, 10.2565, 6.3875, '生长鱼');
-INSERT INTO `fish` VALUES ('Perch', 840, 37.3, 11.4884, 7.7957, '鱼苗');
-INSERT INTO `fish` VALUES ('Perch', 685, 39, 10.881, 6.864, '生长鱼');
-INSERT INTO `fish` VALUES ('Perch', 700, 38.3, 10.6091, 6.7408, '生长鱼');
-INSERT INTO `fish` VALUES ('Perch', 700, 39.4, 10.835, 6.2646, '鱼苗');
-INSERT INTO `fish` VALUES ('Perch', 690, 39.3, 10.5717, 6.3666, '生长鱼');
-INSERT INTO `fish` VALUES ('Perch', 900, 41.4, 11.1366, 7.4934, '生长鱼');
-INSERT INTO `fish` VALUES ('Perch', 650, 41.4, 11.1366, 6.003, '生长鱼');
-INSERT INTO `fish` VALUES ('Perch', 820, 41.3, 12.4313, 7.3514, '鱼苗');
-INSERT INTO `fish` VALUES ('Perch', 850, 42.3, 11.9286, 7.1064, '生长鱼');
-INSERT INTO `fish` VALUES ('Perch', 900, 42.5, 11.73, 7.225, '生长鱼');
-INSERT INTO `fish` VALUES ('Perch', 1015, 42.4, 12.3808, 7.4624, '生长鱼');
-INSERT INTO `fish` VALUES ('Perch', 820, 42.5, 11.135, 6.63, '生长鱼');
-INSERT INTO `fish` VALUES ('Perch', 1100, 44.6, 12.8002, 6.8684, '鱼苗');
-INSERT INTO `fish` VALUES ('Perch', 1000, 45.2, 11.9328, 7.2772, '鱼苗');
-INSERT INTO `fish` VALUES ('Perch', 1100, 45.5, 12.5125, 7.4165, '生长鱼');
-INSERT INTO `fish` VALUES ('Perch', 1000, 46, 12.604, 8.142, '生长鱼');
-INSERT INTO `fish` VALUES ('Perch', 1000, 46.6, 12.4888, 7.5958, '鱼苗');
-INSERT INTO `fish` VALUES ('Pike', 200, 34.8, 5.568, 3.3756, '生长鱼');
-INSERT INTO `fish` VALUES ('Pike', 300, 37.8, 5.7078, 4.158, '生长鱼');
-INSERT INTO `fish` VALUES ('Pike', 300, 38.8, 5.9364, 4.3844, '生长鱼');
-INSERT INTO `fish` VALUES ('Pike', 300, 39.8, 6.2884, 4.0198, '生长鱼');
-INSERT INTO `fish` VALUES ('Pike', 430, 40.5, 7.29, 4.5765, '鱼苗');
-INSERT INTO `fish` VALUES ('Pike', 345, 41, 6.396, 3.977, '鱼苗');
-INSERT INTO `fish` VALUES ('Pike', 456, 45.5, 7.28, 4.3225, '鱼苗');
-INSERT INTO `fish` VALUES ('Pike', 510, 45.5, 6.825, 4.459, '鱼苗');
-INSERT INTO `fish` VALUES ('Pike', 540, 45.8, 7.786, 5.1296, '生长鱼');
-INSERT INTO `fish` VALUES ('Pike', 500, 48, 6.96, 4.896, '生长鱼');
-INSERT INTO `fish` VALUES ('Pike', 567, 48.7, 7.792, 4.87, '鱼苗');
-INSERT INTO `fish` VALUES ('Pike', 770, 51.2, 7.68, 5.376, '生长鱼');
-INSERT INTO `fish` VALUES ('Pike', 950, 55.1, 8.9262, 6.1712, '鱼苗');
-INSERT INTO `fish` VALUES ('Pike', 1250, 59.7, 10.6863, 6.9849, '鱼苗');
-INSERT INTO `fish` VALUES ('Pike', 1600, 64, 9.6, 6.144, '生长鱼');
-INSERT INTO `fish` VALUES ('Pike', 1550, 64, 9.6, 6.144, '生长鱼');
-INSERT INTO `fish` VALUES ('Pike', 1650, 68, 10.812, 7.48, '鱼苗');
-INSERT INTO `fish` VALUES ('Smelt', 6.7, 10.8, 1.7388, 1.0476, '生长鱼');
-INSERT INTO `fish` VALUES ('Smelt', 7.5, 11.6, 1.972, 1.16, '生长鱼');
-INSERT INTO `fish` VALUES ('Smelt', 7, 11.6, 1.7284, 1.1484, '生长鱼');
-INSERT INTO `fish` VALUES ('Smelt', 9.7, 12, 2.196, 1.38, '生长鱼');
-INSERT INTO `fish` VALUES ('Smelt', 9.8, 12.4, 2.0832, 1.2772, '生长鱼');
-INSERT INTO `fish` VALUES ('Smelt', 8.7, 12.6, 1.9782, 1.2852, '生长鱼');
-INSERT INTO `fish` VALUES ('Smelt', 10, 13.1, 2.2139, 1.2838, '生长鱼');
-INSERT INTO `fish` VALUES ('Smelt', 9.9, 13.1, 2.2139, 1.1659, '鱼苗');
-INSERT INTO `fish` VALUES ('Smelt', 9.8, 13.2, 2.2044, 1.1484, '生长鱼');
-INSERT INTO `fish` VALUES ('Smelt', 12.2, 13.4, 2.0904, 1.3936, '生长鱼');
-INSERT INTO `fish` VALUES ('Smelt', 13.4, 13.5, 2.43, 1.269, '鱼苗');
-INSERT INTO `fish` VALUES ('Smelt', 12.2, 13.8, 2.277, 1.2558, '生长鱼');
-INSERT INTO `fish` VALUES ('Smelt', 19.7, 15.2, 2.8728, 2.0672, '生长鱼');
-INSERT INTO `fish` VALUES ('Smelt', 19.9, 16.2, 2.9322, 1.8792, '生长鱼');
-
+INSERT INTO `fish` (Species, Weight, Length, Height, Width, Status) VALUES 
+ ('Bream', 242, 30, 11.52, 4.02, '生长鱼') ,
+ ('Bream', 290, 31.2, 12.48, 4.3056, '鱼苗') ,
+ ('Bream', 340, 31.1, 12.3778, 4.6961, '生长鱼') ,
+ ('Bream', 363, 33.5, 12.73, 4.4555, '生长鱼') ,
+ ('Bream', 430, 34, 12.444, 5.134, '鱼苗') ,
+ ('Bream', 450, 34.7, 13.6024, 4.9274, '生长鱼') ,
+ ('Bream', 500, 34.5, 14.1795, 5.2785, '生长鱼') ,
+ ('Bream', 390, 35, 12.67, 4.69, '生长鱼') ,
+ ('Bream', 450, 35.1, 14.0049, 4.8438, '生长鱼') ,
+ ('Bream', 500, 36.2, 14.2266, 4.9594, '鱼苗') ,
+ ('Bream', 475, 36.2, 14.2628, 5.1042, '生长鱼') ,
+ ('Bream', 500, 36.2, 14.3714, 4.8146, '生长鱼') ,
+ ('Bream', 500, 36.4, 13.7592, 4.368, '鱼苗') ,
+ ('Bream', 340, 37.3, 13.9129, 5.0728, '生长鱼') ,
+ ('Bream', 600, 37.2, 14.9544, 5.1708, '鱼苗') ,
+ ('Bream', 600, 37.2, 15.438, 5.58, '生长鱼') ,
+ ('Bream', 700, 38.3, 14.8604, 5.2854, '生长鱼') ,
+ ('Bream', 700, 38.5, 14.938, 5.1975, '生长鱼') ,
+ ('Bream', 610, 38.6, 15.633, 5.1338, '鱼苗') ,
+ ('Bream', 650, 38.7, 14.4738, 5.7276, '生长鱼') ,
+ ('Bream', 575, 39.5, 15.1285, 5.5695, '鱼苗') ,
+ ('Bream', 685, 39.2, 15.9936, 5.3704, '生长鱼') ,
+ ('Bream', 620, 39.7, 15.5227, 5.2801, '鱼苗') ,
+ ('Bream', 680, 40.6, 15.4686, 6.1306, '生长鱼') ,
+ ('Bream', 700, 40.5, 16.2405, 5.589, '鱼苗') ,
+ ('Bream', 725, 40.9, 16.36, 6.0532, '鱼苗') ,
+ ('Bream', 720, 40.6, 16.3618, 6.09, '生长鱼') ,
+ ('Bream', 714, 41.5, 16.517, 5.8515, '生长鱼') ,
+ ('Bream', 850, 41.6, 16.8896, 6.1984, '生长鱼') ,
+ ('Bream', 1000, 42.6, 18.957, 6.603, '生长鱼') ,
+ ('Bream', 920, 44.1, 18.0369, 6.3063, '生长鱼') ,
+ ('Bream', 955, 44, 18.084, 6.292, '生长鱼') ,
+ ('Bream', 925, 45.3, 18.7542, 6.7497, '生长鱼') ,
+ ('Bream', 975, 45.9, 18.6354, 6.7473, '生长鱼') ,
+ ('Bream', 950, 46.5, 17.6235, 6.3705, '生长鱼') ,
+ ('Roach', 40, 16.2, 4.1472, 2.268, '鱼苗') ,
+ ('Roach', 69, 20.3, 5.2983, 2.8217, '生长鱼') ,
+ ('Roach', 78, 21.2, 5.5756, 2.9044, '生长鱼') ,
+ ('Roach', 87, 22.2, 5.6166, 3.1746, '鱼苗') ,
+ ('Roach', 120, 22.2, 6.216, 3.5742, '生长鱼') ,
+ ('Roach', 0, 22.8, 6.4752, 3.3516, '生长鱼') ,
+ ('Roach', 110, 23.1, 6.1677, 3.3957, '鱼苗') ,
+ ('Roach', 120, 23.7, 6.1146, 3.2943, '鱼苗') ,
+ ('Roach', 150, 24.7, 5.8045, 3.7544, '生长鱼') ,
+ ('Roach', 145, 24.3, 6.6339, 3.5478, '鱼苗') ,
+ ('Roach', 160, 25.3, 7.0334, 3.8203, '生长鱼') ,
+ ('Roach', 140, 25, 6.55, 3.325, '生长鱼') ,
+ ('Roach', 160, 25, 6.4, 3.8, '生长鱼') ,
+ ('Roach', 169, 27.2, 7.5344, 3.8352, '鱼苗') ,
+ ('Roach', 161, 26.7, 6.9153, 3.6312, '鱼苗') ,
+ ('Roach', 200, 26.8, 7.3968, 4.1272, '生长鱼') ,
+ ('Roach', 180, 27.9, 7.0866, 3.906, '鱼苗') ,
+ ('Roach', 290, 29.2, 8.8768, 4.4968, '生长鱼') ,
+ ('Roach', 272, 30.6, 8.568, 4.7736, '生长鱼') ,
+ ('Roach', 390, 35, 9.485, 5.355, '生长鱼') ,
+ ('Whitefish', 270, 28.7, 8.3804, 4.2476, '鱼苗') ,
+ ('Whitefish', 270, 29.3, 8.1454, 4.2485, '生长鱼') ,
+ ('Whitefish', 306, 30.8, 8.778, 4.6816, '生长鱼') ,
+ ('Whitefish', 540, 34, 10.744, 6.562, '生长鱼') ,
+ ('Whitefish', 800, 39.6, 11.7612, 6.5736, '鱼苗') ,
+ ('Whitefish', 1000, 43.5, 12.354, 6.525, '生长鱼') ,
+ ('Parkki', 55, 16.5, 6.8475, 2.3265, '鱼苗') ,
+ ('Parkki', 60, 17.4, 6.5772, 2.3142, '生长鱼') ,
+ ('Parkki', 90, 19.8, 7.4052, 2.673, '鱼苗') ,
+ ('Parkki', 120, 21.3, 8.3922, 2.9181, '生长鱼') ,
+ ('Parkki', 150, 22.4, 8.8928, 3.2928, '生长鱼') ,
+ ('Parkki', 140, 23.2, 8.5376, 3.2944, '生长鱼') ,
+ ('Parkki', 170, 23.2, 9.396, 3.4104, '鱼苗') ,
+ ('Parkki', 145, 24.1, 9.7364, 3.1571, NULL) ,
+ ('Parkki', 200, 25.8, 10.3458, 3.6636, NULL) ,
+ ('Parkki', 273, 28, 11.088, 4.144, '鱼苗') ,
+ ('Parkki', 300, 29, 11.368, 4.234, '生长鱼') ,
+ ('Perch', 5.9, 8.8, 2.112, 1.408, '生长鱼') ,
+ ('Perch', 32, 14.7, 3.528, 1.9992, '生长鱼') ,
+ ('Perch', 40, 16, 3.824, 2.432, '生长鱼') ,
+ ('Perch', 51.5, 17.2, 4.5924, 2.6316, '鱼苗') ,
+ ('Perch', 70, 18.5, 4.588, 2.9415, '生长鱼') ,
+ ('Perch', 100, 19.2, 5.2224, 3.3216, '生长鱼') ,
+ ('Perch', 78, 19.4, 5.1992, 3.1234, '生长鱼') ,
+ ('Perch', 80, 20.2, 5.6358, 3.0502, '生长鱼') ,
+ ('Perch', 85, 20.8, 5.1376, 3.0368, '生长鱼') ,
+ ('Perch', 85, 21, 5.082, 2.772, '鱼苗') ,
+ ('Perch', 110, 22.5, 5.6925, 3.555, '生长鱼') ,
+ ('Perch', 115, 22.5, 5.9175, 3.3075, '生长鱼') ,
+ ('Perch', 125, 22.5, 5.6925, 3.6675, '生长鱼') ,
+ ('Perch', 130, 22.8, 6.384, 3.534, '生长鱼') ,
+ ('Perch', 120, 23.5, 6.11, 3.4075, '鱼苗') ,
+ ('Perch', 120, 23.5, 5.64, 3.525, '生长鱼') ,
+ ('Perch', 130, 23.5, 6.11, 3.525, '生长鱼') ,
+ ('Perch', 135, 23.5, 5.875, 3.525, '生长鱼') ,
+ ('Perch', 110, 23.5, 5.5225, 3.995, '鱼苗') ,
+ ('Perch', 130, 24, 5.856, 3.624, '生长鱼') ,
+ ('Perch', 150, 24, 6.792, 3.624, '生长鱼') ,
+ ('Perch', 145, 24.2, 5.9532, 3.63, '生长鱼') ,
+ ('Perch', 150, 24.5, 5.2185, 3.626, '生长鱼') ,
+ ('Perch', 170, 25, 6.275, 3.725, '生长鱼') ,
+ ('Perch', 225, 25.5, 7.293, 3.723, '生长鱼') ,
+ ('Perch', 145, 25.5, 6.375, 3.825, '鱼苗') ,
+ ('Perch', 188, 26.2, 6.7334, 4.1658, '生长鱼') ,
+ ('Perch', 180, 26.5, 6.4395, 3.6835, '生长鱼') ,
+ ('Perch', 197, 27, 6.561, 4.239, '鱼苗') ,
+ ('Perch', 218, 28, 7.168, 4.144, '生长鱼') ,
+ ('Perch', 300, 28.7, 8.323, 5.1373, '生长鱼') ,
+ ('Perch', 260, 28.9, 7.1672, 4.335, '生长鱼') ,
+ ('Perch', 265, 28.9, 7.0516, 4.335, '鱼苗') ,
+ ('Perch', 250, 28.9, 7.2828, 4.5662, '生长鱼') ,
+ ('Perch', 250, 29.4, 7.8204, 4.2042, '生长鱼') ,
+ ('Perch', 300, 30.1, 7.5852, 4.6354, '生长鱼') ,
+ ('Perch', 320, 31.6, 7.6156, 4.7716, '生长鱼') ,
+ ('Perch', 514, 34, 10.03, 6.018, '生长鱼') ,
+ ('Perch', 556, 36.5, 10.2565, 6.3875, '生长鱼') ,
+ ('Perch', 840, 37.3, 11.4884, 7.7957, '鱼苗') ,
+ ('Perch', 685, 39, 10.881, 6.864, '生长鱼') ,
+ ('Perch', 700, 38.3, 10.6091, 6.7408, '生长鱼') ,
+ ('Perch', 700, 39.4, 10.835, 6.2646, '鱼苗') ,
+ ('Perch', 690, 39.3, 10.5717, 6.3666, '生长鱼') ,
+ ('Perch', 900, 41.4, 11.1366, 7.4934, '生长鱼') ,
+ ('Perch', 650, 41.4, 11.1366, 6.003, '生长鱼') ,
+ ('Perch', 820, 41.3, 12.4313, 7.3514, '鱼苗') ,
+ ('Perch', 850, 42.3, 11.9286, 7.1064, '生长鱼') ,
+ ('Perch', 900, 42.5, 11.73, 7.225, '生长鱼') ,
+ ('Perch', 1015, 42.4, 12.3808, 7.4624, '生长鱼') ,
+ ('Perch', 820, 42.5, 11.135, 6.63, '生长鱼') ,
+ ('Perch', 1100, 44.6, 12.8002, 6.8684, '鱼苗') ,
+ ('Perch', 1000, 45.2, 11.9328, 7.2772, '鱼苗') ,
+ ('Perch', 1100, 45.5, 12.5125, 7.4165, '生长鱼') ,
+ ('Perch', 1000, 46, 12.604, 8.142, '生长鱼') ,
+ ('Perch', 1000, 46.6, 12.4888, 7.5958, '鱼苗') ,
+ ('Pike', 200, 34.8, 5.568, 3.3756, '生长鱼') ,
+ ('Pike', 300, 37.8, 5.7078, 4.158, '生长鱼') ,
+ ('Pike', 300, 38.8, 5.9364, 4.3844, '生长鱼') ,
+ ('Pike', 300, 39.8, 6.2884, 4.0198, '生长鱼') ,
+ ('Pike', 430, 40.5, 7.29, 4.5765, '鱼苗') ,
+ ('Pike', 345, 41, 6.396, 3.977, '鱼苗') ,
+ ('Pike', 456, 45.5, 7.28, 4.3225, '鱼苗') ,
+ ('Pike', 510, 45.5, 6.825, 4.459, '鱼苗') ,
+ ('Pike', 540, 45.8, 7.786, 5.1296, '生长鱼') ,
+ ('Pike', 500, 48, 6.96, 4.896, '生长鱼') ,
+ ('Pike', 567, 48.7, 7.792, 4.87, '鱼苗') ,
+ ('Pike', 770, 51.2, 7.68, 5.376, '生长鱼') ,
+ ('Pike', 950, 55.1, 8.9262, 6.1712, '鱼苗') ,
+ ('Pike', 1250, 59.7, 10.6863, 6.9849, '鱼苗') ,
+ ('Pike', 1600, 64, 9.6, 6.144, '生长鱼') ,
+ ('Pike', 1550, 64, 9.6, 6.144, '生长鱼') ,
+ ('Pike', 1650, 68, 10.812, 7.48, '鱼苗') ,
+ ('Smelt', 6.7, 10.8, 1.7388, 1.0476, '生长鱼') ,
+ ('Smelt', 7.5, 11.6, 1.972, 1.16, '生长鱼') ,
+ ('Smelt', 7, 11.6, 1.7284, 1.1484, '生长鱼') ,
+ ('Smelt', 9.7, 12, 2.196, 1.38, '生长鱼') ,
+ ('Smelt', 9.8, 12.4, 2.0832, 1.2772, '生长鱼') ,
+ ('Smelt', 8.7, 12.6, 1.9782, 1.2852, '生长鱼') ,
+ ('Smelt', 10, 13.1, 2.2139, 1.2838, '生长鱼') ,
+ ('Smelt', 9.9, 13.1, 2.2139, 1.1659, '鱼苗') ,
+ ('Smelt', 9.8, 13.2, 2.2044, 1.1484, '生长鱼') ,
+ ('Smelt', 12.2, 13.4, 2.0904, 1.3936, '生长鱼') ,
+ ('Smelt', 13.4, 13.5, 2.43, 1.269, '鱼苗') ,
+ ('Smelt', 12.2, 13.8, 2.277, 1.2558, '生长鱼') ,
+ ('Smelt', 19.7, 15.2, 2.8728, 2.0672, '生长鱼') ,
+ ('Smelt', 19.9, 16.2, 2.9322, 1.8792, '生长鱼') ;
 SET FOREIGN_KEY_CHECKS = 1;
 
 
@@ -242,7 +248,7 @@ CREATE TABLE `water_quality` (
 
 -- ----------------------------
 -- Records of water_quality
--- 水质数据 5-15
+-- 数据来源：水质数据.xlsx 5-15
 -- ----------------------------
 
 INSERT INTO `water_quality` (`监测时间`,`水质类别`,`水温`,`pH`,`溶氧量`,`电导率`,`浊度`,`高锰酸盐指数`,`氨氮`,`总磷`,`总氮`,`站点情况`) VALUES ('5月15日','Ⅱ',23,8.35,10.83,426.8,11.4,1.86,0.025,0.037,2.93,'正常');
@@ -450,7 +456,7 @@ INSERT INTO `water_quality` (`监测时间`,`水质类别`,`水温`,`pH`,`溶氧
 
 -- ----------------------------
 -- Table structure for water_supply
--- 水质补充数据 2021-04-05
+-- 数据来源：水质数据（补充） 2021-04-05
 -- ----------------------------
 DROP TABLE IF EXISTS `water_supply`;
 CREATE TABLE `water_supply` (
@@ -467,7 +473,7 @@ CREATE TABLE `water_supply` (
 
 -- ----------------------------
 -- Records of water_supply
--- 水质补充数据 2021-04-05
+-- 数据来源：水质数据（补充） 2021-04-05
 -- ----------------------------
 INSERT INTO `water_supply` (`省份`,`流域`,`断面`,`水质类别`,`温度`,`PH`,`站点情况`) VALUES ('上海','长江流域','急水港桥','5','15.9','7.17','正常');
 INSERT INTO `water_supply` (`省份`,`流域`,`断面`,`水质类别`,`温度`,`PH`,`站点情况`) VALUES ('云南','滇池流域','西苑隧道','5','17.6','7.94','正常');
@@ -497,7 +503,7 @@ INSERT INTO `water_supply` (`省份`,`流域`,`断面`,`水质类别`,`温度`,`
 
 -- ----------------------------
 -- Table structure for yield
--- 自行添加数据
+-- 数据来源：自行添加
 -- ----------------------------
 DROP TABLE IF EXISTS `yield`;
 CREATE TABLE `yield` (
@@ -517,6 +523,7 @@ CREATE TABLE `yield` (
 
 -- ----------------------------
 -- Records of yield
+-- 数据来源：自行添加
 -- ----------------------------
 INSERT INTO `yield` (`年份`,`月份`,`产量`,`鱼排面积`,`同比增加`,`平均产量`) VALUES (2024,1,'2.0','2.6','2.0','4.0');
 INSERT INTO `yield` (`年份`,`月份`,`产量`,`鱼排面积`,`同比增加`,`平均产量`) VALUES (2024,2,'4.9','5.9','2.2','3.2');
@@ -548,5 +555,6 @@ CREATE TABLE `all_yield` (
 )  ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 -- ----------------------------
 -- Records of all_yield
+-- 数据来源：2020年全国统计年鉴
 -- ----------------------------
 INSERT INTO `all_yield` (`地区`,`鱼类`,`甲壳类`,`贝类`,`藻类`,`其它`) VALUES ('全国','821.27','215.27','61.67','1.74','27.38');
