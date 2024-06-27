@@ -30,7 +30,7 @@ CREATE TABLE user (
     email VARCHAR(100), -- 电子邮件
     role ENUM('user', 'admin') NOT NULL DEFAULT 'user', -- 角色：用户或管理员
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP -- 创建时间
-); ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+)ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user
@@ -457,7 +457,7 @@ CREATE TABLE `water_supply` (
   `省份` VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   `流域` VARCHAR(45) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '未提供',
   `断面` VARCHAR(45) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
-  `水质类别` INT CHARACTER SET utf8 COLLATE utf8_bin DEFAULT 0,
+  `水质类别` VARCHAR(45) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT 0,
   `温度` VARCHAR(45) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
   `PH` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
   `站点情况` VARCHAR(45) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT '未提供',
