@@ -21,6 +21,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
 -- Table structure for user
+-- 数据来源：自行设计
 -- ----------------------------
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE user (
@@ -30,10 +31,11 @@ CREATE TABLE user (
     email VARCHAR(100), -- 电子邮件
     role ENUM('user', 'admin') NOT NULL DEFAULT 'user', -- 角色：用户或管理员
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP -- 创建时间
-); ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user
+-- 数据来源：自行设计
 -- ----------------------------
 INSERT INTO `user` (username, password, email, role) VALUES ('user1', '123456', 'user1@example.com', 'user');
 INSERT INTO `user` (username, password, email, role) VALUES ('admin1', '654321', 'admin1@example.com', 'admin');
@@ -43,6 +45,7 @@ INSERT INTO `user` (username, password, email, role) VALUES ('user2', '123456', 
 
 -- ----------------------------
 -- Table structure for fish
+-- 数据来源：Fish.csv
 -- ----------------------------
 DROP TABLE IF EXISTS `fish`;
 CREATE TABLE `fish`  (
@@ -56,6 +59,7 @@ CREATE TABLE `fish`  (
 
 -- ----------------------------
 -- Records of fish
+-- 数据来源：Fish.csv
 -- ----------------------------
 INSERT INTO `fish` VALUES ('Bream', 242, 30, 11.52, 4.02, '生长鱼');
 INSERT INTO `fish` VALUES ('Bream', 290, 31.2, 12.48, 4.3056, '鱼苗');
@@ -242,7 +246,7 @@ CREATE TABLE `water_quality` (
 
 -- ----------------------------
 -- Records of water_quality
--- 水质数据 5-15
+-- 数据来源：水质数据.xlsx 5-15
 -- ----------------------------
 
 INSERT INTO `water_quality` (`监测时间`,`水质类别`,`水温`,`pH`,`溶氧量`,`电导率`,`浊度`,`高锰酸盐指数`,`氨氮`,`总磷`,`总氮`,`站点情况`) VALUES ('5月15日','Ⅱ',23,8.35,10.83,426.8,11.4,1.86,0.025,0.037,2.93,'正常');
@@ -450,7 +454,7 @@ INSERT INTO `water_quality` (`监测时间`,`水质类别`,`水温`,`pH`,`溶氧
 
 -- ----------------------------
 -- Table structure for water_supply
--- 水质补充数据 2021-04-05
+-- 数据来源：水质数据（补充） 2021-04-05
 -- ----------------------------
 DROP TABLE IF EXISTS `water_supply`;
 CREATE TABLE `water_supply` (
@@ -467,7 +471,7 @@ CREATE TABLE `water_supply` (
 
 -- ----------------------------
 -- Records of water_supply
--- 水质补充数据 2021-04-05
+-- 数据来源：水质数据（补充） 2021-04-05
 -- ----------------------------
 INSERT INTO `water_supply` (`省份`,`流域`,`断面`,`水质类别`,`温度`,`PH`,`站点情况`) VALUES ('上海','长江流域','急水港桥','5','15.9','7.17','正常');
 INSERT INTO `water_supply` (`省份`,`流域`,`断面`,`水质类别`,`温度`,`PH`,`站点情况`) VALUES ('云南','滇池流域','西苑隧道','5','17.6','7.94','正常');
@@ -497,7 +501,7 @@ INSERT INTO `water_supply` (`省份`,`流域`,`断面`,`水质类别`,`温度`,`
 
 -- ----------------------------
 -- Table structure for yield
--- 自行添加数据
+-- 数据来源：自行添加
 -- ----------------------------
 DROP TABLE IF EXISTS `yield`;
 CREATE TABLE `yield` (
@@ -517,6 +521,7 @@ CREATE TABLE `yield` (
 
 -- ----------------------------
 -- Records of yield
+-- 数据来源：自行添加
 -- ----------------------------
 INSERT INTO `yield` (`年份`,`月份`,`产量`,`鱼排面积`,`同比增加`,`平均产量`) VALUES (2024,1,'2.0','2.6','2.0','4.0');
 INSERT INTO `yield` (`年份`,`月份`,`产量`,`鱼排面积`,`同比增加`,`平均产量`) VALUES (2024,2,'4.9','5.9','2.2','3.2');
@@ -548,5 +553,6 @@ CREATE TABLE `all_yield` (
 )  ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 -- ----------------------------
 -- Records of all_yield
+-- 数据来源：2020年全国统计年鉴
 -- ----------------------------
 INSERT INTO `all_yield` (`地区`,`鱼类`,`甲壳类`,`贝类`,`藻类`,`其它`) VALUES ('全国','821.27','215.27','61.67','1.74','27.38');

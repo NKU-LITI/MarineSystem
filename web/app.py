@@ -131,7 +131,11 @@ def admain_default():
 
 @app.route('/admain_operateList')
 def admain_operateList():
-    return render_template('admain/operateList.html')
+    #获取鱼类数据
+    fish = source.all_fish
+    #print(type(fish))
+    #print(fish)
+    return render_template('admain/operateList.html', all_fish=fish)
     
 @app.route('/admain_searchList')
 def admain_searchList():
