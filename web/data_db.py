@@ -8,8 +8,9 @@
 import pandas as pd
 from sqlalchemy import create_engine
 from data import SourceDataDemo
+from config import config
 
-ENGINE_CONFIG = 'mysql+pymysql://root:2002821@127.0.0.1:3306/marinesystem?charset=utf8'
+ENGINE_CONFIG = 'mysql+pymysql://root:' + config['MYSQL_PASSWORD'] + '@127.0.0.1:3306/' + config['DATABASE_NAME'] +  '?charset=utf8'
 
 
 class SourceData(SourceDataDemo):
