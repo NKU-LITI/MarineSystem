@@ -15,7 +15,9 @@ from sqlalchemy import text
 # openai相关
 from openai import OpenAI
 import requests
+import query
 import recognition
+
 
 # 初始化数据库
 app = Flask(__name__,static_folder='static')
@@ -254,7 +256,8 @@ def search_fish():
 
 @app.route('/admain_searchList')
 def admain_searchList():
-    return render_template('admain/searchList.html')
+    users = source.all_users
+    return render_template('admain/searchList.html', users=users)
 
 @app.route('/admain_form')
 def admain_form():
@@ -292,6 +295,32 @@ def admain_computer():
 def admain_error():
     return render_template('admain/error.html')
 
+
+@app.route('/order/userlist')
+def get_userlist():
+    name=request.args.get('username')
+    print(name)
+
+    categories=['user_id','username','email','role','created_at']
+    data=[]
+    if(name==None):
+        sql = "select user_id, username, email, role, created_at from user"
+        result = query.query(sql)
+        for record in result:
+            d = {categories[i]: record[i] for i in range(len(categories))}
+            data.append(d)
+        # print(data)
+        data_dict = dict(code=0, msg="", count=1000, data=data)
+    else:
+        sql="select user_id, username, email, role, created_at from user where username='%s'"%(name)
+        result = query.query(sql)
+        for record in result:
+            d = {categories[i]: record[i] for i in range(len(categories))}
+            data.append(d)
+        # print(data)
+        data_dict = dict(code=0, msg="", count=1000, data=data)
+    print(data_dict)
+    return jsonify(data_dict)
 
 
 @app.route('/logout_success')
