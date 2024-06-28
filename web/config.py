@@ -10,6 +10,6 @@ class Config:
 
 config = {
     'default': Config,
-    'MYSQL_PASSWORD': '123456',
+    'MYSQL_PASSWORD': '2002821',
     'DATABASE_NAME': 'marinesystem'
 }

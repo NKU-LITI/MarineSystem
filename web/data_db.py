@@ -14,9 +14,8 @@ import pandas as pd
 # from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine, text
 from data import SourceDataDemo
-from config import config
 
-ENGINE_CONFIG = 'mysql+pymysql://root:' + config['MYSQL_PASSWORD'] + '@127.0.0.1:3306/' + config['DATABASE_NAME'] +  '?charset=utf8'
+ENGINE_CONFIG = 'mysql+pymysql://root:2002821@127.0.0.1:3306/marinesystem?charset=utf8'
 class SourceData(SourceDataDemo):
 
     def __init__(self):
@@ -32,15 +31,6 @@ class SourceData(SourceDataDemo):
         total_count = df['total_count'].iloc[0]
         return total_count
     
-    @property
-    def TotalUserCount(self): 
-        sql = """
-        SELECT COUNT(*) AS total_count FROM user;
-        """
-        df = pd.read_sql(sql, self.ENGINE)
-        #提取出数字
-        total_count = df['total_count'].iloc[0]
-        return total_count
     
     @property
     def GrowthCount(self): 
@@ -592,10 +582,13 @@ ORDER BY MIN(Length);
     def all_fish(self):
         sql=""" SELECT * FROM `fish`; """
         df = pd.read_sql(sql, self.ENGINE)
-        client_data = [{'id': row[0], 'Species': row[1], 'Weight': row[2], 
-                        'Length': row[3], 'Height': row[4] , 
-                        'Width': row[5], 'Status':row[6]} for row in df.values]
+
+        client_data = [{'Species': row[0], 'Weight': row[1], 
+                        'Length': row[2], 'Height': row[3] , 
+                        'Width': row[4], 'Status':row[5]} for row in df.values]
         return client_data
+    
+
     
     @ property
     def get_fish_by_id(self, fish_id):
@@ -671,4 +664,89 @@ ORDER BY MIN(Length);
 '''
         
     # -------------- '鱼类信息'的CRUD操作 结束 -----------------
+
+
+
+
+
+    # -------------- 以下为管理员界面对'用户信息'的CRUD操作 -----------------
+
+
+    @property
+    def TotalUserCount(self): 
+        sql = """
+        SELECT COUNT(*) AS total_count FROM user;
+        """
+        df = pd.read_sql(sql, self.ENGINE)
+        #提取出数字
+        total_count = df['total_count'].iloc[0]
+        return total_count
+    
+    @ property
+    def all_users(self):
+        sql=""" select user_id, username, email, role, created_at from user; """
+        df = pd.read_sql(sql, self.ENGINE)
+        client_data = [{'user_id': row[0], 'username': row[1], 
+                        'email': row[2], 'role': row[3] , 
+                        'created_at': row[4]} for row in df.values]
+        return client_data
+
+
+
+
+    def update_user(self, user_id, username, password, email, role):
+        sql = text("""
+        UPDATE user SET 
+            user_id = :user_id, 
+            username = :username, 
+            password = :password, 
+            email = :email, 
+            role = :role, 
+        WHERE user_id = :user_id;
+        """)
+        print(f"\n===={user_id}=====\n")
+        with self.ENGINE.connect() as conn:
+            conn.execute(sql, {
+                'user_id': user_id,
+                'username': username,
+                'password': password,
+                'email': email,
+                'role': role,
+            })
+            conn.commit() # 提交事务
+
+    def insert_user(self, username, password, email, role):
+        sql = text("""
+        INSERT INTO `user` (username, password, email, role) VALUES (
+            :username,
+            :password,
+            :email,
+            :role
+        )
+        """)
+        print(f"\n===={email}=====\n")
+        with self.ENGINE.connect() as conn:
+            conn.execute(sql, {
+                'username': username,
+                'password': password,
+                'email': email,
+                'role': role
+            })
+            conn.commit()  # 提交事务
+
+    def delete_user(self, id):
+        sql = text("DELETE FROM `user` WHERE user_id = :user_id")
+        with self.ENGINE.connect() as conn:
+            conn.execute(sql, {'user_id': id})
+            conn.commit()  # Commit the transaction after execution
+
+    '''
+    def search_fish(self, query,params):
+        with self.ENGINE.connect() as conn:
+            result = conn.execute(text(query), params).fetchall()
+            #return [dict(row) for row in result]
+            return  [dict(row._mapping) for row in result]
+'''
+        
+    # -------------- '用户信息'的CRUD操作 结束 -----------------
 
