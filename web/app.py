@@ -67,7 +67,6 @@ def mainInfo():
     quality = [source.water_quality]
     quality_history = [source.water_quality_history]
     device_info = source.get_device
-    print(device_info)
     return render_template('mainInfo.html', quality=quality, quality_history=quality_history, device = device_info)
 
 
@@ -109,8 +108,11 @@ def dataCenter():
     basin_data = [{'省份': item['省份'], '流域': item['流域'], 
                   '温度': item['温度'], 'PH': item['PH'], '站点情况': item['站点情况']} for item in supply]
     all_yield = source.all_yield
+    device_info = source.get_device
+    quality = source.water_quality
     return render_template('dataCenter.html', title='数据中心', data=data, legend=[i.get('name') for i in data],
-                           supply=supply, chinaDatas=chinaDatas, yield_data=yield_data, basin_data=basin_data, all_yield=all_yield)
+                           supply=supply, chinaDatas=chinaDatas, yield_data=yield_data, basin_data=basin_data, 
+                           all_yield=all_yield, device=device_info, quality=quality)
 
 
 @app.route('/smartCenter')
