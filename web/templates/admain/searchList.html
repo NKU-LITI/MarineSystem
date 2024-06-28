@@ -58,7 +58,7 @@
                     <td>{{ user.created_at }}</td>
                     <td>
                         <a href="#" class="tablelink"
-                            onclick="editUser({{ user.user_id }}, '{{ user.username }}', '{{ user.password }}','{{ user.email }}', {{ user.role }})">修改</a>
+                            onclick="editUser({{ user.user_id }}, '{{ user.username }}', '{{ user.password }}','{{ user.email }}', '{{ user.role }}')">修改</a>
                         <form id="deleteForm{{ user.user_id }}" action="{{ url_for('delete_user', id=user.user_id) }}"
                             method="post" style="display:inline;">
                             <button type="button" onclick="confirmDelete({{ user.user_id }})"
@@ -80,8 +80,9 @@
                 <h2>编辑用户信息</h2>
                 <form id="editForm">
                     <!--<input type="hidden" id="fishId" name="id">-->
-                    <input type="hidden" id="user_id" name="id">
-                    <label for="id">用户ID: <span id="displayId"></span></label><br>
+                    <input type="hidden" id="user_id" name="user_id">
+                    <label for="user_id">用户ID: <span id="displayId"></span></label><br>
+                    
                     <label for="username">用户名:</label>
                     <input type="text" id="username" name="username"><br>
                     <label for="password">密码:</label>
@@ -130,11 +131,10 @@
                 <input name="" type="button" class="cancel" value="取消" />
             </div>
         </div>
-    </div>
 
-    <div class="pagin">
-        <div class="message">共<i class="blue">{{users|length}}</i>条记录</div>
-    </div>
+        <div class="pagin">
+            <div class="message">共<i class="blue">{{users|length}}</i>条记录</div>
+        </div>
     </div>
 
 
@@ -170,11 +170,12 @@
     <script>
         //修改操作
         function editUser(user_id, username, password, email, role) {
-            document.getElementById('username').value = username;
+            document.getElementById('user_id').value = user_id;
+            document.getElementById('displayId').textContent = user_id;
             document.getElementById('username').textContent = username;
-            document.getElementById('password').value = password;
-            document.getElementById('email').value = email;
-            document.getElementById('role').value = role;
+            document.getElementById('password').textContent = password;
+            document.getElementById('email').textContent = email;
+            document.getElementById('role').textContent = role;
             var modal = document.getElementById('editModal');
             modal.style.display = 'block';
         }

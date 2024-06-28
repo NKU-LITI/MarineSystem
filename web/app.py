@@ -250,6 +250,7 @@ def search_fish():
     return render_template('admain/fish.html', all_fish=fish_list)
 
 
+# admin: 用户表的展示及操作
 # -------------------------------begin-------------------------------
 
 
@@ -258,12 +259,6 @@ def admain_searchList():
     users = source.all_users
     return render_template('admain/searchList.html', users=users)
 
-
-
-
-
-# admin: 用户表的展示及操作
-# -------------------------------begin-------------------------------
 
 
 @app.route('/edit_user', methods=['POST'])
@@ -322,25 +317,25 @@ def search_user():
 
     
     if search_id:
-        sql_query += f" AND id = {search_id}"
+        sql_query += f" AND user_id = {search_id}"
 
     # 添加条件：如果 search_username 不为空，则添加用户名条件
 
     if search_username:
-        sql_query += f" AND Species = '{search_username}'"
+        sql_query += f" AND username = '{search_username}'"
 
 
     # 添加条件：如果 search_email 不为空，则添加邮箱条件
     if search_email:
-        sql_query += f" AND Email = '{search_email}'"
+        sql_query += f" AND email = '{search_email}'"
 
     # 添加条件：如果 search_role 不为空，则添加角色条件
     if search_role: 
-        sql_query += f" AND Role = '{search_role}'"
+        sql_query += f" AND role = '{search_role}'"
 
     # 添加条件：如果 search_created_at 不为空，则添加创建时间条件
     if search_created_at:
-        sql_query += f" AND Created_at = '{search_created_at}'"
+        sql_query += f" AND created_at = '{search_created_at}'"
 
 
 
