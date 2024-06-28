@@ -15,11 +15,9 @@ from sqlalchemy import text
 # openai相关
 from openai import OpenAI
 import requests
-<<<<<<< HEAD
 import query
-=======
 import recognition
->>>>>>> 8e912c88ebd5e200b6d398d4cbd0eddd1d3584ff
+
 
 # 初始化数据库
 app = Flask(__name__,static_folder='static')
