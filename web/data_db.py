@@ -15,6 +15,7 @@ import pandas as pd
 from sqlalchemy import create_engine, text
 from data import SourceDataDemo
 
+
 ENGINE_CONFIG = 'mysql+pymysql://root:123456@127.0.0.1:3306/test?charset=utf8'
 class SourceData(SourceDataDemo):
 
@@ -669,6 +670,16 @@ ORDER BY MIN(Length);
 
     # -------------- 以下为管理员界面对'用户信息'的CRUD操作 -----------------
 
+    @ property
+    def get_user_by_id(self, user_id):
+        sql = f"SELECT user_id, username, email, role, created_at FROM `user` WHERE id = {user_id};"
+        df = pd.read_sql(sql, self.ENGINE)
+        if df.empty:
+            return None
+        row = df.iloc[0]
+        return {'user_id': row[0], 'username': row[1].strip(), 'email': row[2], 
+                'role': row[3], 'created_at': row[4].strip()}
+
 
     @property
     def TotalUserCount(self): 
@@ -695,21 +706,20 @@ ORDER BY MIN(Length);
     def update_user(self, user_id, username, password, email, role):
         sql = text("""
         UPDATE user SET 
-            user_id = :user_id, 
             username = :username, 
             password = :password, 
             email = :email, 
-            role = :role, 
+            role = :role
         WHERE user_id = :user_id;
         """)
-        print(f"\n===={user_id}=====\n")
+        print(f"\n===={email}=====\n")
         with self.ENGINE.connect() as conn:
             conn.execute(sql, {
                 'user_id': user_id,
                 'username': username,
                 'password': password,
                 'email': email,
-                'role': role,
+                'role': role
             })
             conn.commit() # 提交事务
 
