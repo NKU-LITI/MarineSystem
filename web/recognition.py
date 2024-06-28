@@ -17,7 +17,6 @@ def predict_fish(img_path):
     # 加载图片
     assert os.path.exists(img_path), "file: '{}' dose not exist.".format(img_path)
     img = Image.open(img_path)
-
     # 图片修改为 224x224
     img = img.resize((im_width, im_height))
     # plt.imshow(img)
