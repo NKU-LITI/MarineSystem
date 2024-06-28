@@ -592,21 +592,6 @@ ORDER BY MIN(Length);
     def all_fish(self):
         sql=""" SELECT * FROM `fish`; """
         df = pd.read_sql(sql, self.ENGINE)
-<<<<<<< HEAD
-        client_data = [{'Species': row[0], 'Weight': row[1], 
-                        'Length': row[2], 'Height': row[3] , 
-                        'Width': row[4], 'Status':row[5]} for row in df.values]
-        return client_data
-    
-    @ property
-    def all_users(self):
-        sql=""" select user_id, username, email, role, created_at from user; """
-        df = pd.read_sql(sql, self.ENGINE)
-        client_data = [{'user_id': row[0], 'username': row[1], 
-                        'email': row[2], 'role': row[3] , 
-                        'created_at': row[4]} for row in df.values]
-        return client_data
-=======
         client_data = [{'id': row[0], 'Species': row[1], 'Weight': row[2], 
                         'Length': row[3], 'Height': row[4] , 
                         'Width': row[5], 'Status':row[6]} for row in df.values]
@@ -687,4 +672,3 @@ ORDER BY MIN(Length);
         
     # -------------- '鱼类信息'的CRUD操作 结束 -----------------
 
->>>>>>> 8e912c88ebd5e200b6d398d4cbd0eddd1d3584ff

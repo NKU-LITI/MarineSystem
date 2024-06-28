@@ -134,6 +134,7 @@
                     <div class="chat-input" >
                         <input type="text" id="chatInput" placeholder="Type a message...">
                         <button id="sendButton">Send</button>
+                        <button id="suggestButton">Suggest</button>"
                     </div>
                 </div>
            </div>
@@ -154,8 +155,66 @@
 
 <!-- table0 -->
 <script type="text/javascript">
-    var myChart = echarts.init(document.getElementById('table0'));
-    option = {
+    var quality_history = {{quality_history |safe}}
+    console.log(quality_history)
+
+    // 初始化一个空对象用于存储反转后的数据
+    var reversedHistory = {};
+
+    // 遍历quality_history[0]中的每个字典
+    quality_history[0].forEach(record => {
+        // 遍历每个字典的键值对
+        for (let key in record) {
+            if (record.hasOwnProperty(key)) {
+                // 如果reversedHistory中没有这个键，初始化一个空数组
+                if (!reversedHistory[key]) {
+                    reversedHistory[key] = [];
+                }
+                // 将当前值添加到对应的键的数组中
+                reversedHistory[key].push(record[key]);
+            }
+        }
+    });
+
+    // 静态的 -> 动态的
+    var data_ph = reversedHistory['PH'].slice(-7);;
+    var data_temp = reversedHistory['水温'].slice(-7);;
+    var data_ox = reversedHistory['溶解氧'].slice(-7);;
+    var data_do = reversedHistory['浊度'].slice(-7);;
+
+    // 计算一下各项均值（7天的）
+    var _ph = data_ph.reduce((acc, cur) => acc + cur, 0) / data_ph.length;
+    var _temp = data_temp.reduce((acc, cur) => acc + cur, 0) / data_temp.length;
+    var _ox = data_ox.reduce((acc, cur) => acc + cur, 0) / data_ox.length;
+    var _do = data_do.reduce((acc, cur) => acc + cur, 0) / data_do.length;
+
+    console.log(_ph,_temp,_ox,_do)
+
+    /*** 计算综合评分 ***/
+    // 计算每个部分的得分（离平均值越近越接近1，否则接近0）
+    function calculateScore(data, avg, weight) {
+        return data.map(value => {
+            var ratio = 1 - Math.abs(value - avg) / avg;
+            return Math.max(0, ratio) * weight;
+        });
+    }
+
+    var scores_ph = calculateScore(data_ph, _ph, 25);
+    var scores_temp = calculateScore(data_temp, _temp, 25);
+    var scores_ox = calculateScore(data_ox, _ox, 25);
+    var scores_do = calculateScore(data_do, _do, 25);
+
+    // 计算每天的综合得分
+    var totalScores = [];
+    for (var i = 0; i < 7; i++) {
+        var totalScore = scores_ph[i] + scores_temp[i] + scores_ox[i] + scores_do[i];
+        totalScores.push(Math.round(totalScore));
+    }
+    console.log(totalScores);
+
+    /*** 下面是图表 ***/
+    var myChart1 = echarts.init(document.getElementById('table0'));
+    option1 = {
       color:['#f1ff00','#00c1ff', '#61a0a8', '#d48265', '#91c7ae','#749f83',  '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3'],
         // backgroundColor: 'rgba(1,202,217,.2)',
         grid: {
@@ -189,7 +248,7 @@
            indicator: [
               { name: '水温', max: 6500 },
               { name: 'PH', max: 16000},
-              { name: '光照', max: 30000},
+              { name: '浊度', max: 30000},
               { name: '溶解氧', max: 44000}
            ]
        },
@@ -220,20 +279,18 @@
             top: 'center',
             z: 100, // 设置 z 轴层级
             style: {
-                text: '84',
+                text: totalScores[6],// 当天的
                 textAlign: 'center',
                 fill: '#fff',
                 fontSize: 32
             }
         }
     };
-    myChart.setOption(option);
-</script>
+    myChart1.setOption(option1);
 
-<!-- table1 -->
-<script type="text/javascript">
-    var myChart = echarts.init(document.getElementById('table1'));
-    option = {
+// <!-- table1 -->
+    var myChart2 = echarts.init(document.getElementById('table1'));
+    option2 = {
       color:['#7de494','#7fd7b1', '#5578cf', '#5ebbeb', '#d16ad8','#f8e19a',  '#00b7ee', '#81dabe','#5fc5ce'],
         backgroundColor: 'rgba(1,202,217,.2)',
 
@@ -291,7 +348,8 @@
                 type:'line',
                 stack: '总量',
                 //   areaStyle: {normal: {}},// 面积
-                data:[76, 89, 83, 91, 88, 80, 84],
+                // data:[76, 89, 83, 91, 88, 80, 84],
+                data: totalScores,// 换成动态的
                 label: {
                     show: true, // 开启标签
                     position: 'top' // 标签位置
@@ -309,57 +367,140 @@
 
         ]
         };
-    myChart.setOption(option);
-</script>
+    myChart2.setOption(option2);
 
 
-<!-- table2 -->
-<script type="text/javascript">
-    var myChart = echarts.init(document.getElementById('table2'));
-    option = {
+// <!-- table2 -->
+    var myChart3= echarts.init(document.getElementById('table2'));
+    option3 = {
       color:['#76c4bf','#e5ffc7','#508097','#4d72d9'],
         backgroundColor: 'transparent',// 透明
         grid: {
-                                        left:10,
-                                        right:40,
-                                        top:0,
-                                        bottom:0,
-                  containLabel: true
-                                    },
-                  // legend: {
-                  //     x : 'center',
-                  //     y : 'bottom',
-                  //     textStyle:{
-                  //       fontSize: 10,
-                  //       color:'rgba(255,255,255,.7)'
-                  //     },
-                  //     data:['涉蒙','涉疆','涉军','涉恐','涉藏','涉稳','涉警']
-                  // },
-                  calculable : true,
-                  series : [
+                            left:10,
+                            right:40,
+                            top:0,
+                            bottom:0,
+        containLabel: true
+                        },
+        calculable : true,
+        series : [
 
-                      {
-                          name:'面积模式',
-                          type:'pie',
-                          radius : [10, 70],
-                          center : ['50%', '50%'],
-                          roseType : 'area',
-                          data:[
-                              {value:15, name:'温度'},
-                              {value:50, name:'光照'},
-                              {value:0.3, name:'溶解氧'},
-                              {value:8.4, name:'PH'},
-                              {value:0.02, name:'盐度'}
+            {
+                name:'面积模式',
+                type:'pie',
+                radius : [10, 70],
+                center : ['50%', '50%'],
+                roseType : 'area',
+                data:[
+                    {value:data_temp[6], name:'温度'},
+                    {value:data_ph[6], name:'PH'},
+                    {value:data_ox[6], name:'溶解氧'},
+                    {value:data_do[6], name:'浊度'},
 
-                          ],
-                          label: {
-                            show: true, // 显示标签
-                            formatter: '{b}: {c}' // 标签的格式，其中 {b} 代表数据名，{c} 代表数据值
-                        }
-                      }
-                  ]
-              };
-    myChart.setOption(option);
+                ],
+                label: {
+                show: true, // 显示标签
+                formatter: '{b}: {c}', // 标签的格式，其中 {b} 代表数据名，{c} 代表数据值
+            },
+        }
+        ]
+    };
+    myChart3.setOption(option3);
+
+// <!-- AI message -->
+// <script type="text/javascript">
+    const chatContent = document.getElementById('chatContent');
+    const chatInput = document.getElementById('chatInput');
+    const sendButton = document.getElementById('sendButton');
+    const suggestButton = document.getElementById('suggestButton');
+    // print("ss")
+
+    // 显示用户发送的消息
+    function addMessage(message, isUser = true) {
+        // print('User: ' + message)
+        const messageElement = document.createElement('div');
+        messageElement.textContent = message;
+        messageElement.style.textAlign = isUser ? 'right' : 'left';
+        // messageElement.style.margin = '5px 0';
+        messageElement.style.font = '#000000';
+        messageElement.style.fontSize = '14px';
+        // messageElement.style.border = '1px solid rgba(27, 146, 253, 0.5)';
+        chatContent.appendChild(messageElement);
+        chatContent.scrollTop = chatContent.scrollHeight;
+    }
+    
+    // Function to send a message to the backend
+    async function sendMessage(message) {
+        addMessage(message);
+        chatInput.value = '';
+
+        // Replace with your actual backend URL
+        const response = await fetch('/api/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ message })
+        });
+        const data = await response.json();
+        addMessage(data.reply, false);
+    }
+
+    sendButton.addEventListener('click', () => {
+        // print("me:",message)
+        const message = chatInput.value.trim();
+        console.log(message)
+        if (message) {
+            sendMessage(message);
+        }
+    });
+
+    chatInput.addEventListener('keypress', (event) => {
+        if (event.key === 'Enter') {
+            console.log("here")
+            // print("here")
+            const message = chatInput.value.trim();
+            if (message) {
+                sendMessage(message);
+            }
+        }
+    });
+
+    // 询问环境意见
+    suggestButton.addEventListener('click', () => {
+        var q = "对渔场环境的决策建议？"
+        addMessage(q);
+        // 在这里直接回复就可以
+        // ph决策
+        if(data_ph[6]>_ph){
+            ph_reply = "（1）ph值"+data_ph[6]+"高于平均值"+_ph.toFixed(2)+"，建议降低ph。"
+        }else{
+            ph_reply = "1. ph值"+data_ph[6]+"低于平均值"+_ph.toFixed(2)+"，建议提高ph。"
+        }
+
+        // temp决策
+        if(data_temp[6]>_temp){
+            temp_reply = "（2）温度值"+data_temp[6]+"高于平均值"+_temp.toFixed(1)+"，建议降低温度。"
+        }else{
+            temp_reply = "（2） 温度值"+data_temp[6]+"低于平均值"+_temp.toFixed(1)+"，建议提高温度。"
+        }
+
+        if(data_ox[6]>_ox){
+            ox_reply = "（3） 溶解氧"+data_ox[6]+"高于平均值"+_ox.toFixed(1)+"，建议降低。"
+        }else{
+            ox_reply = "（3） 溶解氧"+data_ox[6]+"低于平均值"+_ox.toFixed(1)+"，建议提高。"
+        }
+
+        if(data_do[6]>_do){
+            do_reply = "（4） 浊度值"+data_do[6]+"高于平均值"+_do.toFixed(1)+"，建议降低。"
+        }else{
+            do_reply = "（4）浊度值"+data_do[6]+"低于平均值"+_do.toFixed(1)+"，建议提高。"
+        }
+
+        reply = ph_reply + "\n" + temp_reply + "\n" + ox_reply + "\n" + do_reply;
+        addMessage(reply, false);
+    });
+
 </script>
 
 <!-- 图像识别 -->
@@ -479,64 +620,6 @@
     
 </script>
 
-<!-- AI message -->
- <script type="text/javascript">
-    const chatContent = document.getElementById('chatContent');
-    const chatInput = document.getElementById('chatInput');
-    const sendButton = document.getElementById('sendButton');
-    // print("ss")
 
-    // 显示用户发送的消息
-    function addMessage(message, isUser = true) {
-        // print('User: ' + message)
-        const messageElement = document.createElement('div');
-        messageElement.textContent = message;
-        messageElement.style.textAlign = isUser ? 'right' : 'left';
-        // messageElement.style.margin = '5px 0';
-        messageElement.style.font = '#000000';
-        messageElement.style.fontSize = '14px';
-        // messageElement.style.border = '1px solid rgba(27, 146, 253, 0.5)';
-        chatContent.appendChild(messageElement);
-        chatContent.scrollTop = chatContent.scrollHeight;
-    }
-    
-    // Function to send a message to the backend
-    async function sendMessage(message) {
-        addMessage(message);
-        chatInput.value = '';
-
-        // Replace with your actual backend URL
-        const response = await fetch('/api/chat', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ message })
-        });
-        const data = await response.json();
-        addMessage(data.reply, false);
-    }
-
-    sendButton.addEventListener('click', () => {
-        // print("me:",message)
-        const message = chatInput.value.trim();
-        console.log(message)
-        if (message) {
-            sendMessage(message);
-        }
-    });
-
-    chatInput.addEventListener('keypress', (event) => {
-        if (event.key === 'Enter') {
-            console.log("here")
-            // print("here")
-            const message = chatInput.value.trim();
-            if (message) {
-                sendMessage(message);
-            }
-        }
-    });
-
-</script>
 
 </html>

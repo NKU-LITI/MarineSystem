@@ -382,12 +382,22 @@ ol {
 
 /* 右 */
 .content .content-right .right-top {
-    margin-left: 0rem;
+    margin-left: 10rem;
     margin-top: 5rem;
-    width: 95%; /* 使 .left-top 的宽度和 .center-top 一样 */
+    width: 85%; /* 使 .left-top 的宽度和 .center-top 一样 */
     height: 120rem; /* 设置 .left-top 的高度为 75rem */
     background: url("../img/smartCenter/jt.png");
     background-size: 100% 100%; /* 添加这行使图片完全适应元素的宽度和高度 */
+
+}
+
+.content .content-right .suggest {
+    margin-left: 10rem;
+    margin-top: 5rem;
+    width: 85%; /* 使 .left-top 的宽度和 .center-top 一样 */
+    height: 120rem; /* 设置 .left-top 的高度为 75rem */
+    font-size: large;
+    color: #f51738;
 
 }
 

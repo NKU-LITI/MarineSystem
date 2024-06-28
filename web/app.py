@@ -114,7 +114,10 @@ def dataCenter():
 
 @app.route('/smartCenter')
 def smartCenter():
-    return render_template('smartCenter.html')
+    # 也是需要获取历史数据
+    quality = [source.water_quality]
+    quality_history = [source.water_quality_history]
+    return render_template('smartCenter.html', quality=quality, quality_history=quality_history)
 
 
 @app.route('/admain')
