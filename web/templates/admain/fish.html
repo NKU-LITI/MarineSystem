@@ -16,6 +16,14 @@
             <li><span><img src="../../static/img/admain/t01.png"/></span><a href="#" onclick="searchFish()">查询</a></li>
         </ul>
         <ul class="toolbar1">
+            <li><span><img src="../../static/img/admain/t01.png" /></span><a href="#" onclick="uploadCSV()">导入</a>
+            </li>
+        </ul>
+        <ul class="toolbar1">
+            <li><span><img src="../../static/img/admain/t01.png" /></span><a href="#" onclick="downloadCSV()">导出</a>
+            </li>
+        </ul>
+        <ul class="toolbar1">
             <li><span><img src="../../static/img/admain/t01.png"/></span><a href="#" onclick="insertFish()">添加</a></li>
         </ul>
 
@@ -318,6 +326,81 @@
             }
         });
     }
+
+</script>
+
+<!-- 鱼类的upload和download操作 -->
+<script>
+        var fish = {{fish|tojson|safe}}
+        const data = fish;
+
+        // 将列表转换为 CSV
+        function convertToCSV(arr) {
+            const array = [Object.keys(arr[0])].concat(arr);
+
+            return array.map(it => {
+                return Object.values(it).toString();
+            }).join('\n');
+        }
+
+        const csv = convertToCSV(data);
+        console.log(csv);
+
+        // 创建并下载 CSV 文件
+        function downloadCSV() {
+            const filename = "data.csv";
+            const csvFile = new Blob([csv], { type: "text/csv" });
+            const downloadLink = document.createElement("a");
+
+            downloadLink.download = filename;
+            downloadLink.href = window.URL.createObjectURL(csvFile);
+            downloadLink.style.display = "none";
+
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+        }
+
+        /*** 导入功能 ***/
+        function uploadCSV() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.csv'; // 只允许上传CSV文件
+            input.style.display = 'none';
+
+            input.onchange = async (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = async (event) => {
+                        const csvData = event.target.result;
+                        // 处理CSV数据
+                        const rows = csvData.split('\n').map(row => row.split(','));
+                        console.log(rows);
+
+                        // 将CSV数据发送到后端
+                        const response = await fetch('/upload_fish_csv', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ data: rows })
+                        });
+
+                        if (response.ok) {
+                            const result = await response.json();
+                            console.log('Upload result:', result);
+                        } else {
+                            console.error('上传失败:', response.statusText);
+                        }
+                    };
+                    reader.readAsText(file);
+                }
+            };
+
+    // 模拟点击文件选择对话框
+    input.click();
+}
 
 </script>
 

@@ -195,6 +195,10 @@ def insert_fish():
     print("\n3\n")
     return redirect(url_for('admain_fish'))
 
+@app.route('/upload_fish_csv', methods=['POST'])
+def upload_fish_csv():
+    print("fish!!!!!!!!!!!!!!!")
+
 
 @app.route('/search_fish', methods=['GET', 'POST'])
 def search_fish():
@@ -295,6 +299,23 @@ def insert_user():
     source.insert_user( username, password, email, role)
     print("\n3\n")
     return redirect(url_for('admain_searchList'))
+
+@app.route('/upload_user_csv', methods=['POST'])
+def insert_user_csv(): # 批量插入（upload的方式）
+    data = request.get_json()['data'] # 第一行都是标题['email', 'username', 'password', 'role', '  \r']
+    print(data)
+    for i in range(len(data)-1):
+        temp_row = data[i+1]
+        email = temp_row[0]
+        username = temp_row[1]
+        password = temp_row[2]
+        role = temp_row[3]
+        source.insert_user(username, password, email, role)
+        print("\n3\n")
+    return redirect(url_for('admain_searchList'))
+
+
+    
 
 
 @app.route('/search_user', methods=['GET', 'POST'])
@@ -471,16 +492,17 @@ def recognize():
 
 
 # 用户上传自己的图文件
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 限制上传文件大小为 16MB
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', }
+app.config['MAX_CONTENT_LENGTH'] = 64 * 1024 * 1024  # 限制上传文件大小为 64MB
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif','csv'}
 app.config['ALLOWED_EXTENSIONS'] = ALLOWED_EXTENSIONS
-UPLOAD_FOLDER = "web/static/img/smartCenter/userFish"
+UPLOAD_FOLDER_FIG = "web/static/img/smartCenter/userFish"
+UPLOAD_FOLDER_CSV = "web/static/csv"
 @app.route('/upload_fig', methods=['POST'])
-def upload_fig():
+def upload_fig():   # 上传图片
     file = request.files['image']
     if file:
         filename = file.filename
-        filepath = UPLOAD_FOLDER+'/'+filename
+        filepath = UPLOAD_FOLDER_FIG+'/'+filename
         current_dir = os.getcwd()
         print("Current working directory:", current_dir)
         file.save(filepath)
@@ -491,7 +513,24 @@ def upload_fig():
             # 截取从'static'开始的子字符串
             filepath = filepath[start_index:]
         filepath = '../'+filepath
-        return jsonify({'path': filepath})   
+        return jsonify({'path': filepath})  
+    
+@app.route('/upload_csv', methods=['POST'])
+def upload_csv():   # 上传csv 
+    file = request.files['csv']
+    if file:
+        filename = file.filename
+        filepath = UPLOAD_FOLDER_CSV+'/'+filename
+        file.save(filepath)
+        print("csv upload success,path:", filepath)
+        start_index = filepath.find('static')
+        if start_index != -1:
+            # 截取从'static'开始的子字符串
+            filepath = filepath[start_index:]
+        filepath = '../../'+filepath
+        return jsonify({'path': filepath})
+
+
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', debug=False)
