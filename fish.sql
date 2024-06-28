@@ -460,45 +460,47 @@ INSERT INTO `water_quality` (`监测时间`,`水质类别`,`水温`,`pH`,`溶氧
 -- ----------------------------
 DROP TABLE IF EXISTS `water_supply`;
 CREATE TABLE `water_supply` (
-  `省份` VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
-  `流域` VARCHAR(45) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '未提供',
-  `断面` VARCHAR(45) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
-  `水质类别` VARCHAR(45) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT 0,
-  `温度` VARCHAR(45) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
-  `PH` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
-  `站点情况` VARCHAR(45) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT '未提供',
+  `省份` VARCHAR(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `流域` VARCHAR(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '未提供',
+  `断面` VARCHAR(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `水质类别` INT DEFAULT 0,
+  `温度` VARCHAR(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `PH` VARCHAR(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `站点情况` VARCHAR(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT '未提供',
   PRIMARY KEY (`省份`, `流域`)
-)  ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 
 -- ----------------------------
 -- Records of water_supply
 -- 数据来源：水质数据（补充） 2021-04-05
 -- ----------------------------
-INSERT INTO `water_supply` (`省份`,`流域`,`断面`,`水质类别`,`温度`,`PH`,`站点情况`) VALUES ('上海','长江流域','急水港桥','5','15.9','7.17','正常');
-INSERT INTO `water_supply` (`省份`,`流域`,`断面`,`水质类别`,`温度`,`PH`,`站点情况`) VALUES ('云南','滇池流域','西苑隧道','5','17.6','7.94','正常');
-INSERT INTO `water_supply` (`省份`,`流域`,`断面`,`水质类别`,`温度`,`PH`,`站点情况`) VALUES ('内蒙','黄河流域','画匠营子','3','12.7','7.93','正常');
-INSERT INTO `water_supply` (`省份`,`流域`,`断面`,`水质类别`,`温度`,`PH`,`站点情况`) VALUES ('北京','海河流域','古北口','5','11.8','9.93','正常');
-INSERT INTO `water_supply` (`省份`,`流域`,`断面`,`水质类别`,`温度`,`PH`,`站点情况`) VALUES ('吉林','松花江流域','松花江村','未提供','0','0','停站');
-INSERT INTO `water_supply` (`省份`,`流域`,`断面`,`水质类别`,`温度`,`PH`,`站点情况`) VALUES ('四川','长江流域','龙洞','1','14.7','8.30','正常');
-INSERT INTO `water_supply` (`省份`,`流域`,`断面`,`水质类别`,`温度`,`PH`,`站点情况`) VALUES ('天津','海河流域','果河桥','2','14.3','8.57','正常');
-INSERT INTO `water_supply` (`省份`,`流域`,`断面`,`水质类别`,`温度`,`PH`,`站点情况`) VALUES ('安徽','巢湖流域','湖滨(老)','4','15.1','7.80','正常');
-INSERT INTO `water_supply` (`省份`,`流域`,`断面`,`水质类别`,`温度`,`PH`,`站点情况`) VALUES ('山东','黄河流域','泺口','未提供','12.3','8.56','维护');
-INSERT INTO `water_supply` (`省份`,`流域`,`断面`,`水质类别`,`温度`,`PH`,`站点情况`) VALUES ('山西','黄河流域','河津大桥','未提供','0','0','停站');
-INSERT INTO `water_supply` (`省份`,`流域`,`断面`,`水质类别`,`温度`,`PH`,`站点情况`) VALUES ('广东','珠江流域','七星岗','2','23.0','7.33','正常');
-INSERT INTO `water_supply` (`省份`,`流域`,`断面`,`水质类别`,`温度`,`PH`,`站点情况`) VALUES ('广西','珠江流域','老口','2','22.1','7.53','正常');
-INSERT INTO `water_supply` (`省份`,`流域`,`断面`,`水质类别`,`温度`,`PH`,`站点情况`) VALUES ('江苏','长江流域','林山','1','17.7','7.74','正常');
-INSERT INTO `water_supply` (`省份`,`流域`,`断面`,`水质类别`,`温度`,`PH`,`站点情况`) VALUES ('江西','长江流域','滁槎','2','18.1','7.07','正常');
-INSERT INTO `water_supply` (`省份`,`流域`,`断面`,`水质类别`,`温度`,`PH`,`站点情况`) VALUES ('河北','海河流域','八号桥','3','12.1','8.41','正常');
-INSERT INTO `water_supply` (`省份`,`流域`,`断面`,`水质类别`,`温度`,`PH`,`站点情况`) VALUES ('河南','长江流域','陶岔','2','23.2','7.99','正常');
-INSERT INTO `water_supply` (`省份`,`流域`,`断面`,`水质类别`,`温度`,`PH`,`站点情况`) VALUES ('浙江','太湖流域','斜路港','3','17.3','7.51','正常');
-INSERT INTO `water_supply` (`省份`,`流域`,`断面`,`水质类别`,`温度`,`PH`,`站点情况`) VALUES ('湖北','长江流域','宗关','2','15.6','7.73','正常');
-INSERT INTO `water_supply` (`省份`,`流域`,`断面`,`水质类别`,`温度`,`PH`,`站点情况`) VALUES ('湖南','长江流域','新港','2','16.7','7.18','正常');
-INSERT INTO `water_supply` (`省份`,`流域`,`断面`,`水质类别`,`温度`,`PH`,`站点情况`) VALUES ('福建','浙闽片河流','白岩潭','3','20.2','7.39','正常');
-INSERT INTO `water_supply` (`省份`,`流域`,`断面`,`水质类别`,`温度`,`PH`,`站点情况`) VALUES ('辽宁','辽河流域','大伙房水库','2','7.5','7.76','正常');
-INSERT INTO `water_supply` (`省份`,`流域`,`断面`,`水质类别`,`温度`,`PH`,`站点情况`) VALUES ('重庆','长江流域','朱沱','2','16.5','7.90','正常');
-INSERT INTO `water_supply` (`省份`,`流域`,`断面`,`水质类别`,`温度`,`PH`,`站点情况`) VALUES ('陕西','黄河流域','潼关吊桥','3','13.2','7.94','正常');
-INSERT INTO `water_supply` (`省份`,`流域`,`断面`,`水质类别`,`温度`,`PH`,`站点情况`) VALUES ('黑龙江','松花江流域','松花江村','未提供','0','0','停站');
+INSERT INTO `water_supply` (`省份`, `流域`, `断面`, `水质类别`, `温度`, `PH`, `站点情况`) 
+VALUES 
+('上海', '长江流域', '急水港桥', 5, '15.9', '7.17', '正常'),
+('云南', '滇池流域', '西苑隧道', 5, '17.6', '7.94', '正常'),
+('内蒙古', '黄河流域', '画匠营子', 3, '12.7', '7.93', '正常'),
+('北京', '海河流域', '古北口', 5, '11.8', '9.93', '正常'),
+('吉林', '松花江流域', '松花江村', 0, '0', '0', '停站'),
+('四川', '长江流域', '龙洞', 1, '14.7', '8.30', '正常'),
+('天津', '海河流域', '果河桥', 2, '14.3', '8.57', '正常'),
+('安徽', '巢湖流域', '湖滨(老)', 4, '15.1', '7.80', '正常'),
+('山东', '黄河流域', '泺口', 0, '12.3', '8.56', '维护'),
+('山西', '黄河流域', '河津大桥', 0, '0', '0', '停站'),
+('广东', '珠江流域', '七星岗', 2, '23.0', '7.33', '正常'),
+('广西', '珠江流域', '老口', 2, '22.1', '7.53', '正常'),
+('江苏', '长江流域', '林山', 1, '17.7', '7.74', '正常'),
+('江西', '长江流域', '滁槎', 2, '18.1', '7.07', '正常'),
+('河北', '海河流域', '八号桥', 3, '12.1', '8.41', '正常'),
+('河南', '长江流域', '陶岔', 2, '23.2', '7.99', '正常'),
+('浙江', '太湖流域', '斜路港', 3, '17.3', '7.51', '正常'),
+('湖北', '长江流域', '宗关', 2, '15.6', '7.73', '正常'),
+('湖南', '长江流域', '新港', 2, '16.7', '7.18', '正常'),
+('福建', '浙闽片河流', '白岩潭', 3, '20.2', '7.39', '正常'),
+('辽宁', '辽河流域', '大伙房水库', 2, '7.5', '7.76', '正常'),
+('重庆', '长江流域', '朱沱', 2, '16.5', '7.90', '正常'),
+('陕西', '黄河流域', '潼关吊桥', 3, '13.2', '7.94', '正常'),
+('黑龙江', '松花江流域', '松花江村', 0, '0', '0', '停站');
 
 
 -- ----------------------------
