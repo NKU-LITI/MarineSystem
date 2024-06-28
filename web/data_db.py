@@ -15,7 +15,7 @@ import pandas as pd
 from sqlalchemy import create_engine, text
 from data import SourceDataDemo
 
-ENGINE_CONFIG = 'mysql+pymysql://root:123456@127.0.0.1:3306/marinesystem?charset=utf8'
+ENGINE_CONFIG = 'mysql+pymysql://root:123456@127.0.0.1:3306/test?charset=utf8'
 class SourceData(SourceDataDemo):
 
     def __init__(self):
@@ -582,13 +582,11 @@ ORDER BY MIN(Length);
     def all_fish(self):
         sql=""" SELECT * FROM `fish`; """
         df = pd.read_sql(sql, self.ENGINE)
-
-        client_data = [{'Species': row[0], 'Weight': row[1], 
-                        'Length': row[2], 'Height': row[3] , 
-                        'Width': row[4], 'Status':row[5]} for row in df.values]
+        client_data = [{'id': row[0], 'Species': row[1], 'Weight': row[2], 
+                        'Length': row[3], 'Height': row[4] , 
+                        'Width': row[5], 'Status':row[6]} for row in df.values]
         return client_data
     
-
     
     @ property
     def get_fish_by_id(self, fish_id):
@@ -738,15 +736,47 @@ ORDER BY MIN(Length);
         sql = text("DELETE FROM `user` WHERE user_id = :user_id")
         with self.ENGINE.connect() as conn:
             conn.execute(sql, {'user_id': id})
-            conn.commit()  # Commit the transaction after execution
-
-    '''
-    def search_fish(self, query,params):
-        with self.ENGINE.connect() as conn:
-            result = conn.execute(text(query), params).fetchall()
-            #return [dict(row) for row in result]
-            return  [dict(row._mapping) for row in result]
-'''
-        
+            conn.commit()  # Commit the transaction after execution        
     # -------------- '用户信息'的CRUD操作 结束 -----------------
 
+
+
+    # -------------- '主要信息'的设备 -----------------
+    @property
+    def get_device(self):
+        sql = """ 
+        SELECT `设备ID`, `主控版本`, `主控温度`, `次控状态`, `警告状态`, `供氧系统`,
+               `可见光摄像头`, `红外摄像头`, `可用空间`, `传输速率`, `屏幕亮度`, `音量`,
+               `电源类型`, `剩余电量`
+        FROM `device`;
+        """
+        try:
+            df = pd.read_sql(sql, self.ENGINE)
+            if not df.empty:
+                row = df.iloc[0]
+                device_data = {
+                    '设备ID': row['设备ID'], 
+                    '主控版本': row['主控版本'], 
+                    '主控温度': row['主控温度'], 
+                    '次控状态': row['次控状态'], 
+                    '警告状态': row['警告状态'], 
+                    '供氧系统': row['供氧系统'],
+                    '可见光摄像头': row['可见光摄像头'],
+                    '红外摄像头': row['红外摄像头'],
+                    '可用空间': row['可用空间'],
+                    '传输速率': row['传输速率'],
+                    '屏幕亮度': row['屏幕亮度'],
+                    '音量': row['音量'],
+                    '电源类型': row['电源类型'],
+                    '剩余电量': row['剩余电量']
+                }
+                return device_data
+            else:
+                return None
+        except Exception as e:
+            print(f"Error fetching device data: {str(e)}")
+            return None
+
+
+
+    # -------------- '主要信息'的设备 结束 -----------------

@@ -66,7 +66,9 @@ def reset_password():
 def mainInfo():
     quality = [source.water_quality]
     quality_history = [source.water_quality_history]
-    return render_template('mainInfo.html', quality=quality, quality_history=quality_history)
+    device_info = source.get_device
+    print(device_info)
+    return render_template('mainInfo.html', quality=quality, quality_history=quality_history, device = device_info)
 
 
 @app.route('/waterSystem')
@@ -418,7 +420,10 @@ def get_userlist():
 
 @app.route('/logout_success')
 def logout_success():
-    return render_template('mainInfo.html')
+    quality = [source.water_quality]
+    quality_history = [source.water_quality_history]
+    device_info = source.get_device
+    return render_template('mainInfo.html', quality=quality, quality_history=quality_history, device_info = device_info)
 
 
 # 大模型API（用于回答）
