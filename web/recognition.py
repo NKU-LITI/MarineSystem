@@ -51,7 +51,6 @@ def predict_fish(img_path):
 
     # 返回预测的类别
     result = {"class": class_indict[str(predict_class)], "prob": str(result[predict_class])}
-    print(result)
     return result
 
 # if __name__ == '__main__':

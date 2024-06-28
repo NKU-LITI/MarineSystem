@@ -516,18 +516,30 @@
 
     // 鱼类的图像列表
     const imageList = [
-        '../static/img/smartCenter/fish/caoyu.jpg',
-        '../static/img/smartCenter/fish/hetun1.jpg',
-        '../static/img/smartCenter/fish/hetun2.jpg',
-        '../static/img/smartCenter/fish/hudieyu.jpg',
-        '../static/img/smartCenter/fish/jiyu.jpg',
-        '../static/img/smartCenter/fish/jinyu.jpg',
-        '../static/img/smartCenter/fish/longyu.jpg',
-        '../static/img/smartCenter/fish/luohanyu.jpg',
-        '../static/img/smartCenter/fish/nianyu.jpg',
-        '../static/img/smartCenter/fish/qingdaofu.jpg',
-        '../static/img/smartCenter/fish/shibanyu.jpg',
+        '../static/img/smartCenter/fish/caoyu.jpg',// 0
+        '../static/img/smartCenter/fish/hetun1.jpg',// 1
+        '../static/img/smartCenter/fish/hetun2.jpg',// 2
+        '../static/img/smartCenter/fish/hudieyu.jpg',// 3
+        '../static/img/smartCenter/fish/jiyu.jpg',// 4
+        '../static/img/smartCenter/fish/jinyu.jpg',// 5
+        '../static/img/smartCenter/fish/longyu.jpg',// 6
+        '../static/img/smartCenter/fish/luohanyu.jpg',// 7
+        '../static/img/smartCenter/fish/nianyu.jpg',// 8
+        '../static/img/smartCenter/fish/qingdaofu.jpg',// 9
+        '../static/img/smartCenter/fish/shibanyu.jpg',// 10
     ];
+
+    const numDic={
+        'ht': 1,
+        'hdy': 3,
+        'jiny': 5,
+        'jy': 4,
+        'lhy': 7,
+        'ly': 6,
+        'ny': 8,
+        'qdf': 9,
+        'sby': 10
+    }
 
     const fishDic = {
         'ht': "河豚",
@@ -612,7 +624,8 @@
             fishId.textContent = generateRandomId();
             fishName.textContent = fishDic[res['class']];
             prob.textContent = res['prob'];
-            myfish.src = path;
+            // myfish.src = path;
+            myfish.src = imageList[numDic[res['class']]];// 我们的样本图片
         }
     })
 

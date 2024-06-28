@@ -466,7 +466,7 @@ def recognize():
     print(img_path)
     res = recognition.predict_fish(img_path)
     # res = 1
-    print("res::::::",res)
+    print(res)
     return jsonify(res)
 
 
