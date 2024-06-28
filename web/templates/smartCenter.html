@@ -60,24 +60,28 @@
                 <!-- 中间上面 -->
                 <div class="center-top">
                     <span>实时监控</span>
-                    <div class="center-pic" ></div>
+                    <div class="center-pic"><img id="centerFig" src="../static/img/smartCenter/fish/caoyu.jpg" style="height: 100%;"></div>
+                    <button id="switch" style="background-color: cornflowerblue;width: 30rem;height: 12rem;margin-right: 5rem;">switch</button>
+                    <button id="upload" style="background-color: cornflowerblue;width: 30rem;height: 12rem;">upload</button>
+                    <button id="update" style="background-color: cornflowerblue;width: 30rem;height: 12rem;margin-left: 5rem;">update</button>
                 </div>
 
 
                 <!-- 中间下面 -->
                 <div class="content-title">
                     <span style="font-size: 18px;margin-left:70rem">实时数据</span>
+
                 </div>
                 <div class="center-bottom">
                     <!-- 下上 -->
                     <div class="bottom-top">
-                        <div class="bottom-pic"></div>
+                        <div class="bottom-pic"><img id="myfish" src="../static/img/smartCenter/8.png" style="height: 100%;"></div>
                         <div class="bottom-middle"></div>
                         <div class="bottom-text">
                             <ul>
-                                <li>编号：AS0092</li>
-                                <li>种类：扇形海鱼</li>
-                                <li>性别：雌性</li>
+                                <li >编号：<span id="fishId">AS0092</span></li>
+                                <li>种类：<span id="fishName">扇形海鱼</span></li>
+                                <li>prob：<span id="prob">0.98</span></li>
                             </ul>
                         </div>
                     </div>
@@ -356,6 +360,123 @@
                   ]
               };
     myChart.setOption(option);
+</script>
+
+<!-- 图像识别 -->
+<script type="text/javascript">
+    const fig = document.getElementById('centerFig');
+    const switchButton = document.getElementById('switch');
+    const updateButton = document.getElementById('update');
+    const uploadButton = document.getElementById('upload');
+    const fishId = document.getElementById('fishId');
+    const fishName = document.getElementById('fishName');
+    const prob = document.getElementById('prob');
+    const myfish = document.getElementById('myfish');
+
+    // 鱼类的图像列表
+    const imageList = [
+        '../static/img/smartCenter/fish/caoyu.jpg',
+        '../static/img/smartCenter/fish/hetun1.jpg',
+        '../static/img/smartCenter/fish/hetun2.jpg',
+        '../static/img/smartCenter/fish/hudieyu.jpg',
+        '../static/img/smartCenter/fish/jiyu.jpg',
+        '../static/img/smartCenter/fish/jinyu.jpg',
+        '../static/img/smartCenter/fish/longyu.jpg',
+        '../static/img/smartCenter/fish/luohanyu.jpg',
+        '../static/img/smartCenter/fish/nianyu.jpg',
+        '../static/img/smartCenter/fish/qingdaofu.jpg',
+        '../static/img/smartCenter/fish/shibanyu.jpg',
+    ];
+
+    const fishDic = {
+        'ht': "河豚",
+        'hdy': "蝴蝶鱼",
+        'jiny': "金鱼",
+        'jy': "鲫鱼",
+        'lhy': "罗汉鱼",
+        'ly': "龙鱼",
+        'ny': "鲶鱼",
+        'qdf': "清道夫",
+        'sby': "石斑鱼"
+    }
+
+    let currentIndex = 1; // 初始索引
+    switchButton.addEventListener('click', () => {
+        // 切换到下一个图像
+        currentIndex = (currentIndex + 1) % imageList.length;
+        fig.src = imageList[currentIndex];
+    });
+
+    uploadButton.addEventListener('click', () => {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'image/*'; // 只允许上传图片文件
+        input.style.display = 'none';
+
+        input.onchange = async (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                // const reader = new FileReader();
+                // reader.onload = (event) => {
+                //     fig.src = event.target.result;
+                // };
+                // reader.readAsDataURL(file);
+                const formData = new FormData();
+                formData.append('image', file);
+                const response = await fetch('/upload_fig', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+                console.log('Upload result:', result);
+
+                if (result.path) {
+                    fig.src = result.path; // 使用服务器返回的路径设置图像源
+                }
+            }
+        };
+
+        // 模拟点击文件选择对话框
+        input.click();
+    });
+
+    /**** 识别模型 ****/
+    // 路径传到后端
+    async function sendPath(path) {
+        const response = await fetch('/recognize', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ path})
+        });
+        const res = await response.json();
+        console.log(res);
+        return res;
+    }
+
+    // 随机生成ID
+    function generateRandomId() {
+        const letter = String.fromCharCode(65 + Math.floor(Math.random() * 26)); // 生成随机大写字母
+        const numbers = Math.floor(10000 + Math.random() * 90000); // 生成五位随机数字
+        return letter + numbers;
+    }
+
+    updateButton.addEventListener('click', async() => {
+        const path = fig.src;
+        console.log(path)
+        if (path) {
+            const res = await sendPath(path);
+            // console.log(res)
+            fishId.textContent = generateRandomId();
+            fishName.textContent = fishDic[res['class']];
+            prob.textContent = res['prob'];
+            myfish.src = path;
+        }
+    })
+
+
+    
 </script>
 
 <!-- AI message -->

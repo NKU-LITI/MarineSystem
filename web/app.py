@@ -4,14 +4,34 @@ import sys
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + '/../')
 
 from flask import Flask, render_template, request, url_for, redirect, jsonify
+
+
+# 数据库相关
 #from data import SourceData
-from data_db import SourceData
+from data_db import SourceData, ENGINE_CONFIG   # 主要用于前端界面的查询
+#from data_db import db,Fish  # 主要用于admin的CRUD
+from sqlalchemy import text
+
+# openai相关
 from openai import OpenAI
 import requests
+<<<<<<< HEAD
 import query
+=======
+import recognition
+>>>>>>> 8e912c88ebd5e200b6d398d4cbd0eddd1d3584ff
 
+# 初始化数据库
 app = Flask(__name__,static_folder='static')
+app.config['SQLALCHEMY_DATABASE_URI'] = ENGINE_CONFIG
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 source = SourceData()
+#db.init_app(app)
+
+
+# bool变量控制查询操作
+#Fish_Find = False
+#Fish_Find_Data = []
 
 
 @app.route('/')
@@ -130,14 +150,110 @@ def admain_right():
 def admain_default():
     return render_template('admain/default.html')
 
-@app.route('/admain_operateList')
-def admain_operateList():
-    #获取鱼类数据
+
+# admin: 鱼类表的展示及操作
+# -------------------------------begin-------------------------------
+@app.route('/admain_fish')
+def admain_fish():
     fish = source.all_fish
-    #print(type(fish))
-    #print(fish)
-    return render_template('admain/operateList.html', all_fish=fish)
-    
+    return render_template('admain/fish.html', all_fish=fish)
+
+@app.route('/edit_fish', methods=['POST'])
+def edit_fish():
+    print("\n1\n")
+    fish_id = request.form['id']
+    species = request.form['species']
+    weight = request.form['weight']
+    length = request.form['length']
+    height = request.form['height']
+    width = request.form['width']
+    status = request.form['status']
+    print("\n2\n")
+    source.update_fish(fish_id, species, weight, length, height, width, status)
+    print("\n3\n")
+    return redirect(url_for('admain_fish'))
+
+@app.route('/delete_fish/<int:id>', methods=['POST'])
+def delete_fish(id):
+    print("\n1  {id}\n")
+    source.delete_fish(fish_id=id)
+    return redirect(url_for('admain_fish'))
+
+
+@app.route('/insert_fish', methods=['POST'])
+def insert_fish():
+    species = request.form.get('species')
+    weight = request.form.get('weight')
+    length = request.form.get('length')
+    height = request.form.get('height')
+    width = request.form.get('width')
+    status = request.form.get('status')
+
+    source.insert_fish(species, weight, length, height, width, status)
+    print("\n3\n")
+    return redirect(url_for('admain_fish'))
+
+
+@app.route('/search_fish', methods=['GET', 'POST'])
+def search_fish():
+    if request.method == 'POST':
+        search_id = request.form.get('searchId')
+        search_species = request.form.get('searchSpecies')
+        search_weight = request.form.get('searchWeight')
+        search_length = request.form.get('searchLength')
+        search_height = request.form.get('searchHeight')
+        search_width = request.form.get('searchWidth')
+        search_status = request.form.get('searchStatus')
+    elif request.method == 'GET':
+        search_id = request.args.get('searchId')
+        search_species = request.args.get('searchSpecies')
+        search_weight = request.args.get('searchWeight')
+        search_length = request.args.get('searchLength')
+        search_height = request.args.get('searchHeight')
+        search_width = request.args.get('searchWidth')
+        search_status = request.args.get('searchStatus')
+
+    # 构建 SQL 查询语句
+    sql_query = "SELECT * FROM fish WHERE 1=1"
+
+    # 添加条件：如果 search_species 不为空，则添加物种条件
+    if search_id:
+        sql_query += f" AND id = {search_id}"
+
+    if search_species:
+        sql_query += f" AND Species = '{search_species}'"
+
+    # 添加条件：如果 search_status 不为空，则添加状态条件
+    if search_status:
+        sql_query += f" AND Status = '{search_status}'"
+
+    # 添加条件：如果不为 0，则添加
+    if search_weight and float(search_weight) != 0:
+        sql_query += f" AND Weight = {float(search_weight)}"
+
+    if search_length and float(search_length) != 0:
+        sql_query += f" AND Length = {float(search_length)}"
+
+    # 添加条件：如果 search_height 不为 0，则添加高度条件
+    if search_height and float(search_height) != 0:
+        sql_query += f" AND Height = {float(search_height)}"
+
+    # 添加条件：如果 search_width 不为 0，则添加宽度条件
+    if search_width and float(search_width) != 0:
+        sql_query += f" AND Width = {float(search_width)}"
+
+    print(sql_query)
+    with source.ENGINE.connect() as conn:
+        result = conn.execute(text(sql_query)).fetchall()
+    fish_list = [dict(row._mapping) for row in result]
+    print(fish_list)
+
+    return render_template('admain/fish.html', all_fish=fish_list)
+
+
+# -------------------------------begin-------------------------------
+
+
 @app.route('/admain_searchList')
 def admain_searchList():
     users = source.all_users
@@ -211,10 +327,10 @@ def get_userlist():
 def logout_success():
     return render_template('mainInfo.html')
 
+
 # 大模型API（用于回答）
 api_key = "sk-Z6ttNnGzWksu7LYIOVVNuvXi3GqD5g6rykmK7NAn7ZcqTP7Q"
 MessageModel = OpenAI(api_key=api_key, base_url="https://api.moonshot.cn/v1")
-
 
 @app.route('/api/chat', methods=['POST'])
 def chat():
@@ -235,13 +351,53 @@ def chat():
         temperature=0.3,
     )
 
-
     # 直接访问ChatCompletionMessage对象的content属性
     model_reply = completion.choices[0].message.content
     # model_reply = get_reply(user_message)
     print("answer:",model_reply)
     return jsonify({'reply': model_reply})
 
+# 图像识别模型
+@app.route('/recognize', methods=['POST'])
+def recognize():
+    data = request.json
+    img_path = data.get('path')
+    # 找到'static'在 URL中的位置
+    start_index = img_path.find('static')
+    if start_index != -1:
+        # 截取从'static'开始的子字符串
+        img_path = img_path[start_index:]
+    img_path = 'web/'+img_path
+    # img_path = 'web/草鱼.jpg'
+    print(img_path)
+    res = recognition.predict_fish(img_path)
+    # res = 1
+    print(res)
+    return jsonify(res)
+
+
+# 用户上传自己的图文件
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 限制上传文件大小为 16MB
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', }
+app.config['ALLOWED_EXTENSIONS'] = ALLOWED_EXTENSIONS
+UPLOAD_FOLDER = "web/static/img/smartCenter/userFish"
+@app.route('/upload_fig', methods=['POST'])
+def upload_fig():
+    file = request.files['image']
+    if file:
+        filename = file.filename
+        filepath = UPLOAD_FOLDER+'/'+filename
+        current_dir = os.getcwd()
+        print("Current working directory:", current_dir)
+        file.save(filepath)
+        # 但是传到后端的时候需要把路径变成"web/static/"->"../static"
+        # 找到'static'在 URL中的位置
+        start_index = filepath.find('static')
+        if start_index != -1:
+            # 截取从'static'开始的子字符串
+            filepath = filepath[start_index:]
+        filepath = '../'+filepath
+        return jsonify({'path': filepath})   
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', debug=True)
