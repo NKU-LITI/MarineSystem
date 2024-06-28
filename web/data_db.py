@@ -30,6 +30,16 @@ class SourceData(SourceDataDemo):
         return total_count
     
     @property
+    def TotalUserCount(self): 
+        sql = """
+        SELECT COUNT(*) AS total_count FROM user;
+        """
+        df = pd.read_sql(sql, self.ENGINE)
+        #提取出数字
+        total_count = df['total_count'].iloc[0]
+        return total_count
+    
+    @property
     def GrowthCount(self): 
         sql = """
         SELECT COUNT(*) AS total_count FROM fish where Status="生长鱼";
@@ -540,4 +550,13 @@ ORDER BY MIN(Length);
         client_data = [{'Species': row[0], 'Weight': row[1], 
                         'Length': row[2], 'Height': row[3] , 
                         'Width': row[4], 'Status':row[5]} for row in df.values]
+        return client_data
+    
+    @ property
+    def all_users(self):
+        sql=""" select user_id, username, email, role, created_at from user; """
+        df = pd.read_sql(sql, self.ENGINE)
+        client_data = [{'user_id': row[0], 'username': row[1], 
+                        'email': row[2], 'role': row[3] , 
+                        'created_at': row[4]} for row in df.values]
         return client_data

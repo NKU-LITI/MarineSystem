@@ -140,7 +140,8 @@ def admain_operateList():
     
 @app.route('/admain_searchList')
 def admain_searchList():
-    return render_template('admain/searchList.html')
+    users = source.all_users
+    return render_template('admain/searchList.html', users=users)
 
 @app.route('/admain_form')
 def admain_form():

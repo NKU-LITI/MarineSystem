@@ -65,25 +65,28 @@
             </tr>
         </thead>
         <tbody>
+            {% for user in users %}
             <tr>
                 <td><input name="" type="checkbox" value=""/></td>
-                <td>20130908</td>
-                <td>威海海洋牧场科技发展有限公司</td>
-                <td>admin</td>
-                <td>江苏南京</td>
-                <td>2013-09-09</td>
+                <td>{{ user.user_id }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.role }}</td>
+                <td>{{ user.created_at }}</td>
+                <td><a href="#" class="tablelink">修改</a> <a href="#" class="tablelink">删除</a></td>
             </tr>        
-
+            {% endfor %}
 
         </tbody>
     </table>
 
     <div class="pagin">
-        <div class="message">共<i class="blue">1256</i>条记录，当前显示第&nbsp;<i class="blue">2&nbsp;</i>页</div>
+        <div class="message">共<i class="blue">{{user_count}} </i>条记录，当前显示第&nbsp;<i class="blue">1&nbsp;</i>页</div>
         <ul class="paginList">
             <li class="paginItem"><a href="javascript:;"><span class="pagepre"></span></a></li>
-            <li class="paginItem"><a href="javascript:;">1</a></li>
-            <li class="paginItem current"><a href="javascript:;">2</a></li>
+            <li class="paginItem current"><a href="javascript:;">1</a></li>
+            <li class="paginItem"><a href="javascript:;">2</a></li>
+
             <li class="paginItem"><a href="javascript:;">3</a></li>
             <li class="paginItem"><a href="javascript:;">4</a></li>
             <li class="paginItem"><a href="javascript:;">5</a></li>
