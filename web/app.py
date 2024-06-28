@@ -15,7 +15,6 @@ from sqlalchemy import text
 # openai相关
 from openai import OpenAI
 import requests
-import query
 import recognition
 
 
@@ -256,6 +255,102 @@ def search_fish():
 def admain_searchList():
     users = source.all_users
     return render_template('admain/searchList.html', users=users)
+
+
+
+
+
+# admin: 用户表的展示及操作
+# -------------------------------begin-------------------------------
+
+
+@app.route('/edit_user', methods=['POST'])
+def edit_user():
+    print("\n1\n")
+    user_id = request.form['user_id']
+    username = request.form['username']
+    password = request.form['password']
+    email = request.form['email']
+    role = request.form['role']
+    print("\n2\n")
+    source.update_user(user_id, username, password, email, role)
+    print("\n3\n")
+    return redirect(url_for('admain_searchList'))
+
+@app.route('/delete_user/<int:id>', methods=['POST'])
+def delete_user(id):
+    print("\n1  {id}\n")
+    source.delete_user(id=id)
+    return redirect(url_for('admain_searchList'))
+
+
+@app.route('/insert_user', methods=['POST'])
+def insert_user():
+    username = request.form.get('username')
+    password = request.form.get('password')
+    email = request.form.get('email')
+    role = request.form.get('role')
+    #created_at = request.form.get('created_at')
+
+    source.insert_user( username, password, email, role)
+    print("\n3\n")
+    return redirect(url_for('admain_searchList'))
+
+
+@app.route('/search_user', methods=['GET', 'POST'])
+def search_user():
+    if request.method == 'POST':
+        search_id = request.form.get('searchId')
+        search_username = request.form.get('searchUsername')
+        search_email = request.form.get('searchEmail')
+        search_role = request.form.get('searchRole')
+        search_created_at = request.form.get('searchCreatedAt')
+    elif request.method == 'GET':
+        search_id = request.args.get('searchId')
+        search_username = request.args.get('searchUsername')
+        search_email = request.args.get('searchEmail')
+        search_role = request.args.get('searchRole')
+        search_created_at = request.args.get('searchCreatedAt')
+
+
+    # 构建 SQL 查询语句
+    sql_query = "SELECT * FROM user WHERE 1=1"
+
+
+
+    
+    if search_id:
+        sql_query += f" AND id = {search_id}"
+
+    # 添加条件：如果 search_username 不为空，则添加用户名条件
+
+    if search_username:
+        sql_query += f" AND Species = '{search_username}'"
+
+
+    # 添加条件：如果 search_email 不为空，则添加邮箱条件
+    if search_email:
+        sql_query += f" AND Email = '{search_email}'"
+
+    # 添加条件：如果 search_role 不为空，则添加角色条件
+    if search_role: 
+        sql_query += f" AND Role = '{search_role}'"
+
+    # 添加条件：如果 search_created_at 不为空，则添加创建时间条件
+    if search_created_at:
+        sql_query += f" AND Created_at = '{search_created_at}'"
+
+
+
+    print(sql_query)
+    with source.ENGINE.connect() as conn:
+        result = conn.execute(text(sql_query)).fetchall()
+    user_list = [dict(row._mapping) for row in result]
+    print(user_list)
+
+    return render_template('admain/searchList.html', users=user_list)
+
+# ----------------------------------------------------------------------------
 
 @app.route('/admain_form')
 def admain_form():
