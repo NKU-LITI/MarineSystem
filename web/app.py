@@ -318,8 +318,6 @@ def search_user():
     # 构建 SQL 查询语句
     sql_query = "SELECT * FROM user WHERE 1=1"
 
-
-
     
     if search_id:
         sql_query += f" AND user_id = {search_id}"
