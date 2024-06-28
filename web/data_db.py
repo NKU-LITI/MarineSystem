@@ -11,7 +11,7 @@
 为便于编辑减少重复，管理员界面的增删改查使用SQLAlchemy方式
 '''
 import pandas as pd
-from flask_sqlalchemy import SQLAlchemy
+# from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine, text
 from data import SourceDataDemo
 
@@ -540,6 +540,43 @@ ORDER BY MIN(Length);
 
     # -------------- '数据中心'界面 结束 -----------------
 
+    # -------------- 以下为mainInfo -----------------
+    @ property
+    def water_quality(self):
+        sql = """
+        SELECT *
+        FROM water_quality
+        LIMIT 1;
+        """
+        df = pd.read_sql(sql, self.ENGINE)
+        # print("water_quality：",df.values[0][0])
+        client_data = {
+            '水温': df.values[0][2],
+            'PH': df.values[0][3],
+            '溶解氧': df.values[0][4],
+            '浊度': df.values[0][6],
+            '总氮': df.values[0][10]
+        }
+        return client_data
+    
+    @ property
+    def water_quality_history(self):
+        # 历史12天的
+        sql = """
+        SELECT *
+        FROM water_quality
+        LIMIT 12;
+        """
+        df = pd.read_sql(sql, self.ENGINE)
+        client_data = [{
+            '水温': row[2],
+            'PH': row[3],
+            '溶解氧': row[4],
+            '浊度': row[6],
+            '总氮': row[10]
+        } for row in df.values]
+        print("history:",client_data)
+        return client_data
     
     # -------------- 以下为管理员界面对'鱼类信息'的CRUD操作 -----------------
     @ property

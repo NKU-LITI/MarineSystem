@@ -63,7 +63,9 @@ def reset_password():
 
 @app.route('/mainInfo')
 def mainInfo():
-    return render_template('mainInfo.html')
+    quality = [source.water_quality]
+    quality_history = [source.water_quality_history]
+    return render_template('mainInfo.html', quality=quality, quality_history=quality_history)
 
 
 @app.route('/waterSystem')
@@ -329,6 +331,7 @@ def chat():
 # 图像识别模型
 @app.route('/recognize', methods=['POST'])
 def recognize():
+    print("start recognize")
     data = request.json
     img_path = data.get('path')
     # 找到'static'在 URL中的位置
@@ -341,7 +344,7 @@ def recognize():
     print(img_path)
     res = recognition.predict_fish(img_path)
     # res = 1
-    print(res)
+    print("res::::::",res)
     return jsonify(res)
 
 
@@ -369,5 +372,5 @@ def upload_fig():
         return jsonify({'path': filepath})   
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', debug=True)
+    app.run(host='127.0.0.1', debug=False)
 

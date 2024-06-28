@@ -112,7 +112,7 @@
                 <button id="ph" class="choice">PH值</button>
                 <button id="temp" class="choice">温度</button>
                 <button id="ox" class="choice">溶解氧</button>
-                <button id="sun" class="choice">光照</button>
+                <button id="do" class="choice">浊度</button>
                 <div id="table0" class="_table0"></div>
             </div>
             
@@ -615,13 +615,44 @@ var markerArr2 = [
 <script>
     // 初始化ECharts实例
     var myChart1 = echarts.init(document.getElementById('table0'));
+    var quality_history = {{quality_history |safe}}
+    console.log(quality_history)
 
-    // 初始数据
-    var data_ph = [2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 8.3, 9.4, 7.0, 9.5, 12.0, 11.2];
-    var data_temp = [2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2];
+    // 初始化一个空对象用于存储反转后的数据
+    var reversedHistory = {};
 
-    // 初始显示2017年数据
-    renderChart(data_ph);
+    // 遍历quality_history[0]中的每个字典
+    quality_history[0].forEach(record => {
+        // 遍历每个字典的键值对
+        for (let key in record) {
+            if (record.hasOwnProperty(key)) {
+                // 如果reversedHistory中没有这个键，初始化一个空数组
+                if (!reversedHistory[key]) {
+                    reversedHistory[key] = [];
+                }
+                // 将当前值添加到对应的键的数组中
+                reversedHistory[key].push(record[key]);
+            }
+        }
+    });
+    // 打印反转后的数组
+    // console.log('Reversed History:', reversedHistory);
+    
+
+    // // 初始数据
+    // var data_ph = [2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 8.3, 9.4, 7.0, 9.5, 12.0, 11.2];
+    // var data_temp = [2.0, 2.2, 3.3, 4.5, 6.3, 10.2, 20.3, 23.4, 23.0, 16.5, 12.0, 6.2];
+
+    // 静态的 -> 动态的
+    var data_ph = reversedHistory['PH'];
+    var data_temp = reversedHistory['水温'];
+    var data_ox = reversedHistory['溶解氧'];
+    var data_do = reversedHistory['浊度'];
+    // console.log(data_ph)
+
+
+    // 初始显示ph
+    renderChart(data_do);
 
     // 点击按钮切换显示数据
     document.getElementById('ph').onclick = function() {
@@ -630,6 +661,14 @@ var markerArr2 = [
 
     document.getElementById('temp').onclick = function() {
         renderChart(data_temp);
+    }
+
+    document.getElementById('ox').onclick = function() {
+        renderChart(data_ox);
+    }
+
+    document.getElementById('do').onclick = function() {
+        renderChart(data_do);
     }
 
     // 渲染图表函数
@@ -669,13 +708,21 @@ var markerArr2 = [
 </script>
 
 <!-- table1--左下那个 -->
-<script>
+<script type="text/javascript">
+    // 静态数据->后端读取
+    // var salvProName =["PH值","温度","溶解氧","光照","污染值"];
+	// var salvProValue =[6.0,22.5,7,6,9.2];
+    var quality = {{quality|tojson|safe}};
+    var salvProName = Object.keys(quality[0])
+    var salvProValue = Object.values(quality[0])
+    // console.log(salvProName)
     var myChart2 = echarts.init(document.getElementById('datashows'));
-	var salvProName =["PH值","温度","溶解氧","光照","污染值"];
-	var salvProValue =[6.0,22.5,7,6,9.2];
+    
+    // 获取salvProValue数组中的最大值
+    var maxValue = Math.max(...salvProValue);
 	var salvProMax =[];//背景按最大值
 	for (let i = 0; i < salvProValue.length; i++) {
-	    salvProMax.push(salvProValue[0])
+	    salvProMax.push(maxValue)
 	}
 	option = {
 
