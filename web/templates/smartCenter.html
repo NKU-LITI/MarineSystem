@@ -430,8 +430,9 @@
     }
     
     // Function to send a message to the backend
-    async function sendMessage(message) {
-        addMessage(message);
+    async function sendMessage(message,ifSuggest = false) {
+        if(!ifSuggest)
+            addMessage(message);
         chatInput.value = '';
 
         // Replace with your actual backend URL
@@ -470,35 +471,43 @@
     suggestButton.addEventListener('click', () => {
         var q = "对渔场环境的决策建议？"
         addMessage(q);
-        // 在这里直接回复就可以
-        // ph决策
-        if(data_ph[6]>_ph){
-            ph_reply = "（1）ph值"+data_ph[6]+"高于平均值"+_ph.toFixed(2)+"，建议降低ph。"
-        }else{
-            ph_reply = "1. ph值"+data_ph[6]+"低于平均值"+_ph.toFixed(2)+"，建议提高ph。"
-        }
+        // // 在这里直接回复就可以
+        // // ph决策
+        // if(data_ph[6]>_ph){
+        //     ph_reply = "（1）ph值"+data_ph[6]+"高于平均值"+_ph.toFixed(2)+"，建议降低ph。"
+        // }else{
+        //     ph_reply = "1. ph值"+data_ph[6]+"低于平均值"+_ph.toFixed(2)+"，建议提高ph。"
+        // }
 
-        // temp决策
-        if(data_temp[6]>_temp){
-            temp_reply = "（2）温度值"+data_temp[6]+"高于平均值"+_temp.toFixed(1)+"，建议降低温度。"
-        }else{
-            temp_reply = "（2） 温度值"+data_temp[6]+"低于平均值"+_temp.toFixed(1)+"，建议提高温度。"
-        }
+        // // temp决策
+        // if(data_temp[6]>_temp){
+        //     temp_reply = "（2）温度值"+data_temp[6]+"高于平均值"+_temp.toFixed(1)+"，建议降低温度。"
+        // }else{
+        //     temp_reply = "（2） 温度值"+data_temp[6]+"低于平均值"+_temp.toFixed(1)+"，建议提高温度。"
+        // }
 
-        if(data_ox[6]>_ox){
-            ox_reply = "（3） 溶解氧"+data_ox[6]+"高于平均值"+_ox.toFixed(1)+"，建议降低。"
-        }else{
-            ox_reply = "（3） 溶解氧"+data_ox[6]+"低于平均值"+_ox.toFixed(1)+"，建议提高。"
-        }
+        // if(data_ox[6]>_ox){
+        //     ox_reply = "（3） 溶解氧"+data_ox[6]+"高于平均值"+_ox.toFixed(1)+"，建议降低。"
+        // }else{
+        //     ox_reply = "（3） 溶解氧"+data_ox[6]+"低于平均值"+_ox.toFixed(1)+"，建议提高。"
+        // }
 
-        if(data_do[6]>_do){
-            do_reply = "（4） 浊度值"+data_do[6]+"高于平均值"+_do.toFixed(1)+"，建议降低。"
-        }else{
-            do_reply = "（4）浊度值"+data_do[6]+"低于平均值"+_do.toFixed(1)+"，建议提高。"
-        }
+        // if(data_do[6]>_do){
+        //     do_reply = "（4） 浊度值"+data_do[6]+"高于平均值"+_do.toFixed(1)+"，建议降低。"
+        // }else{
+        //     do_reply = "（4）浊度值"+data_do[6]+"低于平均值"+_do.toFixed(1)+"，建议提高。"
+        // }
 
-        reply = ph_reply + "\n" + temp_reply + "\n" + ox_reply + "\n" + do_reply;
-        addMessage(reply, false);
+        // reply = ph_reply + "\n" + temp_reply + "\n" + ox_reply + "\n" + do_reply;
+        // addMessage(reply, false);
+
+        const message = "我的渔场数据为：当前ph值"+data_ph[6]+"，平均ph值"+_ph.toFixed(2)+"，当前温度值"+data_temp[6]+"，平均温度值"+_temp.toFixed(1)
+            +"，当前溶解氧值"+data_ox[6]+"，平均溶解氧值"+_ox.toFixed(1)+"，当前浊度值"+data_do[6]+"，平均浊度值"+_do.toFixed;
+            
+        console.log(message)
+        if (message) {
+            sendMessage(message,true);
+        }
     });
 
 </script>

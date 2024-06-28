@@ -428,7 +428,7 @@ MessageModel = OpenAI(api_key=api_key, base_url="https://api.moonshot.cn/v1")
 @app.route('/api/chat', methods=['POST'])
 def chat():
     data = request.json
-    user_message = data.get('message')
+    user_message = data.get('message')+"（限定50字以内）"
     print("question:",user_message)
 
     # 构建消息列表
