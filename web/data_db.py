@@ -582,10 +582,9 @@ ORDER BY MIN(Length);
     def all_fish(self):
         sql=""" SELECT * FROM `fish`; """
         df = pd.read_sql(sql, self.ENGINE)
-
-        client_data = [{'Species': row[0], 'Weight': row[1], 
-                        'Length': row[2], 'Height': row[3] , 
-                        'Width': row[4], 'Status':row[5]} for row in df.values]
+        client_data = [{'id': row[0], 'Species': row[1], 'Weight': row[2], 
+                        'Length': row[3], 'Height': row[4] , 
+                        'Width': row[5], 'Status':row[6]} for row in df.values]
         return client_data
     
 
