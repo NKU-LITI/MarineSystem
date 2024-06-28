@@ -1,10 +1,10 @@
-﻿
-<html>
+﻿<html>
+
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>无标题文档</title>
-    <link href="../../static/css/style_admain.css" rel="stylesheet" type="text/css"/>
-    <link href="../../static/js/admain/3rd/select/select.css" rel="stylesheet" type="text/css"/>
+    <link href="../../static/css/style_admain.css" rel="stylesheet" type="text/css" />
+    <link href="../../static/js/admain/3rd/select/select.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="../../static/js/admain/jquery/jquery.1.11.2.min.js"></script>
     <script type="text/javascript" src="../../static/js/admain/3rd/select/select-ui.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -13,105 +13,297 @@
 <body>
 
 
-<div class="rightinfo">
-    <ul class="seachform">
-        <li>
-            <label>综合查询</label>
-            <input name="" type="text" class="scinput"/>
-        </li>
-        <li>
-            <label>指派</label>
-            <div class="vocation">
-                <select class="select3">
-                    <option>全部</option>
-                    <option>其他</option>
-                </select>
-            </div>
-        </li>
-        <li>
-            <label>重点客户</label>
-            <div class="vocation">
-                <select class="select3">
-                    <option>全部</option>
-                    <option>其他</option>
-                </select>
-            </div>
-        </li>
-        <li>
-            <label>客户状态</label>
-            <div class="vocation">
-                <select class="select3">
-                    <option>全部</option>
-                    <option>其他</option>
-                </select>
-            </div>
-        </li>
-        <li>
-            <label>&nbsp;</label>
-            <input name="" type="button" class="scbtn" value="查询"/>
-        </li>
-    </ul>
+    <div class="rightinfo">
+        <div class="tools">
+            <ul class="toolbar">
+                <!--<li><span><img src="../../static/img/admain/t04.png"/></span>查询</li>-->
+                <li><span><img src="../../static/img/admain/t01.png" /></span><a href="#" onclick="searchUser()">查询</a>
+                </li>
+            </ul>
+            <ul class="toolbar1">
+                <li><span><img src="../../static/img/admain/t01.png" /></span><a href="#" onclick="insertUser()">添加</a>
+                </li>
+            </ul>
+
+            <ul class="searchbar">
+                <li><input type="text" id="searchId" placeholder="编号"></li>
+                <li><input type="text" id="searchSpecies" placeholder="用户名"></li>
+                <li><input type="text" id="searchWeight" placeholder="邮箱"></li>
+                <li><input type="text" id="searchLength" placeholder="身份"></li>
+                <li><input type="text" id="searchHeight" placeholder="注册日期"></li>
+            </ul>
+        </div>
 
 
-    <table class="tablelist">
-        <thead>
-            <tr>
-                <th><input name="" type="checkbox" value="" checked="checked"/></th>
-                <th>编号<i class="sort"><img src="../../static/img/admain/px.png"/></i></th>
-                <th>用户名</th>
-                <th>邮箱</th>
-                <th>角色</th>
-                <th>注册日期</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for user in users %}
-            <tr>
-                <td><input name="" type="checkbox" value=""/></td>
-                <td>{{ user.user_id }}</td>
-                <td>{{ user.username }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.role }}</td>
-                <td>{{ user.created_at }}</td>
-                <td><a href="#" class="tablelink">修改</a> <a href="#" class="tablelink">删除</a></td>
-            </tr>        
-            {% endfor %}
+        <table class="tablelist">
+            <thead>
+                <tr>
+                    <th><input name="" type="checkbox" value="" checked="checked" /></th>
+                    <th>编号<i class="sort"><img src="../../static/img/admain/px.png" /></i></th>
+                    <th>用户名</th>
+                    <th>邮箱</th>
+                    <th>身份</th>
+                    <th>注册日期</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td><input name="" type="checkbox" value="" /></td>
+                    <td>{{ user.user_id }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.role }}</td>
+                    <td>{{ user.created_at }}</td>
+                    <td>
+                        <a href="#" class="tablelink"
+                            onclick="editUser({{ user.user_id }}, '{{ user.username }}', '{{ user.password }}','{{ user.email }}', {{ user.role }})">修改</a>
+                        <form id="deleteForm{{ user.user_id }}" action="{{ url_for('delete_user', id=user.user_id) }}"
+                            method="post" style="display:inline;">
+                            <button type="button" onclick="confirmDelete({{ user.user_id }})"
+                                class="tablelink">删除</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
 
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+
+
+
+        <!-- edit 模态框 -->
+        <div id="editModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>编辑用户信息</h2>
+                <form id="editForm">
+                    <!--<input type="hidden" id="fishId" name="id">-->
+                    <input type="hidden" id="user_id" name="id">
+                    <label for="id">用户ID: <span id="displayId"></span></label><br>
+                    <label for="username">用户名:</label>
+                    <input type="text" id="username" name="username"><br>
+                    <label for="password">密码:</label>
+                    <input type="text" id="password" name="password"><br>
+                    <label for="email">邮箱:</label>
+                    <input type="text" id="email" name="email"><br>
+                    <label for="role">身份:</label>
+                    <input type="text" id="role" name="role"><br>
+                    <button type="button" onclick="submitEditForm()">保存</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- insert 模态框 -->
+        <div id="insertModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>添加用户信息</h2>
+                <form id="insertForm">
+                    <label for="username">用户名:</label>
+                    <input type="text" id="username" name="username"><br>
+                    <label for="password">密码:</label>
+                    <input type="text" id="password" name="password"><br>
+                    <label for="email">邮箱:</label>
+                    <input type="text" id="email" name="email"><br>
+                    <label for="role">身份:</label>
+                    <input type="text" id="role" name="role"><br>
+                    <button type="button" onclick="submitInsertForm()">保存</button>
+                </form>
+            </div>
+        </div>
+
+
+        <!-- 提示对话框 未使用，可加-->
+        <div class="tip">
+            <div class="tiptop"><span>提示信息</span><a></a></div>
+            <div class="tipinfo">
+                <span><img src="../../static/img/admain/ticon.png" /></span>
+                <div class="tipright">
+                    <p>是否确认对信息的修改 ？</p>
+                    <cite>如果是请点击确定按钮 ，否则请点取消。</cite>
+                </div>
+            </div>
+            <div class="tipbtn">
+                <input name="" type="button" class="sure" value="确定" />&nbsp;
+                <input name="" type="button" class="cancel" value="取消" />
+            </div>
+        </div>
+    </div>
 
     <div class="pagin">
-        <div class="message">共<i class="blue">{{user_count}} </i>条记录，当前显示第&nbsp;<i class="blue">1&nbsp;</i>页</div>
-        <ul class="paginList">
-            <li class="paginItem"><a href="javascript:;"><span class="pagepre"></span></a></li>
-            <li class="paginItem current"><a href="javascript:;">1</a></li>
-            <li class="paginItem"><a href="javascript:;">2</a></li>
-
-            <li class="paginItem"><a href="javascript:;">3</a></li>
-            <li class="paginItem"><a href="javascript:;">4</a></li>
-            <li class="paginItem"><a href="javascript:;">5</a></li>
-            <li class="paginItem more"><a href="javascript:;">...</a></li>
-            <li class="paginItem"><a href="javascript:;">10</a></li>
-            <li class="paginItem"><a href="javascript:;"><span class="pagenxt"></span></a></li>
-        </ul>
+        <div class="message">共<i class="blue">{{users|length}}</i>条记录</div>
     </div>
-</div>
+    </div>
 
-<script type="text/javascript">
-    $(function(){
-        $('.tablelist tbody tr:odd').addClass('odd');
-        //下拉框的样式设置
-        $(".select1").uedSelect({
-            width: 345
+
+
+
+
+    <script type="text/javascript">
+        $(function () {
+            //给偶数行加上颜色
+            $('.tablelist tbody tr:odd').addClass('odd');
+            //提示框弹出事件
+            /*$('.toolbar').find('li').on('click', function(){
+                $(".tip").fadeIn(200);
+            });*/
+            //提示框影藏
+            /*$(".tiptop a").click(function () {
+                $(".tip").fadeOut(200);
+            })
+    
+            $(".sure").click(function () {
+                $(".tip").fadeOut(100);
+            });
+    
+            $(".cancel").click(function () {
+                $(".tip").fadeOut(100);
+            });*/
         });
-        $(".select2").uedSelect({
-            width: 167
+
+    </script>
+
+
+    <!--'修改/插入'的提示框操作-->
+    <script>
+        //修改操作
+        function editUser(user_id, username, password, email, role) {
+            document.getElementById('username').value = username;
+            document.getElementById('username').textContent = username;
+            document.getElementById('password').value = password;
+            document.getElementById('email').value = email;
+            document.getElementById('role').value = role;
+            var modal = document.getElementById('editModal');
+            modal.style.display = 'block';
+        }
+
+        function submitEditForm() {
+            var formData = new FormData(document.getElementById('editForm'));
+
+            fetch('{{ url_for("edit_user") }}', {
+                method: 'POST',
+                body: formData
+            }).then(response => {
+                if (response.ok) {
+                    location.reload();
+                } else {
+                    alert('修改失败');
+                }
+            });
+
+            var modal = document.getElementById('editModal');
+            modal.style.display = 'none';
+        }
+
+        // 点击模态框外部时关闭模态框
+        window.onclick = function (event) {
+            var editModal = document.getElementById('editModal');
+            var insertModal = document.getElementById('insertModal');
+            if (event.target == editModal) {
+                editModal.style.display = 'none';
+            }
+            if (event.target == insertModal) {
+                insertModal.style.display = 'none';
+            }
+        }
+
+        /*document.querySelector('.close').onclick = function() {
+            var modal = document.getElementById('editModal');
+                modal.style.display = 'none';
+        }*/
+
+        // 点击关闭按钮时关闭模态框
+        document.querySelectorAll('.close').forEach(function (closeButton) {
+            closeButton.onclick = function () {
+                var modal = this.closest('.modal');
+                modal.style.display = 'none';
+            }
         });
-        $(".select3").uedSelect({
-            width: 100
-        });
-    });
-</script>
+
+
+        //插入操作
+        function insertUser() {
+            // 可以在这里实现打开模态框或者跳转页面的操作
+            var modal = document.getElementById('insertModal');
+            modal.style.display = 'block';
+        }
+
+        function submitInsertForm() {
+            var formData = new FormData(document.getElementById('insertForm'));
+
+            fetch('{{ url_for("insert_user") }}', {
+                method: 'POST',
+                body: formData
+            }).then(response => {
+                if (response.ok) {
+                    location.reload(); // 插入成功后刷新页面或者执行其他操作
+                } else {
+                    alert('添加失败');
+                }
+            });
+
+            var modal = document.getElementById('insertModal');
+            modal.style.display = 'none';
+        }
+
+
+        //删除
+        function confirmDelete(id) {
+            if (confirm(`确认要删除这条数据吗：ID= ${id} ？`)) {
+                // 构建表单提交
+                var form = document.getElementById(`deleteForm${id}`);
+                form.submit();
+            } else {
+                // 用户取消删除操作
+                return false;
+            }
+        }
+
+
+        //查询
+        function searchUser() {
+            var searchId = document.getElementById('searchId').value.trim();
+            var searchUsername = document.getElementById('searchUsername').value.trim();
+            var searchEmail = document.getElementById('searchEmail').value.trim();
+            var searchRole = document.getElementById('searchRole').value.trim();
+            var searchCreatedAt = document.getElementById('searchCreatedAt').value.trim();
+
+            // 构建查询字符串
+            var queryString = '';
+
+            if (searchId !== '') queryString += '&searchId=' + encodeURIComponent(parseInt(searchId));
+            if (searchUsername !== '') queryString += '&searchUsername=' + encodeURIComponent(searchUsername);
+            if (searchEmail !== '') queryString += '&searchEmail=' + encodeURIComponent(parseFloat(searchEmail));
+            if (searchRole !== '') queryString += '&searchRole=' + encodeURIComponent(parseFloat(searchRole));
+            if (searchCreatedAt !== '') queryString += '&searchCreatedAt=' + encodeURIComponent(parseFloat(searchCreatedAt));
+
+            // 移除开头的 "&"
+            queryString = queryString.slice(1);
+            console.log(queryString);
+
+            // 构建完整的 URL
+            var url = '{{ url_for("search_user") }}?' + queryString;
+
+            // 发起 GET 请求
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    // 如果需要跳转到新页面，可以在这里处理
+                    window.location.href = url;
+                } else {
+                    alert('查询失败');
+                }
+            });
+        }
+
+    </script>
 
 </body>
+
 </html>
