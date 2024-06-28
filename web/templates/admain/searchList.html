@@ -2,12 +2,9 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>无标题文档</title>
-    <link href="../../static/css/style_admain.css" rel="stylesheet" type="text/css" />
-    <link href="../../static/js/admain/3rd/select/select.css" rel="stylesheet" type="text/css" />
+    <title>admin-user</title>
+    <link href="../../static/css/style_admain.css" rel="stylesheet" type="text/css"/>
     <script type="text/javascript" src="../../static/js/admain/jquery/jquery.1.11.2.min.js"></script>
-    <script type="text/javascript" src="../../static/js/admain/3rd/select/select-ui.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -35,10 +32,10 @@
 
             <ul class="searchbar">
                 <li><input type="text" id="searchId" placeholder="编号"></li>
-                <li><input type="text" id="searchSpecies" placeholder="用户名"></li>
-                <li><input type="text" id="searchWeight" placeholder="邮箱"></li>
-                <li><input type="text" id="searchLength" placeholder="身份"></li>
-                <li><input type="text" id="searchHeight" placeholder="注册日期"></li>
+                <li><input type="text" id="searchUsername" placeholder="用户名"></li>
+                <li><input type="text" id="searchEmail" placeholder="邮箱"></li>
+                <li><input type="text" id="searchRole" placeholder="身份"></li>
+                <li><input type="text" id="searchCreatedAt" placeholder="注册日期"></li>
             </ul>
         </div>
 
@@ -123,6 +120,10 @@
             </div>
         </div>
 
+        <div class="pagin">
+            <div class="message">共<i class="blue">{{users|length}}</i>条记录</div>
+        </div>
+
 
         <!-- 提示对话框 未使用，可加-->
         <div class="tip">
@@ -140,9 +141,7 @@
             </div>
         </div>
 
-        <div class="pagin">
-            <div class="message">共<i class="blue">{{users|length}}</i>条记录</div>
-        </div>
+
     </div>
 
 
@@ -284,9 +283,9 @@
 
             if (searchId !== '') queryString += '&searchId=' + encodeURIComponent(parseInt(searchId));
             if (searchUsername !== '') queryString += '&searchUsername=' + encodeURIComponent(searchUsername);
-            if (searchEmail !== '') queryString += '&searchEmail=' + encodeURIComponent(parseFloat(searchEmail));
-            if (searchRole !== '') queryString += '&searchRole=' + encodeURIComponent(parseFloat(searchRole));
-            if (searchCreatedAt !== '') queryString += '&searchCreatedAt=' + encodeURIComponent(parseFloat(searchCreatedAt));
+            if (searchEmail !== '') queryString += '&searchEmail=' + encodeURIComponent(searchEmail);
+            if (searchRole !== '') queryString += '&searchRole=' + encodeURIComponent(searchRole);
+            if (searchCreatedAt !== '') queryString += '&searchCreatedAt=' + encodeURIComponent(searchCreatedAt);
 
             // 移除开头的 "&"
             queryString = queryString.slice(1);
@@ -294,6 +293,9 @@
 
             // 构建完整的 URL
             var url = '{{ url_for("search_user") }}?' + queryString;
+
+
+            // print("查询")
 
             // 发起 GET 请求
             fetch(url, {
