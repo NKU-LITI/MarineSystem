@@ -332,7 +332,7 @@
             const array = [Object.keys(arr[0])].concat(arr);
 
             return array.map(it => {
-                return Object.values(it).toString();
+                return Object.values(it).map(val => `"${val}"`).join(','); // 用双引号包裹值，防止逗号破坏格式
             }).join('\n');
         }
 
@@ -342,8 +342,11 @@
         // 创建并下载 CSV 文件
         function downloadCSV() {
             const filename = "data.csv";
-            const csvFile = new Blob([csv], { type: "text/csv" });
+            // 使用UTF-8 BOM来防止乱码问题
+            const csvWithBOM = '\uFEFF' + csv;
+            const csvFile = new Blob([csvWithBOM], { type: "text/csv;charset=utf-8;" });
             const downloadLink = document.createElement("a");
+
 
             downloadLink.download = filename;
             downloadLink.href = window.URL.createObjectURL(csvFile);

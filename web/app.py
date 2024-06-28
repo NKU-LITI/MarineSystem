@@ -162,6 +162,7 @@ def admain_default():
 @app.route('/admain_fish')
 def admain_fish():
     fish = source.all_fish
+    # print(fish)
     return render_template('admain/fish.html', all_fish=fish)
 
 @app.route('/edit_fish', methods=['POST'])
@@ -201,7 +202,22 @@ def insert_fish():
 
 @app.route('/upload_fish_csv', methods=['POST'])
 def upload_fish_csv():
-    print("fish!!!!!!!!!!!!!!!")
+    # print("fish!!!!!!!!!!!!!!!")
+    data = request.get_json()['data']
+    # print(data)
+    for i in range(len(data)-2):
+        row = data[i+1]
+        species = row[0]
+        weight = row[1]
+        length = row[2]
+        height = row[5]
+        width = row[6]
+        status = row[7]
+        source.insert_fish(species, weight, length, height, width, status)
+        print("\n3\n")
+    return redirect(url_for('admain_fish'))
+
+
 
 
 @app.route('/search_fish', methods=['GET', 'POST'])
@@ -308,7 +324,7 @@ def insert_user():
 def insert_user_csv(): # 批量插入（upload的方式）
     data = request.get_json()['data'] # 第一行都是标题['email', 'username', 'password', 'role', '  \r']
     print(data)
-    for i in range(len(data)-1):
+    for i in range(len(data)-2):
         temp_row = data[i+1]
         email = temp_row[0]
         username = temp_row[1]
