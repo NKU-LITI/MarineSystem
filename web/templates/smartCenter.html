@@ -212,6 +212,18 @@
     }
     console.log(totalScores);
 
+    /*** 警报模块 ***/
+
+    // 检测下当天的情况
+    if(data_ph[6]<5)alert("当天PH值过低！水质不健康，请关注！")
+    else if(data_ph[6]>10)alert("当天PH值过高！水质不健康，请关注！")
+    if(data_temp[6]<18)alert("当天水温过低！水质不健康，请关注！")
+    else if(data_temp[6]>25)alert("当天水温过高！水质不健康，请关注！")
+    if(data_ox[6]<5)alert("当天溶解氧过低！水质不健康，请关注！")
+    else if(data_ox[6]>21)alert("当天溶解氧过高！水质不健康，请关注！")
+    if(data_do[6]<1)alert("当天浊度过低！水质不健康，请关注！")
+    else if(data_do[6]>30)alert("当天浊度过高！水质不健康，请关注！")
+
     /*** 下面是图表 ***/
     var myChart1 = echarts.init(document.getElementById('table0'));
     option1 = {
@@ -511,17 +523,7 @@
     });
 
     
-    /*** 警报模块 ***/
 
-    // 检测下当天的情况
-    if(data_ph[6]<5)alert("当天PH值过低！水质不健康，请关注！")
-    else if(data_ph[6]>10)alert("当天PH值过高！水质不健康，请关注！")
-    if(data_temp[6]<18)alert("当天水温过低！水质不健康，请关注！")
-    else if(data_temp[6]>25)alert("当天水温过高！水质不健康，请关注！")
-    if(data_ox[6]<5)alert("当天溶解氧过低！水质不健康，请关注！")
-    else if(data_ox[6]>21)alert("当天溶解氧过高！水质不健康，请关注！")
-    if(data_do[6]<1)alert("当天浊度过低！水质不健康，请关注！")
-    else if(data_do[6]>30)alert("当天浊度过高！水质不健康，请关注！")
 
 </script>
 
