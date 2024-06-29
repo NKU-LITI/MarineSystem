@@ -551,11 +551,11 @@ ORDER BY MIN(Length);
         df = pd.read_sql(sql, self.ENGINE)
         # print("water_quality：",df.values[0][0])
         client_data = {
-            '水温': df.values[0][2],
-            'PH': df.values[0][3],
-            '溶解氧': df.values[0][4],
-            '浊度': df.values[0][6],
-            '总氮': df.values[0][10]
+            '气温': df.values[0][2],
+            '光照': df.values[0][3],
+            '舒适度': df.values[0][4],
+            '湿度': df.values[0][6],
+            '风速': df.values[0][10]
         }
         return client_data
     

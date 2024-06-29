@@ -88,6 +88,29 @@
 
                     <!-- 下下 -->
                     <div class="bottom-bottom">
+                        <div calss="bottom-left">
+                            <table style="margin-top: 10rem;margin-left:5rem">
+                                <tr>
+                                    <th>Length1</th>
+                                    <th>Length2</th>
+                                    <th>Length3</th>
+                                    <th>Height</th>
+                                    <th>Width</th>
+                                    <th class="clickable" onclick="handleClick()">Weight</th>
+                                </tr>
+                                <tr>
+                                    <td id="Length1">2</td>
+                                    <td id="Length2">2</td>
+                                    <td id="Length3">222</td>
+                                    <td id="Height">333</td>
+                                    <td id="Width">111</td>
+                                    <td id="Weight" style="color: red;">222</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div calss="bottom-right">
+
+                        </div>
                         <!-- <div class="box">
                             <p>体长</p>
                             <h3 class="box-num" style="color:cornflowerblue">10寸</h3>
@@ -514,7 +537,8 @@
         // addMessage(reply, false);
 
         const message = "我的渔场数据为：当前ph值"+data_ph[6]+"，平均ph值"+_ph.toFixed(2)+"，当前温度值"+data_temp[6]+"，平均温度值"+_temp.toFixed(1)
-            +"，当前溶解氧值"+data_ox[6]+"，平均溶解氧值"+_ox.toFixed(1)+"，当前浊度值"+data_do[6]+"，平均浊度值"+_do.toFixed(1);
+            +"，当前溶解氧值"+data_ox[6]+"，平均溶解氧值"+_ox.toFixed(1)+"，当前浊度值"+data_do[6]+"，平均浊度值"+_do.toFixed(1)
+            +"，请给出我的渔场环境建议。";
             
         console.log(message)
         if (message) {
@@ -657,6 +681,33 @@
     
 </script>
 
+<!-- 体重预测 -->
+ <script>
+    async function handleClick(){
+            
+        // 发送 AJAX 请求到后端
+        const response = await fetch('/predict_weight', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({test:"test"})
+        });
 
+        const data = await response.json();
+        console.log(data);
+        // 更新 weight 的值
+        document.getElementById("Weight").innerText = data.res.toFixed(2)
+
+        var input_data = data.new_values
+        document.getElementById("Length1").innerText = input_data['Length1(cm)'][0].toFixed(2)
+        document.getElementById("Length2").innerText = input_data['Length2(cm)'][0].toFixed(2)
+        document.getElementById("Length3").innerText = input_data['Length3(cm)'][0].toFixed(2)
+        document.getElementById("Height").innerText = input_data['Height(cm)'][0].toFixed(2)
+        document.getElementById("Width").innerText = input_data['Width(cm)'][0].toFixed(2)
+
+
+    }
+ </script>
 
 </html>

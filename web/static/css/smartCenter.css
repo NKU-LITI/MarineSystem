@@ -349,7 +349,56 @@ ol {
     color: #f51738; 
 }
 
+.content .content-center .center-bottom .bottom-bottom .bottom-left{
+    margin-left: 5rem;
+    width: 50%;
+    flex:1;
+    /* border-color: #f51738; */
+}
 
+.content .content-center .center-bottom .bottom-bottom .bottom-right{
+    width: 50%;
+    flex:1;
+    /* border-color: #f51738; */
+}
+
+table {
+    margin-top: 10rem;
+    border-collapse: collapse;
+    width: 60%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* background-color: rgb(36, 74, 158); */
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #1d41a2;
+    color: rgb(0, 0, 0);
+    text-transform: uppercase;
+}
+
+th.clickable {
+    cursor: pointer;
+}
+
+th.clickable:hover {
+    background-color: #0f3e8f; /* Even darker green on hover */
+}
+
+/* tr:hover {
+    background-color: #f1f1f1;
+} */
+
+tr:last-child td {
+    border-bottom: none;
+}
 
 
 /* 左 */

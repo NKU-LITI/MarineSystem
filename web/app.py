@@ -1,5 +1,7 @@
 import os
 import sys
+import pandas as pd
+import numpy as np
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + '/../')
 
@@ -16,6 +18,7 @@ from sqlalchemy import text
 from openai import OpenAI
 import requests
 import recognition
+import web.predict_fish_weight as predict_fish_weight
 
 
 # 初始化数据库
@@ -551,6 +554,26 @@ def upload_csv():   # 上传csv
         filepath = '../../'+filepath
         return jsonify({'path': filepath})
 
+
+# 鱼类体重预测
+@app.route('/predict_weight', methods=['POST'])
+def predict_weight():
+    # ['Length1(cm)','Length2(cm)','Length3(cm)','Height(cm)','Width(cm)']
+    # {'length1': '2', 'length2': '2', 'length3': '222', 'width': '111', 'height': '333'}
+    data = request.get_json()
+    print(data)
+    # new_values = predict_fish_weight.make_data()
+    # print(type(new_values))
+    # print(new_values)
+    # new_values = data.values()
+    # print(new_values)
+    # 打包让模型预测
+    # print(data)
+    new_values, res = predict_fish_weight.predict_weight()
+    print(type(new_values),type(res))
+    print(new_values)
+    print("预测结果：",res)
+    return jsonify({'res':float(res),'new_values':new_values.to_dict(orient='list')})
 
 
 if __name__ == '__main__':
