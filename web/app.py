@@ -92,13 +92,14 @@ def waterSystem():
     growth_count = source.GrowthCount
     no_growth_count = source.NoGrowthCount
     fish_species = source.FishSpecies
+    fish_weight= source.FishWeight
 
 
     #return render_template('waterSystem.html', title='水下系统', data=data, legend=[i.get('name') for i in data], data2=data2, legend2=list(data2.keys()),xAxis=xAxis, data3=data3,)
     return render_template('waterSystem.html', title='水下系统', data=data, legend=[i.get('name') for i in data], 
                            data_bream=data_bream, data_roach=data_roach, data_whitefish=data_whitefish, data_parkki=data_parkki, 
                            data_perch=data_perch, data_pike=data_pike, data_smelt=data_smelt, data_height=data_height, legend2=list(data_height.keys()), xAxis = xAxis, 
-                           total_count=total_count, growth_count= growth_count, no_growth_count = no_growth_count, fish_species = fish_species)
+                           total_count=total_count, growth_count= growth_count, no_growth_count = no_growth_count, fish_species = fish_species, fish_weight= fish_weight)
 
 @app.route('/dataCenter')
 def dataCenter():
