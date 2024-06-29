@@ -16,7 +16,7 @@ from sqlalchemy import create_engine, text
 from data import SourceDataDemo
 
 
-ENGINE_CONFIG = 'mysql+pymysql://root:123456@127.0.0.1:3306/marinesystem?charset=utf8'
+ENGINE_CONFIG = 'mysql+pymysql://root:2002821@127.0.0.1:3306/marinesystem?charset=utf8'
 class SourceData(SourceDataDemo):
 
     def __init__(self):
@@ -52,6 +52,17 @@ class SourceData(SourceDataDemo):
         #提取出数字
         total_count = df['total_count'].iloc[0]
         return total_count
+    
+
+    @property
+    def FishWeight(self):
+        sql = """
+        SELECT SUM(weight) AS sum_weight FROM fish;
+        """
+        df = pd.read_sql(sql, self.ENGINE)
+        # 将提取的值转换为整数并返回
+        sum_weight = int(df['sum_weight'].iloc[0])
+        return sum_weight
     
 
     @property
